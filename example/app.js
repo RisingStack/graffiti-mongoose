@@ -5,9 +5,7 @@ import {getSchema} from '../src';
 
 import User from './user';
 
-var schema = getSchema({
-  User: User
-});
+var schema = getSchema([User]);
 
 mongoose.connect('mongodb://localhost/graphql');
 
