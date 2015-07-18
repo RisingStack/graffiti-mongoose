@@ -129,9 +129,12 @@ function getSchema (models) {
 
   // Create top level fields
   var queryFields = reduce(types, (fields, type, typeName) => {
+    var name = `${typeName.toLowerCase()}`;
+
+    // TODO support multiple data: user, users
 
     // TODO: args by index and _id
-    fields[typeName.toLowerCase()] = {
+    fields[name] = {
       type: type,
       args: {
         id: {
