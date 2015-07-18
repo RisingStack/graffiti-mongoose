@@ -39,6 +39,8 @@ function getSchema (models) {
       } else if (path.instance === 'Array') {
         var type = path.caster.options.ref;
 
+        // TODO: handle non ref arrays
+
         paths[path.path] = {
           type: new GraphQLList(types[type]),
           resolve: (model, params, source, fieldASTs) => {
@@ -52,6 +54,8 @@ function getSchema (models) {
           }
         };
       }
+
+      // TODO: handle Number, Date etc.
 
       return paths;
     }, {});
