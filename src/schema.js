@@ -1,10 +1,12 @@
-import {reduce, each} from 'lodash';
+import {reduce, each, isDate} from 'lodash';
 
 import {
   GraphQLObjectType,
   GraphQLNonNull,
   GraphQLSchema,
   GraphQLString,
+  GraphQLInt,
+  GraphQLBoolean,
   GraphQLList
 } from 'graphql/lib/type';
 
@@ -62,31 +64,67 @@ function getSchema (models) {
     // String
     if (['String', 'ObjectID'].indexOf(path.instance) > -1) {
       return {
-        type: new GraphQLNonNull(GraphQLString)
+        type: GraphQLString
       };
     }
 
-    // Array of refs
-    else if (path.instance === 'Array') {
-      var type = path.caster.options.ref;
-
-      // TODO: handle non ref arrays
-
+    // Number
+    else if (path.instance === 'Number') {
       return {
-        type: new GraphQLList(types[type]),
+        type: GraphQLInt
+      };
+    }
+
+    // Date
+    else if (path.instance === 'Date') {
+      return {
+        type: GraphQLString,
         resolve: (modelInstance, params, source, fieldASTs) => {
-          var projections = getProjection(fieldASTs);
-          return modelMap[type].find({
-            _id: {
-              // to make it easily testable
-              $in: modelInstance[path.path].map((id) => id.toString())
-            }
-          }, projections);
+          if (isDate(modelInstance[fieldASTs.name.value])) {
+            return modelInstance[fieldASTs.name.value].toISOString();
+          }
+
+          return null;
         }
       };
     }
 
-    // TODO: handle Number, Date etc.
+    // Boolean
+    else if (path.instance === 'Boolean') {
+      return {
+        type: GraphQLBoolean
+      };
+    }
+
+    // Array
+    else if (path.instance === 'Array') {
+      var type = path.caster.options.ref;
+
+      // Array of refs
+      if (path.caster.instance === 'ObjectID') {
+        return {
+          type: new GraphQLList(types[type]),
+          resolve: (modelInstance, params, source, fieldASTs) => {
+            var projections = getProjection(fieldASTs);
+            return modelMap[type].find({
+              _id: {
+                // to make it easily testable
+                $in: modelInstance[path.path].map((id) => id.toString())
+              }
+            }, projections);
+          }
+        };
+
+      // Array of primitives
+      // FIXME: cannot handle array
+      } else {
+        return {
+          // type: new GraphQLList(getField(path.caster))
+        };
+      }
+    }
+
+    // TODO: handle more type
   }
 
   // Create top level fields
