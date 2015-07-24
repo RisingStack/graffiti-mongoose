@@ -16,6 +16,8 @@ function *run() {
       age
       createdAt
       nums
+      bools
+      strings
       removed
       friends {
         name
@@ -29,7 +31,6 @@ function *run() {
   //     name
   //     age
   //     createdAt
-  //     nums
   //     removed
   //     friends {
   //       name

@@ -98,10 +98,12 @@ function getSchema (models) {
 
     // Array
     else if (path.instance === 'Array') {
-      var type = path.caster.options.ref;
+      var type;
 
       // Array of refs
       if (path.caster.instance === 'ObjectID') {
+        type = path.caster.options.ref;
+
         return {
           type: new GraphQLList(types[type]),
           resolve: (modelInstance, params, source, fieldASTs) => {
@@ -118,9 +120,19 @@ function getSchema (models) {
       // Array of primitives
       // FIXME: cannot handle array
       } else {
-        return {
-          // type: new GraphQLList(getField(path.caster))
-        };
+        if (path.caster.instance === 'Number') {
+          return {
+            type: new GraphQLList(GraphQLInt)
+          };
+        } else if (path.caster.instance === 'String') {
+          return {
+            type: new GraphQLList(GraphQLString)
+          };
+        } else if (path.caster.instance === 'Boolean') {
+          return {
+            type: new GraphQLList(GraphQLBoolean)
+          };
+        }
       }
     }
 

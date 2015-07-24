@@ -11,7 +11,20 @@ var UserSchema = new mongoose.Schema({
     ref: 'User'
   }],
   nums: [Number],
-  removed: Boolean
+  bools: [Boolean],
+  strings: [String],
+  removed: Boolean,
+
+  // TODO: support objects
+  body: {
+    eye: String,
+    foot: Number
+  },
+
+  // TODO: support sub-documents
+  pets: [{
+    name: String
+  }]
 });
 
 var User = mongoose.model('User', UserSchema);
