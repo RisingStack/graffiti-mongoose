@@ -24,6 +24,20 @@ function *run() {
     }
   }`;
 
+  // query = `{
+  //   users {
+  //     name
+  //     age
+  //     createdAt
+  //     nums
+  //     removed
+  //     friends {
+  //       name
+  //       age
+  //     }
+  //   }
+  // }`;
+
   return yield graphql(schema, query);
 }
 

@@ -129,12 +129,15 @@ function getSchema (models) {
 
   // Create top level fields
   var queryFields = reduce(types, (fields, type, typeName) => {
-    var name = `${typeName.toLowerCase()}`;
+    var singularName = `${typeName.toLowerCase()}`;
 
-    // TODO support multiple data: user, users
+    // TODO handle non s ended plurarls
+    var pluralName = `${typeName.toLowerCase()}s`;
+
+    // TODO: args -> filter by indexed fields
 
     // TODO: args by index and _id
-    fields[name] = {
+    fields[singularName] = {
       type: type,
       args: {
         id: {
@@ -145,6 +148,14 @@ function getSchema (models) {
       resolve: (root, {id}, source, fieldASTs) => {
         var projections = getProjection(fieldASTs);
         return modelMap[typeName].findById(id, projections);
+      }
+    };
+
+    fields[pluralName] = {
+      type: new GraphQLList(type),
+      resolve: (root, args, source, fieldASTs) => {
+        var projections = getProjection(fieldASTs);
+        return modelMap[typeName].find({}, projections);
       }
     };
 
