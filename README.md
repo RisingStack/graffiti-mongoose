@@ -10,7 +10,7 @@ npm i @risingstack/graffiti-mongo --save
 
 ## Usage
 
-```
+```javascript
 import mongoose from 'mongoose';
 import {graphql} from 'graphql';
 import {getSchema} from '@risingstack/graffit-mongo';
