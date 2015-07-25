@@ -1,5 +1,5 @@
-import {getProjection} from './utils';
 import {expect} from 'chai';
+import {getProjection} from './utils';
 
 describe('utils', () => {
   describe('projection', () => {
