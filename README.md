@@ -20,7 +20,9 @@ var UserSchema = new mongoose.Schema({
   name: {
     type: String
   },
-  age: Number
+  age: {
+    type: Number
+  }
 });
 
 var User = mongoose.model('User', UserSchema);
