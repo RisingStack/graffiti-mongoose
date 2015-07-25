@@ -22,7 +22,11 @@
     "chai": "^3.0.0",
     "co-mocha": "^1.1.2",
     "mocha": "^2.2.5",
+    "pre-commit": "^1.0.10",
     "sinon": "^1.15.4",
     "sinon-chai": "^2.8.0"
-  }
+  },
+  "pre-commit": [
+    "test"
+  ]
 }
