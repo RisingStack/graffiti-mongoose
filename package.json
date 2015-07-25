@@ -1,7 +1,7 @@
 {
-  "name": "graphorm",
+  "name": "@risingstack/graffiti-mongo",
   "version": "1.0.0",
-  "description": "GraphQL ORM for MongoDB",
+  "description": "Graffiti Mongo adapter",
   "main": "src/index.js",
   "scripts": {
     "start": "node --harmony src/index.js",
