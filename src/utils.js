@@ -1,5 +1,6 @@
 /**
  * generate projection object for mongoose
+ * TODO: Handle sub-documents
  * @param  {Object} fieldASTs
  * @return {Project}
  */
