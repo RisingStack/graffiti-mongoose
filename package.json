@@ -1,5 +1,5 @@
 {
-  "name": "@risingstack/graffiti-mongo",
+  "name": "@risingstack/graffiti-mongoose",
   "version": "1.0.0",
   "description": "Graffiti Mongo adapter",
   "main": "src/index.js",

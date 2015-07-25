@@ -1,11 +1,11 @@
-# graffiti-mongo
+# graffiti-mongoose
 
-MongoDB adapter for [graffiti](https://github.com/RisingStack/graffiti).
+Mongoose adapter for [graffiti](https://github.com/RisingStack/graffiti).
 
 ## Install
 
 ```
-npm i @risingstack/graffiti-mongo --save
+npm i @risingstack/graffiti-mongoose --save
 ```
 
 ## Usage
@@ -13,7 +13,7 @@ npm i @risingstack/graffiti-mongo --save
 ```javascript
 import mongoose from 'mongoose';
 import {graphql} from 'graphql';
-import {getSchema} from '@risingstack/graffit-mongo';
+import {getSchema} from '@risingstack/graffit-mongoose';
 
 
 var UserSchema = new mongoose.Schema({
