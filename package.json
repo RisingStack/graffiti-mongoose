@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node --harmony src/index.js",
-    "test": "NODE_ENV=test mocha --compilers js:babel/register --require co-mocha $(find src -name \"*.spec.js\")"
+    "test": "NODE_ENV=test mocha --compilers js:babel/register --require co-mocha $(find src -name \"*.spec.js\")",
+    "eslint": "eslint src"
   },
   "author": "RisingStack",
   "license": "ISC",
@@ -19,8 +20,10 @@
     "mongoose": "^4.0.6"
   },
   "devDependencies": {
+    "babel-eslint": "^3.1.26",
     "chai": "^3.0.0",
     "co-mocha": "^1.1.2",
+    "eslint": "1.0.0-rc-3",
     "mocha": "^2.2.5",
     "pre-commit": "^1.0.10",
     "sinon": "^1.15.4",

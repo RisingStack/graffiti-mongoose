@@ -66,17 +66,15 @@ function getSchema (models) {
       return {
         type: GraphQLString
       };
-    }
 
     // Number
-    else if (path.instance === 'Number') {
+    } else if (path.instance === 'Number') {
       return {
         type: GraphQLInt
       };
-    }
 
     // Date
-    else if (path.instance === 'Date') {
+    } else if (path.instance === 'Date') {
       return {
         type: GraphQLString,
         resolve: (modelInstance, params, source, fieldASTs) => {
@@ -87,17 +85,15 @@ function getSchema (models) {
           return null;
         }
       };
-    }
 
-    // Boolean
-    else if (path.instance === 'Boolean') {
+      // Boolean
+    } else if (path.instance === 'Boolean') {
       return {
         type: GraphQLBoolean
       };
-    }
 
-    // Array
-    else if (path.instance === 'Array') {
+      // Array
+    } else if (path.instance === 'Array') {
       var type;
 
       // Array of refs
