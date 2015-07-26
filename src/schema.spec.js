@@ -12,6 +12,9 @@ describe('schema', () => {
       name: {
         type: String
       },
+      age: Number,
+      createdAt: Date,
+      removed: Boolean,
       friends: [{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
@@ -57,7 +60,37 @@ describe('schema', () => {
     // TODO: missing test cases
     it('should get data by indexed fields');
 
-    it('should get data with primitive fields');
+    it('should get data with primitive fields', function* () {
+      this.sandbox.stub(Date, 'now').returns(1437911686190);
+
+      this.sandbox.stub(User, 'findById').returnsWithResolve(new User({
+        name: 'Foo',
+        age: 24,
+        removed: false,
+        createdAt: new Date(Date.now())
+      }));
+
+      var result = yield graphql(schema, `{
+        user(id: "aaa") {
+          name
+          age
+          createdAt
+          removed
+        }
+      }`);
+
+      expect(result).to.be.eql({
+        data: {
+          user: {
+            name: 'Foo',
+            age: 24,
+            createdAt: '2015-07-26T11:54:46.190Z',
+            removed: false
+          }
+        }
+      });
+    });
+
     it('should get data with array of primitives fields');
     it('should get data with sub-document fields');
 
