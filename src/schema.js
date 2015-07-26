@@ -161,14 +161,14 @@ function getSchema (models) {
     fields[singularName] = {
       type: type,
       args: {
-        id: {
-          name: 'id',
+        _id: {
+          name: '_id',
           type: new GraphQLNonNull(GraphQLString)
         }
       },
-      resolve: (root, {id}, source, fieldASTs) => {
+      resolve: (root, {_id}, source, fieldASTs) => {
         var projections = getProjection(fieldASTs);
-        return modelMap[typeName].findById(id, projections);
+        return modelMap[typeName].findById(_id, projections);
       }
     };
 

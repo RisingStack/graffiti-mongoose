@@ -11,7 +11,7 @@ mongoose.connect('mongodb://localhost/graphql');
 
 function *run() {
   var query = `{
-    user(id: "559645cd1a38532d14349246") {
+    user(_id: "559645cd1a38532d14349246") {
       name
       age
       createdAt
