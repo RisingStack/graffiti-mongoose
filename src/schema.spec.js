@@ -13,6 +13,7 @@ describe('schema', () => {
         type: String
       },
       age: Number,
+      weight: Number, // to test "floatish" numbers
       createdAt: Date,
       removed: Boolean,
       nums: [Number],
@@ -66,6 +67,7 @@ describe('schema', () => {
       var user = new User({
         name: 'Foo',
         age: 24,
+        weight: 64.7,
         removed: false,
         createdAt: new Date(1437911686190)
       });
@@ -76,6 +78,7 @@ describe('schema', () => {
         user(_id: "${user._id}") {
           name
           age
+          weight
           createdAt
           removed
         }
@@ -86,6 +89,7 @@ describe('schema', () => {
           user: {
             name: 'Foo',
             age: 24,
+            weight: 64.7,
             createdAt: '2015-07-26T11:54:46.190Z',
             removed: false
           }

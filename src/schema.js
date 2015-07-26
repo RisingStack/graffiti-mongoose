@@ -5,7 +5,7 @@ import {
   GraphQLNonNull,
   GraphQLSchema,
   GraphQLString,
-  GraphQLInt,
+  GraphQLFloat,
   GraphQLBoolean,
   GraphQLList
 } from 'graphql/lib/type';
@@ -70,7 +70,7 @@ function getSchema (models) {
     // Number
     } else if (path.instance === 'Number') {
       return {
-        type: GraphQLInt
+        type: GraphQLFloat
       };
 
     // Date
@@ -118,7 +118,7 @@ function getSchema (models) {
       } else {
         if (path.caster.instance === 'Number') {
           return {
-            type: new GraphQLList(GraphQLInt)
+            type: new GraphQLList(GraphQLFloat)
           };
         } else if (path.caster.instance === 'String') {
           return {
