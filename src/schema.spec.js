@@ -12,7 +12,10 @@ describe('schema', () => {
       name: {
         type: String
       },
-      age: Number,
+      age: {
+        type: Number,
+        index: true
+      },
       weight: Number, // to test "floatish" numbers
       createdAt: Date,
       removed: Boolean,
@@ -39,7 +42,7 @@ describe('schema', () => {
     it('should get data by id with selected fields', function* () {
       var user = new User();
 
-      var findByIdStub = this.sandbox.stub(User, 'findById').returnsWithResolve(user);
+      var findByIdStub = this.sandbox.stub(User, 'findOne').returnsWithResolve(user);
 
       var result = yield graphql(schema, `{
         user(_id: "${user._id}") {
@@ -47,7 +50,9 @@ describe('schema', () => {
         }
       }`);
 
-      expect(findByIdStub).to.calledWith(user._id.toString(), {
+      expect(findByIdStub).to.calledWith({
+        _id: user._id
+      }, {
         _id: 1
       });
 
@@ -60,8 +65,37 @@ describe('schema', () => {
       });
     });
 
-    // TODO: missing test cases
-    it('should get data by indexed fields');
+    it('should get data by indexed fields', function* () {
+      var user = new User({
+        name: 'Foo',
+        age: 24
+      });
+
+      var findByIdStub = this.sandbox.stub(User, 'findOne').returnsWithResolve(user);
+
+      var result = yield graphql(schema, `{
+        user(age: 24) {
+          name
+          age
+        }
+      }`);
+
+      expect(findByIdStub).to.calledWith({
+        age: 24
+      }, {
+        name: 1,
+        age: 1
+      });
+
+      expect(result).to.be.eql({
+        data: {
+          user: {
+            name: 'Foo',
+            age: 24
+          }
+        }
+      });
+    });
 
     it('should get data with primitive fields', function* () {
       var user = new User({
@@ -72,7 +106,7 @@ describe('schema', () => {
         createdAt: new Date(1437911686190)
       });
 
-      this.sandbox.stub(User, 'findById').returnsWithResolve(user);
+      this.sandbox.stub(User, 'findOne').returnsWithResolve(user);
 
       var result = yield graphql(schema, `{
         user(_id: "${user._id}") {
@@ -105,7 +139,7 @@ describe('schema', () => {
         dates: [new Date(1437911686190), new Date(1437911680190)]
       });
 
-      this.sandbox.stub(User, 'findById').returnsWithResolve(user);
+      this.sandbox.stub(User, 'findOne').returnsWithResolve(user);
 
       var result = yield graphql(schema, `{
         user(_id: "${user._id}") {
@@ -141,7 +175,7 @@ describe('schema', () => {
         friends: [user1._id]
       });
 
-      var findByIdStub = this.sandbox.stub(User, 'findById').returnsWithResolve(user2);
+      var findByIdStub = this.sandbox.stub(User, 'findOne').returnsWithResolve(user2);
       var findStub = this.sandbox.stub(User, 'find').returnsWithResolve([user1]);
 
       var result = yield graphql(schema, `{
@@ -153,7 +187,9 @@ describe('schema', () => {
         }
       }`);
 
-      expect(findByIdStub).to.calledWith(user2._id.toString(), {
+      expect(findByIdStub).to.calledWith({
+        _id: user2._id
+      }, {
         name: 1,
         friends: 1
       });

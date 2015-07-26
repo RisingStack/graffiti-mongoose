@@ -10,6 +10,8 @@ import {
   GraphQLList
 } from 'graphql/lib/type';
 
+import mongoose from 'mongoose';
+
 import {getProjection} from './utils';
 
 /**
@@ -50,6 +52,28 @@ function getSchema (models) {
       return fields;
     }, {});
   });
+
+  // Model args
+  var modelArgs = reduce(modelMap, (modelArgs, model, modelName) => {
+    var args = reduce(model.schema.paths, (args, path) => {
+      var isIndexed = path.options && path.options.index === true;
+
+      if (isIndexed) {
+        args[path.path] = getField(path);
+      }
+
+      return args;
+    }, {});
+
+    args._id = {
+      name: '_id',
+      type: GraphQLString
+    };
+
+    modelArgs[modelName] = args;
+
+    return modelArgs;
+  }, {});
 
   /**
    * @method getField
@@ -160,15 +184,21 @@ function getSchema (models) {
     // TODO: args by index and _id
     fields[singularName] = {
       type: type,
-      args: {
-        _id: {
-          name: '_id',
-          type: new GraphQLNonNull(GraphQLString)
-        }
-      },
-      resolve: (root, {_id}, source, fieldASTs) => {
+      args: modelArgs[typeName],
+      resolve: (root, args, source, fieldASTs) => {
         var projections = getProjection(fieldASTs);
-        return modelMap[typeName].findById(_id, projections);
+
+        args = reduce(args, (args, arg, argName) => {
+          if (arg && argName === '_id') {
+            args[argName] = mongoose.Types.ObjectId(arg);
+          } else if (arg) {
+            args[argName] = arg;
+          }
+
+          return args;
+        }, {});
+
+        return modelMap[typeName].findOne(args, projections);
       }
     };
 

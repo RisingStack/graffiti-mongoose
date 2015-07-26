@@ -4,7 +4,10 @@ var UserSchema = new mongoose.Schema({
   name: {
     type: String
   },
-  age: Number,
+  age: {
+    type: Number,
+    index: true
+  },
   createdAt: Date,
   friends: [{
     type: mongoose.Schema.Types.ObjectId,
