@@ -1,6 +1,6 @@
 # graffiti-mongoose
 
-Mongoose adapter for [graffiti](https://github.com/RisingStack/graffiti).
+[Mongoose](http://mongoosejs.com) (MongoDB) adapter for [graffiti](https://github.com/RisingStack/graffiti).
 
 ## Install
 
@@ -14,7 +14,6 @@ npm i @risingstack/graffiti-mongoose --save
 import mongoose from 'mongoose';
 import {graphql} from 'graphql';
 import {getSchema} from '@risingstack/graffit-mongoose';
-
 
 var UserSchema = new mongoose.Schema({
   name: {
