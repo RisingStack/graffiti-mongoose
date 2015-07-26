@@ -248,7 +248,7 @@ describe('schema', () => {
       });
     });
 
-    it('should filter daya by array of _id(s)', function* () {
+    it('should filter data by array of _id(s)', function* () {
       var findStub = this.sandbox.stub(User, 'find').returnsWithResolve([]);
 
       var result = yield graphql(schema, `{
@@ -263,10 +263,23 @@ describe('schema', () => {
         }
       }, {
         name: 1
-      })
+      });
     });
 
-    // TODO: missing test cases
-    it('should filter data by indexed fields');
+    it('should filter data by indexed fields', function* () {
+      var findStub = this.sandbox.stub(User, 'find').returnsWithResolve([]);
+
+      var result = yield graphql(schema, `{
+        users(age: 17) {
+          name
+        }
+      }`);
+
+      expect(findStub).to.calledWith({
+        age: 17
+      }, {
+        name: 1
+      });
+    });
   });
 });

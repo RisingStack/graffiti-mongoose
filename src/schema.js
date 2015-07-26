@@ -1,4 +1,4 @@
-import {reduce, each, isDate, isArray} from 'lodash';
+import {map, reduce, each, isDate, isArray} from 'lodash';
 
 import {
   GraphQLObjectType,
@@ -179,16 +179,29 @@ function getSchema (models) {
     // TODO handle non s ended plurarls
     var pluralName = `${typeName.toLowerCase()}s`;
 
+    var singularArgs = modelArgs[typeName];
+    var pluralArgs = reduce(modelArgs[typeName], (args, arg, argName) => {
+      if (argName === '_id') {
+        args[argName] = {
+          type: new GraphQLList(arg.type)
+        };
+      } else {
+        args[argName] = arg;
+      }
+
+      return args;
+    }, {});
+
     // TODO: args -> filter by indexed fields
 
     // TODO: args by index and _id
     fields[singularName] = {
       type: type,
-      args: modelArgs[typeName],
+      args: singularArgs,
       resolve: (root, args, source, fieldASTs) => {
         var projections = getProjection(fieldASTs);
 
-        args = reduce(args, (args, arg, argName) => {
+        var filter = reduce(args, (args, arg, argName) => {
           if (arg && argName === '_id') {
             args[argName] = mongoose.Types.ObjectId(arg);
           } else if (arg) {
@@ -198,28 +211,27 @@ function getSchema (models) {
           return args;
         }, {});
 
-        return modelMap[typeName].findOne(args, projections);
+        return modelMap[typeName].findOne(filter, projections);
       }
     };
 
     fields[pluralName] = {
       type: new GraphQLList(type),
-      args: {
-        _id: {
-          name: '_id',
-          type: new GraphQLList(GraphQLString)
-        }
-      },
+      args: pluralArgs,
       resolve: (root, args, source, fieldASTs) => {
         var projections = getProjection(fieldASTs);
-        var filter = {};
 
-        // filter by array of _id(s)
-        if (args._id && isArray(args._id)) {
-          filter._id = {
-            $in: args._id
-          };
-        }
+        var filter = reduce(args, (args, arg, argName) => {
+          if (arg && argName === '_id') {
+            args[argName] = {
+              $in: arg
+            };
+          } else if (arg) {
+            args[argName] = arg;
+          }
+
+          return args;
+        }, {});
 
         return modelMap[typeName].find(filter, projections);
       }

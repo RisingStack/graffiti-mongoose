@@ -27,7 +27,7 @@ function *run() {
   }`;
 
   // query = `{
-  //   users {
+  //   users(age: 19) {
   //     name
   //     age
   //     createdAt
