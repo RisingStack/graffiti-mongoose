@@ -5,7 +5,13 @@
 ## Install
 
 ```
-npm i @risingstack/graffiti-mongoose --save
+npm install @risingstack/graffiti-mongoose --save
+```
+
+## Test
+
+```
+npm test
 ```
 
 ## Usage
