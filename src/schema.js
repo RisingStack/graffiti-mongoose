@@ -128,6 +128,19 @@ function getSchema (models) {
           return {
             type: new GraphQLList(GraphQLBoolean)
           };
+        } else if (path.caster.instance === 'Date') {
+          return {
+            type: new GraphQLList(GraphQLString),
+            resolve: (modelInstance, params, source, fieldASTs) => {
+              return modelInstance[fieldASTs.name.value].map((value) => {
+                if (isDate(value)) {
+                  return value.toISOString();
+                }
+
+                return null;
+              });
+            }
+          };
         }
       }
     }
