@@ -124,6 +124,7 @@ describe('schema', () => {
       });
     });
 
+    // TODO: cover sub-documents with unit tests
     it('should get data with sub-document fields');
 
     it('should get data with ref fields', function* () {
@@ -205,6 +206,24 @@ describe('schema', () => {
           ]
         }
       });
+    });
+
+    it('should filter daya by array of _id(s)', function* () {
+      var findStub = this.sandbox.stub(User, 'find').returnsWithResolve([]);
+
+      var result = yield graphql(schema, `{
+        users(_id: ["aaa", "bbb"]) {
+          name
+        }
+      }`);
+
+      expect(findStub).to.calledWith({
+        _id: {
+          $in: ['aaa', 'bbb']
+        }
+      }, {
+        name: 1
+      })
     });
 
     // TODO: missing test cases

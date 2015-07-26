@@ -1,4 +1,4 @@
-import {reduce, each, isDate} from 'lodash';
+import {reduce, each, isDate, isArray} from 'lodash';
 
 import {
   GraphQLObjectType,
@@ -174,9 +174,24 @@ function getSchema (models) {
 
     fields[pluralName] = {
       type: new GraphQLList(type),
+      args: {
+        _id: {
+          name: '_id',
+          type: new GraphQLList(GraphQLString)
+        }
+      },
       resolve: (root, args, source, fieldASTs) => {
         var projections = getProjection(fieldASTs);
-        return modelMap[typeName].find({}, projections);
+        var filter = {};
+
+        // filter by array of _id(s)
+        if (args._id && isArray(args._id)) {
+          filter._id = {
+            $in: args._id
+          };
+        }
+
+        return modelMap[typeName].find(filter, projections);
       }
     };
 
