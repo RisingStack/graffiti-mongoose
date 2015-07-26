@@ -20,9 +20,10 @@ var UserSchema = new mongoose.Schema({
   name: {
     type: String
   },
-  age: {
-    type: Number
-  }
+  friends: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }]
 });
 
 var User = mongoose.model('User', UserSchema);
@@ -30,9 +31,11 @@ var User = mongoose.model('User', UserSchema);
 var schema = getSchema([User]);
 
 var query = `{
-    user {
+    users {
       name
-      age
+      friends {
+        name
+      }
     }
   }`;
 
