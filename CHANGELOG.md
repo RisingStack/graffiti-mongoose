@@ -1,3 +1,18 @@
+<a name="1.0.2"></a>
+## 1.0.2 (2015-07-27)
+
+
+### chore
+
+* chore(build): publish built version to npm
+ 77769dc
+* chore(package): bumping version to 1.0.2
+ 9137431
+* chore(package): update description
+ 0f929df
+
+
+
 <a name="1.0.1"></a>
 ## 1.0.1 (2015-07-27)
 
