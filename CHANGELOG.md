@@ -1,3 +1,19 @@
+<a name="1.0.3"></a>
+## 1.0.3 (2015-07-27)
+
+
+### chore
+
+* chore(package): bump version to 1.0.3
+ 5971779
+
+### refactor
+
+* refactor(schema): remove mongoose from schema to avoid conflicts
+ 8a37235
+
+
+
 <a name="1.0.2"></a>
 ## 1.0.2 (2015-07-27)
 
