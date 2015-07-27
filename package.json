@@ -1,6 +1,6 @@
 {
   "name": "@risingstack/graffiti-mongoose",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Mongoose adapter for graffiti (Node.js GraphQL ORM)",
   "main": "lib/index.js",
   "scripts": {
@@ -27,7 +27,7 @@
     "babel": "^5.6.15",
     "babel-eslint": "^3.1.26",
     "chai": "^3.2.0",
-    "chai-subset": "^1.0.1",    
+    "chai-subset": "^1.0.1",
     "co-mocha": "^1.1.2",
     "eslint": "1.0.0-rc-3",
     "mocha": "^2.2.5",
