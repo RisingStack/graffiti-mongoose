@@ -1,0 +1,13 @@
+{
+  "name": "graffiti-mongoose-example",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "co": "^4.6.0",
+    "mongoose": "^4.0.6",
+    "graphql": "^0.1.0"
+  }
+}
