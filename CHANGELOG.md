@@ -6,8 +6,12 @@
 
 * chore(changelog): add CHANGELOG file
  2550e0b
+* chore(changelog): update CHANGELOG
+ 3cc3e48
 * chore(changelog): update changelog
  c002cad
+* chore(ci): integrate TravisCI via config file
+ 833833d
 * chore(gitignore): add .gitignore file to the project
  2a487bc
 * chore(guidelines): add CONTRIBUTING guideline to the project
