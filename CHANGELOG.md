@@ -1,3 +1,22 @@
+<a name="1.0.1"></a>
+## 1.0.1 (2015-07-27)
+
+
+### chore
+
+* chore(changelog): update CHANGELOG.md
+ b106ae1
+* chore(ci): integrate TravisCI via config file
+ 833833d
+* chore(npmignore): add .npmignore file to project
+ fd76552
+* chore(package): add keywords and fix license
+ 71713ad
+* chore(package): bump version to 1.0.1
+ ee6448c
+
+
+
 <a name="1.0.0"></a>
 # 1.0.0 (2015-07-27)
 
