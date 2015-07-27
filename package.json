@@ -5,7 +5,7 @@
   "main": "src/index.js",
   "scripts": {
     "start": "node --harmony src/index.js",
-    "test": "NODE_ENV=test mocha --compilers js:babel/register --require co-mocha $(find src -name \"*.spec.js\")",
+    "test": "NODE_ENV=test mocha --harmony --compilers js:babel/register --require co-mocha $(find src -name \"*.spec.js\")",
     "eslint": "eslint src"
   },
   "author": "RisingStack",
