@@ -1,38 +1,13 @@
 import {expect} from 'chai';
 import {graphql} from 'graphql';
 import mongoose from 'mongoose';
+import ObjectID from 'bson-objectid';
+
 import {getSchema} from './schema';
+import User from '../fixture/user';
 
 describe('schema', () => {
-  let schema;
-  let User;
-
-  before(() => {
-    var UserSchema = new mongoose.Schema({
-      name: {
-        type: String
-      },
-      age: {
-        type: Number,
-        index: true
-      },
-      weight: Number, // to test "floatish" numbers
-      createdAt: Date,
-      removed: Boolean,
-      nums: [Number],
-      strings: [String],
-      bools: [Boolean],
-      dates: [Date],
-      friends: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User'
-      }]
-    });
-
-    User = mongoose.model('User', UserSchema);
-
-    schema = getSchema([User]);
-  });
+  let schema = getSchema([User]);
 
   it('should exist', () => {
     expect(schema).to.be.not.undefined;
@@ -51,7 +26,7 @@ describe('schema', () => {
       }`);
 
       expect(findByIdStub).to.calledWith({
-        _id: user._id
+        _id: ObjectID(user._id.toString())
       }, {
         _id: 1
       });
@@ -188,7 +163,7 @@ describe('schema', () => {
       }`);
 
       expect(findByIdStub).to.calledWith({
-        _id: user2._id
+        _id: ObjectID(user2._id.toString())
       }, {
         name: 1,
         friends: 1

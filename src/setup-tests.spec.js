@@ -1,13 +1,17 @@
 'use strict';
 
-var sinon = require('sinon');
-var chai = require('chai');
-var sinonChai = require('sinon-chai');
-var chaiSubset = require('chai-subset');
+import sinon from 'sinon';
+import chai from 'chai';
+import sinonChai from 'sinon-chai';
+import chaiSubset from 'chai-subset';
+
+import mongoose from 'mongoose';
 
 before(function () {
   chai.use(sinonChai);
   chai.use(chaiSubset);
+
+  mongoose.connect('mongodb://localhost/graffiti-test');
 
   sinon.stub.returnsWithResolve = function (data) {
     return this.returns(Promise.resolve(data));

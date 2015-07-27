@@ -1,4 +1,5 @@
 import {map, reduce, each, isDate, isArray} from 'lodash';
+import ObjectID from 'bson-objectid';
 
 import {
   GraphQLObjectType,
@@ -9,8 +10,6 @@ import {
   GraphQLBoolean,
   GraphQLList
 } from 'graphql/lib/type';
-
-import mongoose from 'mongoose';
 
 import {getProjection} from './utils';
 
@@ -203,7 +202,7 @@ function getSchema (models) {
 
         var filter = reduce(args, (args, arg, argName) => {
           if (arg && argName === '_id') {
-            args[argName] = mongoose.Types.ObjectId(arg);
+            args[argName] = ObjectID(arg);
           } else if (arg) {
             args[argName] = arg;
           }
