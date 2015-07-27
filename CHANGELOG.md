@@ -6,10 +6,14 @@
 
 * chore(changelog): add CHANGELOG file
  2550e0b
+* chore(changelog): update changelog
+ c002cad
 * chore(gitignore): add .gitignore file to the project
  2a487bc
 * chore(guidelines): add CONTRIBUTING guideline to the project
  88837cf
+* chore(license): add LICENSE file to the project
+ d97609e
 * chore(listing): add ESLint to the project
  6068476
 * chore(pre-commit): add tests to pre-commit hooks
@@ -25,6 +29,8 @@
  880fdcd
 * docs(read): improve model style in README
  c57d83e
+* docs(readme): Add supported types and queries to the README
+ c1ff505
 * docs(readme): add example to the README
  bb49bda
 * docs(readme): add mongoose link to the README
