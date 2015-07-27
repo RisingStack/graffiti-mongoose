@@ -1,3 +1,16 @@
+<a name="1.0.4"></a>
+## 1.0.4 (2015-07-27)
+
+
+### chore
+
+* chore(package): bump version to 1.0.4
+ 09ddbbc
+* chore(package): remove unused dependencies
+ 42fa4ac
+
+
+
 <a name="1.0.3"></a>
 ## 1.0.3 (2015-07-27)
 
