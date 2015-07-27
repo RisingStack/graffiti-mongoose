@@ -90,3 +90,7 @@ users(_id: "mongoId", "mongoId2"]) {}
 ```
 npm test
 ```
+
+## License
+
+[MIT](https://github.com/RisingStack/graffiti-mongoose/tree/master/LICENSE)
