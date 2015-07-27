@@ -1,36 +1,38 @@
 <a name="1.0.0"></a>
-# 1.0.0 (2015-07-26)
+# 1.0.0 (2015-07-27)
 
 
 ### chore
 
+* chore(changelog): add CHANGELOG file
+ 2550e0b
 * chore(gitignore): add .gitignore file to the project
  2a487bc
 * chore(guidelines): add CONTRIBUTING guideline to the project
- 2454eaf
+ 88837cf
 * chore(listing): add ESLint to the project
- af7b481
+ 6068476
 * chore(pre-commit): add tests to pre-commit hooks
- 9cb77df
+ e498710
+* chore(project): rename project to "graffiti-mongo"
+ 7c9141a
 * chore(project): rename project to "graffiti-mongoose"
- f32eef0
-* chore(project): rename project to "graffiti-mongoose"
- 4595266
+ b5e1e3e
 
 ### docs
 
 * docs(read): add JavaScript style to README example
- 7ccacf3
+ 880fdcd
 * docs(read): improve model style in README
- 26cc456
+ c57d83e
 * docs(readme): add example to the README
- 9ac02ef
+ bb49bda
 * docs(readme): add mongoose link to the README
- b13621e
+ 61dcfb3
 * docs(readme): add ref example to the README
- 270feec
+ ff12c36
 * docs(readme): add test section to the README
- a469f40
+ 6d5b04d
 
 ### feat
 
@@ -38,12 +40,16 @@
  ab94cba
 * feat(schema): add support for Number, Boolean and Date types
  a07767c
+* feat(schema): add support for filtering plural resource by indexed fields
+ 1debcdd
+* feat(schema): add support for filtering singular resource by indexed fields
+ 805753a
 * feat(schema): change getSchema's interface to handle array of mongoose models
  2b62c48
 * feat(schema): filter plural resource by array of _id -s
- bf0a94d
+ 26e642f
 * feat(schema): support array of dates type
- 2ba9738
+ 787b640
 * feat(schema): support array of primitives
  9e6a439
 * feat(schema): support plural queries
@@ -54,9 +60,9 @@
 * fix(schema): change query interface for singular resource
  3de8b59
 * fix(schema): handle float like numbers
- f40f5d9
+ 5fcc91a
 * fix(schema): rename query argument "id" to "_id"
- fc4350c
+ 9f83ff7
 
 ### style
 
@@ -66,18 +72,22 @@
 ### test
 
 * test(schema): add test skeleton
- 16e0fa0
+ 3b962d6
 * test(schema): add unit tests for simple queries
- d3a652a
+ 28d7ee6
 * test(schema): cover Date, String, Number and Boolean types with tests
- 00ec7d9
+ fa67a21
 * test(schema): cover projection with unit tests
- f5fb7d4
+ 12a0c4c
 
 
 ### BREAKING CHANGE
 
 * array of models instead of objects
+
+* project name changed to "graffiti-mongo"
+
+* project name changed to "graffiti-mongoose"
 
 * query argument "id" rename to "_id"
 
