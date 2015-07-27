@@ -2,11 +2,13 @@
   "name": "@risingstack/graffiti-mongoose",
   "version": "1.0.1",
   "description": "Mongoose adapter for graffiti (Node.js GraphQL ORM)",
-  "main": "src/index.js",
+  "main": "lib/index.js",
   "scripts": {
     "start": "node --harmony src/index.js",
     "test": "NODE_ENV=test mocha --harmony --compilers js:babel/register --require co-mocha $(find src -name \"*.spec.js\")",
-    "eslint": "eslint src"
+    "eslint": "eslint src",
+    "prepublish": "npm test && npm run build",
+    "build": "rm -rf lib/* && babel src --ignore __tests__ --out-dir lib"
   },
   "author": "RisingStack",
   "license": "MIT",
