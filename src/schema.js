@@ -9,7 +9,7 @@ import {
   GraphQLFloat,
   GraphQLBoolean,
   GraphQLList
-} from 'graphql/lib/type';
+} from 'graphql/type';
 
 import {getProjection} from './utils';
 
