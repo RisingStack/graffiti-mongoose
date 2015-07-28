@@ -1,3 +1,30 @@
+<a name="1.1.1"></a>
+## 1.1.1 (2015-07-28)
+
+
+### chore
+
+* chore(changelog): update changelog
+ dfc28de
+* chore(npmignore): add src to npmignore
+ 7c01e31
+* chore(package): bump version to 1.1.0
+ 8f6e97f
+* chore(package): bump version to 1.1.1
+ 827be8c
+
+### feat
+
+* feat(schema): expose graphql
+ 65d1893
+
+### test
+
+* test(schema): use exposed graphql in tests
+ 6690b6c
+
+
+
 <a name="1.1.0"></a>
 # 1.1.0 (2015-07-28)
 
