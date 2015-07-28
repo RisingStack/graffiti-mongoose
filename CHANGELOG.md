@@ -1,3 +1,19 @@
+<a name="1.1.0"></a>
+# 1.1.0 (2015-07-28)
+
+
+### chore
+
+* chore(package): bump version to 1.1.0
+ 8f6e97f
+
+### feat
+
+* feat(schema): expose graphql
+ 65d1893
+
+
+
 <a name="1.0.5"></a>
 ## 1.0.5 (2015-07-28)
 
