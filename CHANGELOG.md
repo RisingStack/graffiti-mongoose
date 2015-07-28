@@ -1,3 +1,16 @@
+<a name="1.0.5"></a>
+## 1.0.5 (2015-07-28)
+
+
+### chore
+
+* chore(package): bump version to 1.0.5
+ cbbd650
+* chore(package): udpdate dependencies
+ b3987fb
+
+
+
 <a name="1.0.4"></a>
 ## 1.0.4 (2015-07-27)
 
