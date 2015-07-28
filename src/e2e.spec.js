@@ -1,8 +1,7 @@
 import {expect} from 'chai';
-import {graphql} from 'graphql';
 import mongoose from 'mongoose';
 
-import {getSchema} from './schema';
+import {getSchema, graphql} from './schema';
 import User from '../fixture/user';
 
 describe('e2e', () => {
