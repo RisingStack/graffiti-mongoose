@@ -1,6 +1,8 @@
 import {map, reduce, each, isDate, isArray} from 'lodash';
 import ObjectID from 'bson-objectid';
 
+import {graphql} from 'graphql';
+
 import {
   GraphQLObjectType,
   GraphQLNonNull,
@@ -248,4 +250,5 @@ function getSchema (models) {
   });
 }
 
-export var getSchema;
+module.exports.getSchema = getSchema;
+module.exports.graphql = graphql;
