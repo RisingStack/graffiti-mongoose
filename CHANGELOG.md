@@ -1,3 +1,28 @@
+<a name="1.2.0"></a>
+# 1.2.0 (2015-07-29)
+
+
+### chore
+
+* chore(package): bump version to 1.2.0
+ ac26a30
+
+### docs
+
+* docs(readme): fix example in README
+ 2015908
+* docs(readme): fix typo
+ 02e6fe1
+* docs(readme): use promise instead of yield
+ 0ec8290
+
+### feat
+
+* feat(schema): support inline fragments
+ 184ffed
+
+
+
 <a name="1.1.1"></a>
 ## 1.1.1 (2015-07-28)
 
