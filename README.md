@@ -84,7 +84,7 @@ Which means, you are able to filter like below, if the age is indexed in your mo
 ```
 users(age: 19) {}
 user(_id: "mongoId1") {}
-users(_id: "mongoId", "mongoId2"]) {}
+users(_id: ["mongoId", "mongoId2"]) {}
 ```
 
 ## Test
