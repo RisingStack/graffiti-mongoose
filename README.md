@@ -19,8 +19,7 @@ Check out the [/example](https://github.com/RisingStack/graffiti-mongoose/tree/m
 ```javascript
 // ES6 imports
 import mongoose from 'mongoose';
-import {graphql} from 'graphql';
-import {getSchema} from '@risingstack/graffit-mongoose';
+import {getSchema, graphql} from '@risingstack/graffit-mongoose';
 
 // usual mongoose stuff
 var UserSchema = new mongoose.Schema({
