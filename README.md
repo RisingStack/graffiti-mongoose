@@ -51,7 +51,10 @@ var query = `{
     }
   }`;
 
-return yield graphql(schema, query);
+graphql(schema, query)
+  .then((result) => {
+    console.log(result);
+  });
 ```
 
 ## Supported mongoose types
