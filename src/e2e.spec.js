@@ -61,6 +61,40 @@ describe('e2e', () => {
         }
       });
     });
+
+    it('should support inline fragments', function* () {
+      var result = yield graphql(schema, `{
+        user(_id: "${user2._id}") {
+          _id
+          name,
+          ... on User {
+            age
+          }
+          friends {
+            _id
+            ... on User {
+              name
+            },
+            age
+          }
+        }
+      }`);
+
+      expect(result).to.be.eql({
+        data: {
+          user: {
+            _id: user2._id.toString(),
+            name: 'Bar',
+            age: 28,
+            friends: [{
+              _id: user1._id.toString(),
+              name: 'Foo',
+              age: 28
+            }]
+          },
+        }
+      });
+    });
   });
 
   describe('plural query', () => {
