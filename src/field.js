@@ -11,6 +11,8 @@ from 'graphql/type';
 import {getProjection} from './projection';
 
 /**
+ * TODO: return with field name
+ *
  * @method getField
  * @param {Object} field
  * @param {Object} types
