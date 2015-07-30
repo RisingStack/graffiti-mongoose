@@ -1,12 +1,12 @@
 import {expect} from 'chai';
-import mongoose from 'mongoose';
 import ObjectID from 'bson-objectid';
+import {graphql} from 'graphql';
 
-import {getSchema, graphql} from './schema';
+import {get} from './schema';
 import User from '../fixture/user';
 
 describe('schema', () => {
-  let schema = getSchema([User]);
+  let schema = get([User]);
 
   it('should exist', () => {
     expect(schema).to.be.not.undefined;
@@ -25,7 +25,7 @@ describe('schema', () => {
       }`);
 
       expect(findByIdStub).to.calledWith({
-        _id: ObjectID(user._id.toString())
+        _id: new ObjectID(user._id.toString())
       }, {
         _id: 1
       });
@@ -225,7 +225,7 @@ describe('schema', () => {
     it('should filter data by array of _id(s)', function* () {
       var findStub = this.sandbox.stub(User, 'find').returnsWithResolve([]);
 
-      var result = yield graphql(schema, `{
+      yield graphql(schema, `{
         users(_id: ["aaa", "bbb"]) {
           name
         }
@@ -243,7 +243,7 @@ describe('schema', () => {
     it('should filter data by indexed fields', function* () {
       var findStub = this.sandbox.stub(User, 'find').returnsWithResolve([]);
 
-      var result = yield graphql(schema, `{
+      yield graphql(schema, `{
         users(age: 17) {
           name
         }
