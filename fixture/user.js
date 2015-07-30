@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
 
-var UserSchema = new mongoose.Schema({
+let UserSchema = new mongoose.Schema({
   name: {
     type: String
   },
@@ -21,6 +21,6 @@ var UserSchema = new mongoose.Schema({
   }]
 });
 
-var User = mongoose.model('User', UserSchema);
+let User = mongoose.model('User', UserSchema);
 
 export default User;
