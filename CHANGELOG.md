@@ -1,3 +1,19 @@
+<a name="1.3.0"></a>
+# 1.3.0 (2015-07-30)
+
+
+### chore
+
+* chore(package): bump version to 1.3.0
+ ef362a2
+
+### feat
+
+* feat(types): expose types
+ b0ef6ff
+
+
+
 <a name="1.2.0"></a>
 # 1.2.0 (2015-07-29)
 
