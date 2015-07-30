@@ -2,11 +2,11 @@ import {expect} from 'chai';
 import ObjectID from 'bson-objectid';
 import {graphql} from 'graphql';
 
-import {get} from './schema';
+import {getSchema} from './schema';
 import User from '../fixture/user';
 
 describe('schema integration test', () => {
-  let schema = get([User]);
+  let schema = getSchema([User]);
 
   describe('singular resource', () => {
     it('should get data by id with selected fields', function* () {

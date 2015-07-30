@@ -3,18 +3,18 @@ import {
   GraphQLSchema
 } from 'graphql/type';
 
-import type from './type';
-import query from './query';
+import {getTypes} from './type';
+import {getArgs, getRootFields} from './query';
 
 /**
- * @method get
+ * @method getSchema
  * @param  {Array} models - mongoose models
  * @return {GraphQLSchema} schema
  */
-function get (models) {
-  var types = type.get(models);
-  var queryArgs = query.getArgs(types, models);
-  var queryFields = query.getRootFields(types, models, queryArgs);
+function getSchema (models) {
+  var types = getTypes(models);
+  var queryArgs = getArgs(types, models);
+  var queryFields = getRootFields(types, models, queryArgs);
 
   // Create root schema
   return new GraphQLSchema({
@@ -26,6 +26,5 @@ function get (models) {
 }
 
 export default {
-  get
+  getSchema
 };
-

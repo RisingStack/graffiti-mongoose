@@ -1,10 +1,9 @@
 import {graphql} from 'graphql';
-import schema from './schema';
-import type from './type';
+import {getSchema} from './schema';
+import {getTypes} from './type';
 
 export default {
   graphql,
-  getSchema: schema.get,
-  getTypes: type.get
+  getSchema,
+  getTypes
 };
-

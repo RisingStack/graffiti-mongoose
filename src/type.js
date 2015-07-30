@@ -7,11 +7,11 @@ import {
 import field from './field';
 
 /**
- * @method get
+ * @method getTypes
  * @param {Object} models
  * @return {Object} types
  */
-function get (models) {
+function getTypes (models) {
   var types = reduce(models, (types, model) => {
     var modelName = model.modelName;
 
@@ -43,6 +43,5 @@ function get (models) {
 }
 
 export default {
-  get
+  getTypes
 };
-
