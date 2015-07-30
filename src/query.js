@@ -6,7 +6,7 @@ import {
   GraphQLList
 } from 'graphql/type';
 
-import {getProjection} from './utils';
+import {getProjection} from './projection';
 import field from './field';
 
 /**
@@ -129,4 +129,3 @@ export default {
   getArgs,
   getRootFields
 };
-

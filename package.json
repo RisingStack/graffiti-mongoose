@@ -24,7 +24,7 @@
     "lodash": "^3.10.0"
   },
   "devDependencies": {
-    "babel": "^5.8.12",
+    "babel": "^5.8.19",
     "babel-eslint": "^3.1.26",
     "chai": "^3.2.0",
     "chai-subset": "^1.0.1",

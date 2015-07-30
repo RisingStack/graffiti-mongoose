@@ -1,10 +1,10 @@
-import { expect } from 'chai';
-import { getProjection } from './utils';
+import {expect} from 'chai';
+import {getProjection} from './projection';
 
 describe('utils', () => {
   describe('projection', () => {
     it('should provide the mongoose projection object', () => {
-      const projection = getProjection({
+      const projectionResult = getProjection({
         selectionSet: {
           selections: [{
             kind: 'Field',
@@ -20,17 +20,17 @@ describe('utils', () => {
         }
       });
 
-      expect(projection).to.be.eql({
+      expect(projectionResult).to.be.eql({
         foo: 1,
         bar: 1
       });
     });
 
     it('should support inline fragments', () => {
-      const projection = getProjection({
+      const projectionResult = getProjection({
         selectionSet: {
           selections: [{
-            kind: "InlineFragment",
+            kind: 'InlineFragment',
             selectionSet: {
               selections: [{
                 kind: 'Field',
@@ -40,7 +40,7 @@ describe('utils', () => {
               }]
             }
           }, {
-            kind: "Field",
+            kind: 'Field',
             name: {
               value: 'bar'
             }
@@ -48,10 +48,10 @@ describe('utils', () => {
         }
       });
 
-      expect(projection).to.be.eql({
+      expect(projectionResult).to.be.eql({
         foo: 1,
         bar: 1
-      })
+      });
     });
   });
 });

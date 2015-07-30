@@ -1,7 +1,8 @@
 /**
  * Generate projection object for mongoose
  * TODO: Handle sub-documents
- * @param  {Object} fieldASTs
+ * @method get
+ * @param {Object} fieldASTs
  * @return {Project}
  */
 export function getProjection(fieldASTs) {
@@ -11,7 +12,7 @@ export function getProjection(fieldASTs) {
       case 'Field':
         return {
           ...projs,
-          [selection.name.value]: 1,
+          [selection.name.value]: 1
         };
       case 'InlineFragment':
         return {
@@ -23,4 +24,3 @@ export function getProjection(fieldASTs) {
     }
   }, {});
 }
-

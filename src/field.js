@@ -7,7 +7,7 @@ import {
   GraphQLList
 } from 'graphql/type';
 
-import {getProjection} from './utils';
+import {getProjection} from './projection';
 
 /**
  * @method get
@@ -111,11 +111,8 @@ function get (path, types, models) {
       }
     }
   }
-
-  // TODO: handle more type
 }
 
 export default {
-  get
+  get: get
 };
-
