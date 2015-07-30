@@ -3,10 +3,11 @@ import ObjectID from 'bson-objectid';
 import {graphql} from 'graphql';
 
 import {getSchema} from './schema';
+import {getModels} from './model';
 import User from '../fixture/user';
 
 describe('schema integration test', () => {
-  let schema = getSchema([User]);
+  let schema = getSchema(getModels([User]));
 
   describe('singular resource', () => {
     it('should get data by id with selected fields', function* () {

@@ -7,27 +7,19 @@ import {
 } from 'graphql/type';
 
 import {getProjection} from './projection';
-import field from './field';
+import {getField} from './field';
 
 /**
  * @method getArgs
  * @param {Object} types
- * @param {Object} models
+ * @param {Object} models - graffiti models
  * @return {Object} queryArgs
  */
 function getArgs (types, models) {
-  var modelMap = reduce(models, (map, model) => {
-    map[model.modelName] = model;
-
-    return map;
-  }, {});
-
-  return reduce(modelMap, (queryArgs, model, modelName) => {
-    var args = reduce(model.schema.paths, (args, path) => {
-      var isIndexed = path.options && path.options.index === true;
-
-      if (isIndexed) {
-        args[path.path] = field.get(path, types, models);
+  return reduce(models, (queryArgs, model) => {
+    var args = reduce(model.fields, (args, field) => {
+      if (field.indexed) {
+        args[field.name] = getField(field, types, models);
       }
 
       return args;
@@ -38,7 +30,7 @@ function getArgs (types, models) {
       type: GraphQLString
     };
 
-    queryArgs[modelName] = args;
+    queryArgs[model.name] = args;
 
     return queryArgs;
   }, {});
@@ -50,15 +42,10 @@ function getArgs (types, models) {
  * @method getRootFields
  * @param {Object} types
  * @param {Object} models
- * @param {Object} queryArgs
  * @return {Object} fields
  */
-function getRootFields (types, models, queryArgs) {
-  var modelMap = reduce(models, (map, model) => {
-    map[model.modelName] = model;
-
-    return map;
-  }, {});
+function getRootFields (types, models) {
+  var queryArgs = getArgs(types, models);
 
   return reduce(types, (fields, type, typeName) => {
     var singularName = `${typeName.toLowerCase()}`;
@@ -94,7 +81,7 @@ function getRootFields (types, models, queryArgs) {
           return args;
         }, {});
 
-        return modelMap[typeName].findOne(filter, projections);
+        return models[typeName].model.findOne(filter, projections);
       }
     };
 
@@ -117,7 +104,7 @@ function getRootFields (types, models, queryArgs) {
           return args;
         }, {});
 
-        return modelMap[typeName].find(filter, projections);
+        return models[typeName].model.find(filter, projections);
       }
     };
 

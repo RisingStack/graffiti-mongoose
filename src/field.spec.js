@@ -7,13 +7,13 @@ import {
 } from 'graphql/type';
 
 import User from '../fixture/user';
-import {get} from './field';
+import {getField} from './field';
 
 var projection =  require('./projection');
 
 describe('field', () => {
   it('should resolve String properly', () => {
-    var field = get({
+    var field = getField({
       instance: 'String'
     });
 
@@ -23,7 +23,7 @@ describe('field', () => {
   });
 
   it('should resolve Number properly', () => {
-    var field = get({
+    var field = getField({
       instance: 'Number'
     });
 
@@ -33,7 +33,7 @@ describe('field', () => {
   });
 
   it('should resolve Boolean properly', () => {
-    var field = get({
+    var field = getField({
       instance: 'Boolean'
     });
 
@@ -43,7 +43,7 @@ describe('field', () => {
   });
 
   it('should resolve Date properly', () => {
-    var field = get({
+    var field = getField({
       instance: 'Date'
     });
 
@@ -73,18 +73,21 @@ describe('field', () => {
     });
     var findStub = this.sandbox.stub(User, 'find').returnsWithResolve(users);
 
-    var field = get({
+    var field = getField({
       instance: 'Array',
       path: 'value',
+      name: 'value',
       caster: {
         instance: 'ObjectID',
-        options: {
-          ref: 'User'
-        }
+        ref: 'User'
       }
     }, {
       User: 'foo'
-    }, [User]);
+    }, {
+      User: {
+        model: User
+      }
+    });
 
     var result = yield field.resolve({
       value: [users[0]._id, users[1]._id]
@@ -110,7 +113,7 @@ describe('field', () => {
   });
 
   it('should resolve Array of String properly', () => {
-    var field = get({
+    var field = getField({
       instance: 'Array',
       caster: {
         instance: 'String'
@@ -123,7 +126,7 @@ describe('field', () => {
   });
 
   it('should resolve Array of Number properly', () => {
-    var field = get({
+    var field = getField({
       instance: 'Array',
       caster: {
         instance: 'Number'
@@ -136,7 +139,7 @@ describe('field', () => {
   });
 
   it('should resolve Array of Boolean properly', () => {
-    var field = get({
+    var field = getField({
       instance: 'Array',
       caster: {
         instance: 'Boolean'
@@ -149,7 +152,7 @@ describe('field', () => {
   });
 
   it('should resolve Array of Dates properly', () => {
-    var field = get({
+    var field = getField({
       instance: 'Array',
       caster: {
         instance: 'Date'

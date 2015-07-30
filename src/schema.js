@@ -4,23 +4,22 @@ import {
 } from 'graphql/type';
 
 import {getTypes} from './type';
-import {getArgs, getRootFields} from './query';
+import {getRootFields} from './query';
 
 /**
  * @method getSchema
- * @param  {Array} models - mongoose models
+ * @param  {Object} models - graffiti models
  * @return {GraphQLSchema} schema
  */
 function getSchema (models) {
   var types = getTypes(models);
-  var queryArgs = getArgs(types, models);
-  var queryFields = getRootFields(types, models, queryArgs);
+  var rootQueryFields = getRootFields(types, models);
 
   // Create root schema
   return new GraphQLSchema({
     query: new GraphQLObjectType({
       name: 'RootQueryType',
-      fields: queryFields
+      fields: rootQueryFields
     })
   });
 }

@@ -4,7 +4,7 @@ import {
   GraphQLObjectType
 } from 'graphql/type';
 
-import field from './field';
+import {getField} from './field';
 
 /**
  * @method getTypes
@@ -12,11 +12,9 @@ import field from './field';
  * @return {Object} types
  */
 function getTypes (models) {
-  var types = reduce(models, (types, model) => {
-    var modelName = model.modelName;
-
-    types[modelName] = new GraphQLObjectType({
-      name: modelName
+  var types = reduce(models, (types, model) => {    
+    types[model.name] = new GraphQLObjectType({
+      name: model.name
     });
 
     return types;
@@ -24,15 +22,13 @@ function getTypes (models) {
 
   // Config types
   each(models, (model) => {
-    var modelName = model.modelName;
 
     // TODO: without internals?
-    types[modelName]._typeConfig.fields = reduce(model.schema.paths, (fields, path) => {
-      var fieldType = field.get(path, types, models);
-      var fieldName = path.path;
+    types[model.name]._typeConfig.fields = reduce(model.fields, (fields, field) => {
+      var type = getField(field, types, models);
 
-      if (fieldType) {
-        fields[fieldName] = fieldType;
+      if (type) {
+        fields[field.name] = type;
       }
 
       return fields;
