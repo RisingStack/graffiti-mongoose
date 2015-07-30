@@ -42,4 +42,7 @@ function get (models) {
   return types;
 }
 
-module.exports.get = get;
+export default {
+  get
+};
+

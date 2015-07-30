@@ -125,5 +125,8 @@ function getRootFields (types, models, queryArgs) {
   }, {});
 }
 
-module.exports.getArgs = getArgs;
-module.exports.getRootFields = getRootFields;
+export default {
+  getArgs,
+  getRootFields
+};
+

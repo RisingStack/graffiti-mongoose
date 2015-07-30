@@ -115,4 +115,7 @@ function get (path, types, models) {
   // TODO: handle more type
 }
 
-module.exports.get = get;
+export default {
+  get
+};
+

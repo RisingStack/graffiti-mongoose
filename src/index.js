@@ -2,7 +2,9 @@ import {graphql} from 'graphql';
 import schema from './schema';
 import type from './type';
 
-module.exports.graphql = graphql;
+export default {
+  graphql,
+  getSchema: schema.get,
+  getTypes: type.get
+};
 
-module.exports.getSchema = schema.get;
-module.exports.getTypes = type.get;

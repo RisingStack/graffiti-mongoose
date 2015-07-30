@@ -25,4 +25,7 @@ function get (models) {
   });
 }
 
-module.exports.get = get;
+export default {
+  get
+};
+
