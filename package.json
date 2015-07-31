@@ -20,7 +20,7 @@
   ],
   "dependencies": {
     "bson-objectid": "^1.1.1",
-    "graphql": "0.1.12",
+    "graphql": "0.2.2",
     "lodash": "^3.10.0"
   },
   "devDependencies": {
