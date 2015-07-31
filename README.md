@@ -16,6 +16,8 @@ Check out the [/example](https://github.com/RisingStack/graffiti-mongoose/tree/m
 
 ## Usage
 
+This adapter is written in `ES6` with [Babel(https://babeljs.io) but is published as transpiled `ES5` JavaScript code to `npm`, which means you don't need ES6 support in your application.  
+
 **usual mongoose model(s):**
 ```javascript
 import mongoose from 'mongoose';
