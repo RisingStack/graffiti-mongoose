@@ -169,7 +169,7 @@ describe('schema', () => {
         }`);
 
         expect(findByIdStub).to.calledWith({
-          _id: ObjectID(user2._id.toString())
+          _id: new ObjectID(user2._id.toString())
         }, {
           name: 1,
           friends: 1
