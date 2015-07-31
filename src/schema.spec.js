@@ -10,7 +10,14 @@ describe('schema', () => {
   let schema = getSchema(getModels([User]));
 
   it('should exist', () => {
-    expect(schema).to.be.not.undefined;
+    expect(schema).to.containSubset({
+      _schemaConfig: {
+        query: {
+          name: 'RootQueryType',
+          description: 'Query schema for Graffiti'
+        }
+      }
+    });
   });
 
   it('queries', () => {

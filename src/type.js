@@ -12,9 +12,10 @@ import {getField} from './field';
  * @return {Object} types
  */
 function getTypes (models) {
-  var types = reduce(models, (types, model) => {    
+  var types = reduce(models, (types, model) => {
     types[model.name] = new GraphQLObjectType({
-      name: model.name
+      name: model.name,
+      description: `"${model.name}" type`
     });
 
     return types;
@@ -25,7 +26,7 @@ function getTypes (models) {
 
     // TODO: without internals?
     types[model.name]._typeConfig.fields = reduce(model.fields, (fields, field) => {
-      var type = getField(field, types, models);
+      var type = getField(field, types, models, model);
 
       if (type) {
         fields[field.name] = type;

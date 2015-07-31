@@ -37,10 +37,11 @@ describe('type', () => {
               type: GraphQLString
             }
           },
-          name: 'Foo'
+          name: 'Foo',
+          description: '"Foo" type'
         },
-        description: undefined,
-        name: 'Foo'
+        name: 'Foo',
+        description: '"Foo" type'
       }
     });
   });

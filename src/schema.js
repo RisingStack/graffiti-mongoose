@@ -19,7 +19,8 @@ function getSchema (models) {
   return new GraphQLSchema({
     query: new GraphQLObjectType({
       name: 'RootQueryType',
-      fields: rootQueryFields
+      fields: rootQueryFields,
+      description: 'Query schema for Graffiti'
     })
   });
 }

@@ -14,44 +14,64 @@ var projection =  require('./projection');
 describe('field', () => {
   it('should resolve String properly', () => {
     var field = getField({
-      instance: 'String'
+      instance: 'String',
+      name: 'foo'
+    }, undefined, undefined, {
+      name: 'Bar'
     });
 
     expect(field).to.be.eql({
-      type: GraphQLString
+      type: GraphQLString,
+      name: 'foo',
+      description: '"foo" field of the "Bar" model with type "String"'
     });
   });
 
   it('should resolve Number properly', () => {
     var field = getField({
-      instance: 'Number'
+      instance: 'Number',
+      name: 'foo'
+    }, undefined, undefined, {
+      name: 'Bar'
     });
 
     expect(field).to.be.eql({
-      type: GraphQLFloat
+      type: GraphQLFloat,
+      name: 'foo',
+      description: '"foo" field of the "Bar" model with type "Number"'
     });
   });
 
   it('should resolve Boolean properly', () => {
     var field = getField({
-      instance: 'Boolean'
+      instance: 'Boolean',
+      name: 'foo'
+    }, undefined, undefined, {
+      name: 'Bar'
     });
 
     expect(field).to.be.eql({
-      type: GraphQLBoolean
+      type: GraphQLBoolean,
+      name: 'foo',
+      description: '"foo" field of the "Bar" model with type "Boolean"'
     });
   });
 
   it('should resolve Date properly', () => {
     var field = getField({
-      instance: 'Date'
+      instance: 'Date',
+      name: 'foo'
+    }, undefined, undefined, {
+      name: 'Bar'
     });
 
     var result = field.resolve({
       value: new Date(1438273470215)
     }, undefined, undefined, {
       name: {
-        value: 'value'
+        value: 'value',
+        name: 'foo',
+        description: '"foo" field of the "Bar" model with type "Date"'
       }
     });
 
@@ -75,7 +95,6 @@ describe('field', () => {
 
     var field = getField({
       instance: 'Array',
-      path: 'value',
       name: 'value',
       caster: {
         instance: 'ObjectID',
@@ -87,6 +106,8 @@ describe('field', () => {
       User: {
         model: User
       }
+    }, {
+      name: 'User'
     });
 
     var result = yield field.resolve({
@@ -108,55 +129,76 @@ describe('field', () => {
     expect(result).to.be.eql(users);
 
     expect(field).to.containSubset({
-      type: new GraphQLList('foo')
+      type: new GraphQLList('foo'),
+      name: 'value',
+      description: '"value" field of the "User" model with type "Array"' +
+        ' of "ObjectID" and reference to "User" model'
     });
   });
 
   it('should resolve Array of String properly', () => {
     var field = getField({
       instance: 'Array',
+      name: 'foo',
       caster: {
         instance: 'String'
       }
+    }, undefined, undefined, {
+      name: 'Bar'
     });
 
     expect(field).to.be.eql({
-      type: new GraphQLList(GraphQLString)
+      type: new GraphQLList(GraphQLString),
+      name: 'foo',
+      description: '"foo" field of the "Bar" model with type "Array" of "String"'
     });
   });
 
   it('should resolve Array of Number properly', () => {
     var field = getField({
       instance: 'Array',
+      name: 'foo',
       caster: {
         instance: 'Number'
       }
+    }, undefined, undefined, {
+      name: 'Bar'
     });
 
     expect(field).to.be.eql({
-      type: new GraphQLList(GraphQLFloat)
+      type: new GraphQLList(GraphQLFloat),
+      name: 'foo',
+      description: '"foo" field of the "Bar" model with type "Array" of "Number"'
     });
   });
 
   it('should resolve Array of Boolean properly', () => {
     var field = getField({
       instance: 'Array',
+      name: 'foo',
       caster: {
         instance: 'Boolean'
       }
+    }, undefined, undefined, {
+      name: 'Bar'
     });
 
     expect(field).to.be.eql({
-      type: new GraphQLList(GraphQLBoolean)
+      type: new GraphQLList(GraphQLBoolean),
+      name: 'foo',
+      description: '"foo" field of the "Bar" model with type "Array" of "Boolean"'
     });
   });
 
   it('should resolve Array of Dates properly', () => {
     var field = getField({
       instance: 'Array',
+      name: 'foo',
       caster: {
         instance: 'Date'
       }
+    }, undefined, undefined, {
+      name: 'Bar'
     });
 
     var result = field.resolve({
@@ -170,7 +212,9 @@ describe('field', () => {
     expect(result).to.be.eql(['1970-01-01T00:00:00.000Z', '2015-07-30T16:24:30.215Z']);
 
     expect(field).to.containSubset({
-      type: new GraphQLList(GraphQLString)
+      type: new GraphQLList(GraphQLString),
+      name: 'foo',
+      description: '"foo" field of the "Bar" model with type "Array" of "Date"'
     });
   });
 });

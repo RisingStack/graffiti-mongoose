@@ -19,7 +19,7 @@ function getArgs (types, models) {
   return reduce(models, (queryArgs, model) => {
     var args = reduce(model.fields, (args, field) => {
       if (field.indexed) {
-        args[field.name] = getField(field, types, models);
+        args[field.name] = getField(field, types, models, model);
       }
 
       return args;
@@ -27,7 +27,8 @@ function getArgs (types, models) {
 
     args._id = {
       name: '_id',
-      type: GraphQLString
+      type: GraphQLString,
+      description: '"_id" field of the "${mode.name}" model with type "String"'
     };
 
     queryArgs[model.name] = args;

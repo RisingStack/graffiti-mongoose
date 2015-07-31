@@ -25,10 +25,13 @@ describe('query', () => {
       User: {
         _id: {
           name: '_id',
-          type: GraphQLString
+          type: GraphQLString,
+          description: '"_id" field of the "${mode.name}" model with type "String"'
         },
         age: {
-          type: GraphQLFloat
+          type: GraphQLFloat,
+          name: 'age',
+          description: '"age" field of the "User" model with type "Number"'
         }
       }
     });
