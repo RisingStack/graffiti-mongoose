@@ -1,3 +1,18 @@
+<a name="1.4.1"></a>
+## 1.4.1 (2015-07-31)
+
+
+### chore
+
+* chore(changelog): update changelog
+ 89a2a89
+* chore(package): bump version to 1.4.1
+ a106290
+* chore(package): update graphql version
+ e99623e
+
+
+
 <a name="1.4.0"></a>
 # 1.4.0 (2015-07-31)
 
