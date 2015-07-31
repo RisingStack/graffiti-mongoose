@@ -1,3 +1,48 @@
+<a name="1.4.0"></a>
+# 1.4.0 (2015-07-31)
+
+
+### chore
+
+* chore(package): bump version to 1.4.0
+ efe3a4b
+
+### fix
+
+* fix(model): handle mongoose models without caster option
+ 5a52ef2
+
+### refactor
+
+* refactor(export): refactor export to support ES6 impots better
+ f3912d4
+* refactor(interface): use ES6 exports
+ 7b5ea46
+* refactor(type): graffiti level models
+ d7bb657
+
+### style
+
+* style(imports): refactor imports to ES6 style
+ ebdabd2
+
+### test
+
+* test(e2e): improve test coverage
+ b751814
+* test(query): cover with unit tests
+ d4635eb
+* test(schema): add new prefix to ObjectId creation
+ 50d7df4
+* test(schema): write test skeletons
+ 2cfa589
+* test(type): cover type resolves with tests
+ c37d5bf
+* test(type): cover type with tests
+ c64a248
+
+
+
 <a name="1.3.0"></a>
 # 1.3.0 (2015-07-30)
 
