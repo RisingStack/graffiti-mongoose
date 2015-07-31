@@ -33,9 +33,9 @@ var UserSchema = new mongoose.Schema({
     ref: 'User'
   }]
 });
-```
 
 var User = mongoose.model('User', UserSchema);
+```
 
 **graffiti-mongoose:**
 ```javascript
