@@ -16,12 +16,10 @@ Check out the [/example](https://github.com/RisingStack/graffiti-mongoose/tree/m
 
 ## Usage
 
+**usual mongoose model(s):**
 ```javascript
-// ES6 imports
 import mongoose from 'mongoose';
-import {getSchema, graphql} from '@risingstack/graffit-mongoose';
 
-// usual mongoose stuff
 var UserSchema = new mongoose.Schema({
   name: {
     type: String
@@ -35,10 +33,14 @@ var UserSchema = new mongoose.Schema({
     ref: 'User'
   }]
 });
+```
 
 var User = mongoose.model('User', UserSchema);
 
-// graffiti from here: easy, right?
+**graffiti-mongoose:**
+```javascript
+import {getSchema, graphql} from '@risingstack/graffit-mongoose';
+
 var schema = getSchema([User]);
 
 var query = `{
