@@ -3,7 +3,8 @@
 [![Build Status](https://travis-ci.org/RisingStack/graffiti-mongoose.svg)](https://travis-ci.org/RisingStack/graffiti-mongoose)  
 
 [Mongoose](http://mongoosejs.com) (MongoDB) adapter for the [graffiti](https://github.com/RisingStack/graffiti) [GraphQL](https://github.com/graphql/graphql-js) ORM.  
-`graffiti-mongoose` generates `GraphQL` types and schemas from your existing `mongoose` models, that's how simple it is. For more info check out the [Usage section](https://github.com/RisingStack/graffiti-mongoose#graffiti-mongoose).
+`graffiti-mongoose` generates `GraphQL` types and schemas from your existing `mongoose` models, that's how simple it is. 
+For more info check out the [Usage section](https://github.com/RisingStack/graffiti-mongoose#graffiti-mongoose-1).
 
 ## Install
 
@@ -19,7 +20,7 @@ Check out the [/example](https://github.com/RisingStack/graffiti-mongoose/tree/m
 
 This adapter is written in `ES6` with [Babel](https://babeljs.io) but it's published as transpiled `ES5` JavaScript code to `npm`, which means you don't need `ES6` support in your application to run it.  
 
-#### usual mongoose model(s)
+##### usual mongoose model(s)
 ```javascript
 import mongoose from 'mongoose';
 
@@ -40,7 +41,7 @@ var UserSchema = new mongoose.Schema({
 var User = mongoose.model('User', UserSchema);
 ```
 
-#### graffiti-mongoose
+##### graffiti-mongoose
 ```javascript
 import {getSchema, graphql} from '@risingstack/graffit-mongoose';
 
