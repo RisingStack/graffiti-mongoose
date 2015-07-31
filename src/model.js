@@ -24,7 +24,7 @@ export function getModel (mongooseModel) {
         instance: schemaPath.caster.instance
       };
 
-      if (schemaPath.caster.options.ref) {
+      if (schemaPath.caster.options && schemaPath.caster.options.ref) {
         field.caster.ref = schemaPath.caster.options.ref;
       }
     }
