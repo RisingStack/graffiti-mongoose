@@ -4,7 +4,8 @@
 
 [Mongoose](http://mongoosejs.com) (MongoDB) adapter for the [graffiti](https://github.com/RisingStack/graffiti) [GraphQL](https://github.com/graphql/graphql-js) ORM.  
 `graffiti-mongoose` generates `GraphQL` types and schemas from your existing `mongoose` models, that's how simple it is. 
-For more info check out the [Usage section](https://github.com/RisingStack/graffiti-mongoose#graffiti-mongoose-1).
+
+For quick jump check out the [Usage section](https://github.com/RisingStack/graffiti-mongoose#graffiti-mongoose-1).
 
 ## Install
 
