@@ -11,8 +11,20 @@ from 'graphql/type';
 import {getProjection} from './projection';
 
 /**
- * TODO: return with field name
- *
+ * @method resolveDateType
+ * @param {Date} value
+ * @return {String}
+ */
+function resolveDateType (value) {
+  if (isDate(value)) {
+    return value.toISOString();
+  }
+
+  // not a date
+  return value;
+}
+
+/**
  * @method getField
  * @param {Object} field
  * @param {Object} types
@@ -45,14 +57,8 @@ function getField(field, types, models, model) {
   // Date
   else if (field.instance === 'Date') {
     graphQLfield.type = GraphQLString;
-    graphQLfield.resolve = (modelInstance, params, source, fieldASTs) => {
-      if (isDate(modelInstance[fieldASTs.name.value])) {
-        return modelInstance[fieldASTs.name.value].toISOString();
-      }
-
-      // not a date
-      return modelInstance[fieldASTs.name.value];
-    };
+    graphQLfield.resolve = (modelInstance, params, source, fieldASTs) =>
+      resolveDateType(modelInstance[fieldASTs.name.value]);
   }
 
   // Boolean
@@ -93,16 +99,8 @@ function getField(field, types, models, model) {
         graphQLfield.type = new GraphQLList(GraphQLBoolean);
       } else if (field.caster.instance === 'Date') {
         graphQLfield.type = new GraphQLList(GraphQLString);
-        graphQLfield.resolve = (modelInstance, params, source, fieldASTs) => {
-          return modelInstance[fieldASTs.name.value].map((value) => {
-            if (isDate(value)) {
-              return value.toISOString();
-            }
-
-            // not a date
-            return modelInstance[fieldASTs.name.value];
-          });
-        };
+        graphQLfield.resolve = (modelInstance, params, source, fieldASTs) =>
+          modelInstance[fieldASTs.name.value].map(resolveDateType);
       }
     }
   }
