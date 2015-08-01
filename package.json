@@ -11,6 +11,14 @@
     "build": "rm -rf lib/* && babel src --ignore __tests__ --out-dir lib"
   },
   "author": "RisingStack",
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:RisingStack/graffiti-mongoose.git"
+  },
+  "bugs": {
+    "url": "https://github.com/RisingStack/graffiti-mongoose/issues"
+  },
+  "homepage": "https://github.com/RisingStack/graffiti-mongoose#readme",
   "license": "MIT",
   "keywords": [
     "GraphQL",
