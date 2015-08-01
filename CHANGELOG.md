@@ -1,3 +1,40 @@
+<a name="1.5.0"></a>
+# 1.5.0 (2015-08-01)
+
+
+### chore
+
+* chore(package): bump version to 1.5.0
+ 4cc15c7
+
+### docs
+
+* docs(readme): add ES6 explanation to readme
+ ceb9aa8
+* docs(readme): fix example typo
+ 4b56823
+* docs(readme): fix typo in ES6 explanation
+ a287183
+* docs(readme): fix usage link
+ ac31470
+* docs(readme): improve README
+ 2ee943c
+* docs(readme): improve README
+ 24569aa
+* docs(readme): improve usage example
+ afdf24e
+* docs(readme): improve usage section
+ 0486ce7
+* docs(readme): separate description better
+ 5feca41
+
+### feat
+
+* feat(fragment): add fragment support with broken projection
+ 25fc49c
+
+
+
 <a name="1.4.1"></a>
 ## 1.4.1 (2015-07-31)
 
