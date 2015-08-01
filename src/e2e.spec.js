@@ -64,7 +64,7 @@ describe('e2e', () => {
         _schemaConfig: {
           query: {
             name: 'RootQueryType',
-            description: 'Query schema for Graffiti'    
+            description: 'Query schema for Graffiti'
           }
         }
       });
@@ -99,37 +99,73 @@ describe('e2e', () => {
         });
       });
 
-      it('should support inline fragments', function* () {
-        let result = yield graphql(schema, `{
-          user(_id: "${user2._id}") {
-            _id
-            name,
-            ... on User {
-              age
+      describe('with fragments', () => {
+        it('should support fragments', function* () {
+          let result = yield graphql(schema, `
+            query GetUser {
+              user(_id: "${user2._id}") {
+                ...UserFragment
+                friends {
+                  ...UserFragment
+                }
+              }
             }
-            friends {
-              _id
-              ... on User {
-                name
-              },
-              age
-            }
-          }
-        }`);
 
-        expect(result).to.be.eql({
-          data: {
-            user: {
-              _id: user2._id.toString(),
-              name: 'Bar',
-              age: 28,
-              friends: [{
-                _id: user1._id.toString(),
-                name: 'Foo',
-                age: 28
-              }]
-            },
-          }
+            fragment UserFragment on User {
+              _id
+              name
+              age
+            }
+          `);
+
+          expect(result).to.be.eql({
+            data: {
+              user: {
+                _id: user2._id.toString(),
+                name: 'Bar',
+                age: 28,
+                friends: [{
+                  _id: user1._id.toString(),
+                  name: 'Foo',
+                  age: 28
+                }]
+              },
+            }
+          });
+        });
+
+        it('should support inline fragments', function* () {
+          let result = yield graphql(schema, `{
+            user(_id: "${user2._id}") {
+              _id
+              name,
+              ... on User {
+                age
+              }
+              friends {
+                _id
+                ... on User {
+                  name
+                },
+                age
+              }
+            }
+          }`);
+
+          expect(result).to.be.eql({
+            data: {
+              user: {
+                _id: user2._id.toString(),
+                name: 'Bar',
+                age: 28,
+                friends: [{
+                  _id: user1._id.toString(),
+                  name: 'Foo',
+                  age: 28
+                }]
+              },
+            }
+          });
         });
       });
     });

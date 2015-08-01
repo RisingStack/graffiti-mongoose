@@ -7,21 +7,21 @@ var schema = getSchema([User]);
 
 mongoose.connect('mongodb://localhost/graphql');
 
-var query = `{
-  user(_id: "559645cd1a38532d14349246") {
-    name
-    age
-    createdAt
-    nums
-    bools
-    strings
-    removed
-    friends {
-      name
-      age
+var query = `
+  query GetUser {
+    user(_id: "559645cd1a38532d14349246") {
+      ...UserFragment
+      friends {
+        ...UserFragment
+      }
     }
   }
-}`;
+
+  fragment UserFragment on User {
+    name
+    age
+  }
+`;
 
 // query = `{
 //   users(age: 19) {

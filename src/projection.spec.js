@@ -26,6 +26,9 @@ describe('utils', () => {
       });
     });
 
+    // TODO: see related method
+    it('should support fragments');
+
     it('should support inline fragments', () => {
       const projectionResult = getProjection({
         selectionSet: {

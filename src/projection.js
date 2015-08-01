@@ -1,26 +1,47 @@
+import {find} from 'lodash';
+
 /**
  * Generate projection object for mongoose
- * TODO: Handle sub-documents
- * @method get
+ * @method getProjection
  * @param {Object} fieldASTs
- * @return {Project}
+ * @return {Object} projection
  */
-export function getProjection(fieldASTs) {
-  const { selections } = fieldASTs.selectionSet;
+function getProjection(fieldASTs) {
+  const {selections} = fieldASTs.selectionSet;
+
+  /*
+   * FIXME: there is no way currently to get the required fields from "FragmentSpread"
+   * workaround: don't do projection, select all of the fields
+   * related issue: https://github.com/graphql/graphql-js/issues/96
+   */
+  let isFragmentSpread = find(selections, {
+    kind: 'FragmentSpread'
+  });
+
+  if (isFragmentSpread) {
+    return {};
+  }
+
+  // Get projection object
   return selections.reduce((projs, selection) => {
     switch (selection.kind) {
       case 'Field':
         return {
-          ...projs,
-          [selection.name.value]: 1
+          ...projs, [selection.name.value]: 1
         };
+
       case 'InlineFragment':
         return {
           ...projs,
           ...getProjection(selection),
         };
+
       default:
-        throw 'Unsupported query';
+        throw new Error('Unsupported query selection: ' + selection.kind);
     }
   }, {});
+}
+
+export {
+  getProjection
 }
