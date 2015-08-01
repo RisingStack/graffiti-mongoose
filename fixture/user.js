@@ -18,7 +18,14 @@ let UserSchema = new mongoose.Schema({
   friends: [{
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
-  }]
+  }],
+  sub: {
+    foo: String,
+    nums: [Number],
+    subsub: {
+      bar: Number
+    }
+  }
 });
 
 let User = mongoose.model('User', UserSchema);

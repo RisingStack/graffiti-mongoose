@@ -105,6 +105,11 @@ function getField(field, types, models, model) {
     }
   }
 
+  // Object
+  else if (field.instance === 'Object') {
+    console.log(field.instance);
+  }
+
   return graphQLfield;
 }
 
