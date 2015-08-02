@@ -6,26 +6,34 @@ describe('model', () => {
     var treeChunk = extractPath({
       path: 'foo.bar.so',
       instance: 'String'
+    }, {
+      name: 'User'
     });
 
     expect(treeChunk).to.be.eql({
       foo: {
-        path: 'foo',
-        indexed: false,
         name: 'foo',
+        path: 'foo',
+        fullPath: 'User.foo',
+        indexed: false,
         instance: 'Object',
         caster: {
-          bar: {
-            path: 'foo.bar',
-            indexed: false,
-            name: 'bar',
-            instance: 'Object',
-            caster: {
-              so: {
-                path: 'foo.bar.so',
-                indexed: false,
-                name: 'so',
-                instance: 'String'
+          fields: {
+            bar: {
+              name: 'bar',
+              path: 'foo.bar',
+              fullPath: 'User.foo.bar',
+              indexed: false,
+              instance: 'Object',
+              caster: {
+                fields: {
+                  so: {
+                    name: 'so',
+                    path: 'foo.bar.so',
+                    instance: 'String',
+                    indexed: false
+                  }
+                }
               }
             }
           }
@@ -51,43 +59,66 @@ describe('model', () => {
       'sub.sub': {
         path: 'sub.sub'
       },
+    }, {
+      name: 'User'
     });
 
     expect(tree).to.containSubset({
       foo: {
+        name: 'foo',
+        path: 'foo',
+        fullPath: 'User.foo',
+        indexed: false,
+        instance: 'Object',
         caster: {
-          bar: {
-            caster: {
-              so: {
-                path: 'foo.bar.so',
-                indexed: false,
-                name: 'so'
-              },
-              very: {
-                path: 'foo.bar.very',
-                indexed: false,
-                name: 'very'
+          fields: {
+            bar: {
+              name: 'bar',
+              path: 'foo.bar',
+              fullPath: 'User.foo.bar',
+              indexed: false,
+              instance: 'Object',
+              caster: {
+                fields: {
+                  so: {
+                    name: 'so',
+                    path: 'foo.bar.so',
+                    indexed: false
+                  },
+                  very: {
+                    name: 'very',
+                    path: 'foo.bar.very',
+                    indexed: false
+                  }
+                }
               }
+            },
+            grr: {
+              name: 'grr',
+              path: 'foo.grr',
+              indexed: false
             }
-          },
-          grr: {
-            path: 'foo.grr',
-            indexed: false,
-            name: 'grr'
           }
-        },
+        }
       },
       simple: {
+        name: 'simple',
         path: 'simple',
-        indexed: false,
-        name: 'simple'
+        indexed: false
       },
       sub: {
+        name: 'sub',
+        path: 'sub',
+        fullPath: 'User.sub',
+        indexed: false,
+        instance: 'Object',
         caster: {
-          sub: {
-            path: 'sub.sub',
-            indexed: false,
-            name: 'sub'
+          fields: {
+            sub: {
+              name: 'sub',
+              path: 'sub.sub',
+              indexed: false
+            }
           }
         }
       }

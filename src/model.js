@@ -49,13 +49,15 @@ function getField (schemaPath) {
  * Extracts tree chunk from path if it's a sub-document
  * @method extractPath
  * @param {Object} schemaPath
+ * @param {Object} model
  * @return {Object} field
  */
-function extractPath(schemaPath) {
+function extractPath(schemaPath, model) {
   let subs = schemaPath.path.split('.');
   var subNames = schemaPath.path.split('.');
 
   return reduceRight(subs, (field, sub, key) => {
+    var path = subNames.join('.');
     var obj = {};
 
     if (key === (subs.length - 1)) {
@@ -63,10 +65,13 @@ function extractPath(schemaPath) {
     } else {
       obj[sub] = {
         name: sub,
-        path: subNames.join('.'),
+        path: path,
+        fullPath: `${model.name}.${path}`,
         indexed: false,
         instance: 'Object',
-        caster: field
+        caster: {
+          fields: field
+        }
       };
     }
 
@@ -80,11 +85,12 @@ function extractPath(schemaPath) {
  * Merge sub-document tree chunks
  * @method extractPaths
  * @param {Object} schemaPaths
+ * @param {Object} model
  * @return {Object) extractedSchemaPaths
  */
-function extractPaths (schemaPaths) {
+function extractPaths (schemaPaths, model) {
   return reduce(schemaPaths, (fields, schemaPath) => {
-    return merge(fields, extractPath(schemaPath));
+    return merge(fields, extractPath(schemaPath, model));
   }, {});
 }
 
@@ -97,7 +103,9 @@ function extractPaths (schemaPaths) {
 function getModel (mongooseModel) {
   const schemaPaths = mongooseModel.schema.paths;
 
-  let fields = extractPaths(schemaPaths);
+  let fields = extractPaths(schemaPaths, {
+    name: mongooseModel.modelName
+  });
 
   return {
     name: mongooseModel.modelName,
