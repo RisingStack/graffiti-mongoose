@@ -1,3 +1,30 @@
+<a name="1.6.0"></a>
+# 1.6.0 (2015-08-02)
+
+
+### chore
+
+* chore(changelog): fix git commit links
+ ([044f311](https://github.com/RisingStack/graffiti-mongoose/commit/044f311))
+* chore(package): add git links
+ ([2602415](https://github.com/RisingStack/graffiti-mongoose/commit/2602415))
+* chore(package): bump version to 1.6.0
+ ([08677e6](https://github.com/RisingStack/graffiti-mongoose/commit/08677e6))
+
+### feat
+
+* feat(model): extract sub-documents to tree
+ ([ddba1d3](https://github.com/RisingStack/graffiti-mongoose/commit/ddba1d3))
+* feat(type): ObjectID with reference
+ ([653e1d1](https://github.com/RisingStack/graffiti-mongoose/commit/653e1d1))
+
+### refactor
+
+* refactor(field): separate date resolve fn
+ ([5731f50](https://github.com/RisingStack/graffiti-mongoose/commit/5731f50))
+
+
+
 <a name="1.5.0"></a>
 # 1.5.0 (2015-08-01)
 
