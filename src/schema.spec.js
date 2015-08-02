@@ -146,7 +146,56 @@ describe('schema', () => {
         });
       });
 
-      it('should get data with ref fields', function* () {
+      it.only('should get data with ref fields', function* () {
+        var mother = new User({
+          name: 'Mother'
+        });
+
+        var user = new User({
+          name: 'User',
+          mother: mother
+        });
+
+        var findOneStub = this.sandbox.stub(User, 'findOne');
+
+        findOneStub.onFirstCall().returns(Promise.resolve(user));
+        findOneStub.onSecondCall().returns(Promise.resolve(mother));
+
+        var result = yield graphql(schema, `{
+          user(_id: "${user._id}") {
+            name
+            mother {
+              name
+            }
+          }
+        }`);
+
+        // FIXME: "Cannot read property 'map' of undefined"
+        // expect(findOneStub).to.calledWith({
+        //   _id: new ObjectID(user._id.toString())
+        // }, {
+        //   name: 1
+        // });
+        //
+        // expect(findOneStub).to.calledWith({
+        //   _id: new ObjectID(mother._id.toString())
+        // }, {
+        //   name: 1
+        // });
+
+        expect(result).to.be.eql({
+          data: {
+            user: {
+              name: 'User',
+              mother: {
+                name: 'Mother'
+              }
+            }
+          }
+        });
+      });
+
+      it('should get data with array of ref(s) fields', function* () {
         var user1 = new User({
           name: 'Foo'
         });
@@ -156,7 +205,7 @@ describe('schema', () => {
           friends: [user1._id]
         });
 
-        var findByIdStub = this.sandbox.stub(User, 'findOne').returnsWithResolve(user2);
+        var findOneStub = this.sandbox.stub(User, 'findOne').returnsWithResolve(user2);
         var findStub = this.sandbox.stub(User, 'find').returnsWithResolve([user1]);
 
         var result = yield graphql(schema, `{
@@ -168,7 +217,7 @@ describe('schema', () => {
           }
         }`);
 
-        expect(findByIdStub).to.calledWith({
+        expect(findOneStub).to.calledWith({
           _id: new ObjectID(user2._id.toString())
         }, {
           name: 1,

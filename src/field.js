@@ -1,4 +1,5 @@
 import {isDate} from 'lodash';
+import ObjectID from 'bson-objectid';
 
 import {
   GraphQLString,
@@ -44,8 +45,28 @@ function getField(field, types, models, model) {
 
   var refModelName;
 
+  // ObjectID
+  if (field.instance === 'ObjectID') {
+
+    // with reference
+    if (field.ref) {
+      graphQLfield.description += ` and reference to "${field.ref}" model`;
+
+      graphQLfield.type = types[field.ref];
+      graphQLfield.resolve = (modelInstance, params, source, fieldASTs) => {
+        var projections = getProjection(fieldASTs);
+
+        return models[field.ref].model.findOne({
+          _id: new ObjectID(modelInstance[field.name])
+        }, projections);
+      };
+    } else {
+      graphQLfield.type = GraphQLString;
+    }
+  }
+
   // String
-  if (['String', 'ObjectID'].indexOf(field.instance) > -1) {
+  else if (field.instance === 'String') {
     graphQLfield.type = GraphQLString;
   }
 
@@ -107,7 +128,7 @@ function getField(field, types, models, model) {
 
   // Object
   else if (field.instance === 'Object') {
-    console.log(field.instance);
+    // TODO: implement
   }
 
   return graphQLfield;

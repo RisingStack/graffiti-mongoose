@@ -32,15 +32,15 @@
     "lodash": "^3.10.0"
   },
   "devDependencies": {
-    "babel": "^5.8.19",
-    "babel-eslint": "^3.1.26",
+    "babel": "^5.8.20",
+    "babel-eslint": "^4.0.5",
     "chai": "^3.2.0",
     "chai-subset": "^1.0.1",
     "co-mocha": "^1.1.2",
-    "eslint": "1.0.0-rc-3",
+    "eslint": "1.0.0",
     "mocha": "^2.2.5",
     "mongoose": "^4.0.6",
-    "pre-commit": "^1.0.10",
+    "pre-commit": "^1.1.1",
     "sinon": "^1.15.4",
     "sinon-chai": "^2.8.0"
   },

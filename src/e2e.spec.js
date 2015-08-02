@@ -32,12 +32,20 @@ describe('e2e', () => {
   });
 
   describe('get schema', () => {
+    let motherUser;
     let user1;
     let user2;
     let schema;
 
     beforeEach(function* () {
       schema = getSchema([User]);
+
+      motherUser = new User({
+        name: 'Mother',
+        age: 54
+      });
+
+      yield motherUser.save();
 
       user1 = new User({
         name: 'Foo',
@@ -49,6 +57,7 @@ describe('e2e', () => {
       user2 = new User({
         name: 'Bar',
         age: 28,
+        mother: motherUser._id,
         friends: [user1._id]
       });
 
@@ -56,7 +65,7 @@ describe('e2e', () => {
     });
 
     afterEach(function* () {
-      yield [user1.remove(), user2.remove()];
+      yield [motherUser.remove(), user1.remove(), user2.remove()];
     });
 
     it('should generate schema from mongoose models', () => {
@@ -77,6 +86,10 @@ describe('e2e', () => {
             _id
             name
             age
+            mother {
+              _id
+              name
+            }
             friends {
               _id
               name
@@ -90,6 +103,10 @@ describe('e2e', () => {
               _id: user2._id.toString(),
               name: 'Bar',
               age: 28,
+              mother: {
+                _id: motherUser._id.toString(),
+                name: 'Mother'
+              },
               friends: [{
                 _id: user1._id.toString(),
                 name: 'Foo'

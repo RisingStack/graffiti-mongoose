@@ -16,14 +16,29 @@ function getField (schemaPath) {
     indexed: options.index ? true : false
   };
 
+  // Field options
+  if (schemaPath.options) {
+
+    // ObjectID ref
+    if (schemaPath.options.ref) {
+      field.ref = schemaPath.options.ref;
+    }
+  }
+
+  // Caster
   if (schemaPath.caster) {
     field.caster = {
       path: schemaPath.caster.path,
       instance: schemaPath.caster.instance
     };
 
-    if (schemaPath.caster.options && schemaPath.caster.options.ref) {
-      field.caster.ref = schemaPath.caster.options.ref;
+    // Caster options
+    if (schemaPath.caster.options) {
+
+      // ObjectID ref
+      if (schemaPath.caster.options.ref) {
+        field.caster.ref = schemaPath.caster.options.ref;
+      }
     }
   }
 

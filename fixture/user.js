@@ -8,6 +8,14 @@ let UserSchema = new mongoose.Schema({
     type: Number,
     index: true
   },
+  mother: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  },
+  friends: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
+  }],
   weight: Number, // to test "floatish" numbers
   createdAt: Date,
   removed: Boolean,
@@ -15,10 +23,6 @@ let UserSchema = new mongoose.Schema({
   strings: [String],
   bools: [Boolean],
   dates: [Date],
-  friends: [{
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'User'
-  }],
   sub: {
     foo: String,
     nums: [Number],
