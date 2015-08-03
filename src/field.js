@@ -43,8 +43,6 @@ function getField(field, types, models, model) {
     graphQLfield.description += ` of "${field.caster.instance}"`;
   }
 
-  var refModelName;
-
   // ObjectID
   if (field.instance === 'ObjectID') {
 
@@ -54,13 +52,16 @@ function getField(field, types, models, model) {
 
       graphQLfield.type = types[field.ref];
       graphQLfield.resolve = (modelInstance, params, source, fieldASTs) => {
-        var projections = getProjection(fieldASTs);
+        var projections = getProjection(fieldASTs);        
 
         return models[field.ref].model.findOne({
           _id: new ObjectID(modelInstance[field.name])
         }, projections);
       };
-    } else {
+    }
+
+    // without ref
+    else {
       graphQLfield.type = GraphQLString;
     }
   }
@@ -92,22 +93,27 @@ function getField(field, types, models, model) {
 
     // Array of ObjectId
     if (field.caster.instance === 'ObjectID') {
-      refModelName = field.caster.ref;
 
-      if (refModelName) {
-        graphQLfield.description += ` and reference to "${refModelName}" model`;
+      // with reference
+      if (field.caster.ref) {
+        graphQLfield.description += ` and reference to "${field.caster.ref}" model`;
+
+        graphQLfield.type = new GraphQLList(types[field.caster.ref]);
+        graphQLfield.resolve = (modelInstance, params, source, fieldASTs) => {
+          var projections = getProjection(fieldASTs);
+          return models[field.caster.ref].model.find({
+            _id: {
+              // toString(): to make it easily testable
+              $in: modelInstance[field.name].map((id) => id.toString())
+            }
+          }, projections);
+        };
       }
 
-      graphQLfield.type = new GraphQLList(types[refModelName]);
-      graphQLfield.resolve = (modelInstance, params, source, fieldASTs) => {
-        var projections = getProjection(fieldASTs);
-        return models[refModelName].model.find({
-          _id: {
-            // to make it easily testable
-            $in: modelInstance[field.name].map((id) => id.toString())
-          }
-        }, projections);
-      };
+      // without reference
+      else {
+        graphQLfield.type = new GraphQLList(GraphQLString);
+      }
     }
 
     // Array of basic types

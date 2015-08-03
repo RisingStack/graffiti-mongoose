@@ -58,7 +58,8 @@ describe('e2e', () => {
         name: 'Bar',
         age: 28,
         mother: motherUser._id,
-        friends: [user1._id]
+        friends: [user1._id],
+        objectIds: [user1._id]
       });
 
       yield user2.save();
@@ -94,6 +95,7 @@ describe('e2e', () => {
               _id
               name
             }
+            objectIds
           }
         }`);
 
@@ -110,7 +112,8 @@ describe('e2e', () => {
               friends: [{
                 _id: user1._id.toString(),
                 name: 'Foo'
-              }]
+              }],
+              objectIds: [user1._id.toString()]
             },
           }
         });

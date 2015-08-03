@@ -16,6 +16,9 @@ let UserSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   }],
+  objectIds: [{
+    type: mongoose.Schema.Types.ObjectId
+  }],
   weight: Number, // to test "floatish" numbers
   createdAt: Date,
   removed: Boolean,

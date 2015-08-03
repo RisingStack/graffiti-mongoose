@@ -195,7 +195,7 @@ describe('schema', () => {
         });
       });
 
-      it('should get data with array of ref(s) fields', function* () {
+      it('should get data with array of ObjectId with ref(s) fields', function* () {
         var user1 = new User({
           name: 'Foo'
         });
