@@ -1,3 +1,24 @@
+<a name="1.6.1"></a>
+## 1.6.1 (2015-08-03)
+
+
+### chore
+
+* chore(package): bump version to 1.6.1
+ ([b37e64a](https://github.com/RisingStack/graffiti-mongoose/commit/b37e64a))
+
+### fix
+
+* fix(type): fix array of ObjectId without ref
+ ([e5575f3](https://github.com/RisingStack/graffiti-mongoose/commit/e5575f3))
+
+### refactor
+
+* refactor(model): improve internal model for sub-documents
+ ([95cf81f](https://github.com/RisingStack/graffiti-mongoose/commit/95cf81f))
+
+
+
 <a name="1.6.0"></a>
 # 1.6.0 (2015-08-02)
 
