@@ -45,7 +45,7 @@ var User = mongoose.model('User', UserSchema);
 
 ##### graffiti-mongoose
 ```javascript
-import {getSchema, graphql} from '@risingstack/graffit-mongoose';
+import {getSchema, graphql} from '@risingstack/graffiti-mongoose';
 
 var schema = getSchema([User]);
 
