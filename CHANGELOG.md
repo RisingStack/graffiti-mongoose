@@ -1,3 +1,17 @@
+<a name="1.6.2"></a>
+## 1.6.2 (2015-09-22)
+
+
+### docs
+
+* docs(readme): fix minor typo in example ([5a2813d](https://github.com/RisingStack/graffiti-mongoose/commit/5a2813d))
+
+### refactor
+
+* refactor(objectid): remove bson-objectid from project ([c4e7ad1](https://github.com/RisingStack/graffiti-mongoose/commit/c4e7ad1))
+
+
+
 <a name="1.6.1"></a>
 ## 1.6.1 (2015-08-03)
 
