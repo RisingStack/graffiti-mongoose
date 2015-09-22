@@ -1,5 +1,4 @@
 import {isDate} from 'lodash';
-import ObjectID from 'bson-objectid';
 
 import {
   GraphQLString,
@@ -52,10 +51,10 @@ function getField(field, types, models, model) {
 
       graphQLfield.type = types[field.ref];
       graphQLfield.resolve = (modelInstance, params, source, fieldASTs) => {
-        var projections = getProjection(fieldASTs);        
+        var projections = getProjection(fieldASTs);
 
         return models[field.ref].model.findOne({
-          _id: new ObjectID(modelInstance[field.name])
+          _id: modelInstance[field.name]
         }, projections);
       };
     }

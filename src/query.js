@@ -1,5 +1,4 @@
 import {reduce} from 'lodash';
-import ObjectID from 'bson-objectid';
 
 import {
   GraphQLString,
@@ -74,7 +73,7 @@ function getRootFields (types, models) {
 
         var filter = reduce(args, (args, arg, argName) => {
           if (arg && argName === '_id') {
-            args[argName] = new ObjectID(arg);
+            args[argName] = arg;
           } else if (arg) {
             args[argName] = arg;
           }

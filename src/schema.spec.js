@@ -1,6 +1,5 @@
 import {expect} from 'chai';
 import {graphql} from 'graphql';
-import ObjectID from 'bson-objectid';
 
 import {getModels} from './model';
 import {getSchema} from './schema';
@@ -35,7 +34,7 @@ describe('schema', () => {
         }`);
 
         expect(findByIdStub).to.calledWith({
-          _id: new ObjectID(user._id.toString())
+          _id: user._id.toString()
         }, {
           _id: 1
         });
@@ -218,7 +217,7 @@ describe('schema', () => {
         }`);
 
         expect(findOneStub).to.calledWith({
-          _id: new ObjectID(user2._id.toString())
+          _id: user2._id.toString()
         }, {
           name: 1,
           friends: 1

@@ -1,5 +1,4 @@
 import {expect} from 'chai';
-import ObjectID from 'bson-objectid';
 import {
   GraphQLString,
   GraphQLFloat,
@@ -44,7 +43,7 @@ describe('field', () => {
     });
 
     expect(findOneStub).to.calledWith({
-      _id: new ObjectID(user._id.toString()),
+      _id: user._id.toString(),
     }, {
       name: 1
     });
