@@ -1,12 +1,7 @@
-import {reduce} from 'lodash';
-
-import {
-  GraphQLString,
-  GraphQLList
-} from 'graphql/type';
-
-import {getProjection} from './projection';
-import {getField} from './field';
+import { GraphQLString, GraphQLList } from 'graphql/type';
+import { reduce } from 'lodash';
+import { getField } from './field';
+import { getProjection } from './projection';
 
 /**
  * @method getArgs
@@ -68,7 +63,7 @@ function getRootFields (types, models) {
     fields[singularName] = {
       type: type,
       args: singularArgs,
-      resolve: (root, args, source, fieldASTs) => {
+      resolve: (root, args, {source, fieldASTs}) => {
         var projections = getProjection(fieldASTs);
 
         var filter = reduce(args, (args, arg, argName) => {
@@ -89,7 +84,7 @@ function getRootFields (types, models) {
     fields[pluralName] = {
       type: new GraphQLList(type),
       args: pluralArgs,
-      resolve: (root, args, source, fieldASTs) => {
+      resolve: (root, args, {source, fieldASTs}) => {
         var projections = getProjection(fieldASTs);
 
         var filter = reduce(args, (args, arg, argName) => {

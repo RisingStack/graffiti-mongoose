@@ -5,6 +5,7 @@ import {
   GraphQLBoolean,
   GraphQLList
 } from 'graphql/type';
+import GraphQLDate from './date';
 
 import User from '../fixture/user';
 import {getField} from './field';
@@ -36,9 +37,11 @@ describe('field', () => {
 
     var result = yield field.resolve({
       _id: user._id.toString()
-    }, undefined, undefined, {
-      name: {
-        value: '_id'
+    }, undefined, {
+      fieldASTs: {
+        name: {
+          value: '_id'
+        }
       }
     });
 
@@ -125,21 +128,11 @@ describe('field', () => {
       name: 'Bar'
     });
 
-    var result = field.resolve({
-      value: new Date(1438273470215)
-    }, undefined, undefined, {
-      name: {
-        value: 'value',
-        name: 'foo',
-        description: '"foo" field of the "Bar" model with type "Date"'
-      }
+    expect(field).to.be.eql({
+      name: 'foo',
+      description: '"foo" field of the "Bar" model with type "Date"',
+      type: GraphQLDate
     });
-
-    expect(field).to.containSubset({
-      type: GraphQLString
-    });
-
-    expect(result).to.be.equal('2015-07-30T16:24:30.215Z');
   });
 
   it('should resolve Array of ObjectId with ref properly', function* () {
@@ -161,7 +154,7 @@ describe('field', () => {
         ref: 'User'
       }
     }, {
-      User: 'foo'
+      User: GraphQLString
     }, {
       User: {
         model: User
@@ -172,9 +165,11 @@ describe('field', () => {
 
     var result = yield field.resolve({
       value: [users[0]._id, users[1]._id]
-    }, undefined, undefined, {
-      name: {
-        value: 'value'
+    }, undefined, {
+      fieldASTs: {
+        name: {
+          value: 'value'
+        }
       }
     });
 
@@ -189,7 +184,7 @@ describe('field', () => {
     expect(result).to.be.eql(users);
 
     expect(field).to.containSubset({
-      type: new GraphQLList('foo'),
+      type: new GraphQLList(GraphQLString),
       name: 'value',
       description: '"value" field of the "User" model with type "Array"' +
         ' of "ObjectID" and reference to "User" model'
@@ -279,18 +274,8 @@ describe('field', () => {
       name: 'Bar'
     });
 
-    var result = field.resolve({
-      value: [new Date(0), new Date(1438273470215)]
-    }, undefined, undefined, {
-      name: {
-        value: 'value'
-      }
-    });
-
-    expect(result).to.be.eql(['1970-01-01T00:00:00.000Z', '2015-07-30T16:24:30.215Z']);
-
-    expect(field).to.containSubset({
-      type: new GraphQLList(GraphQLString),
+    expect(field).to.be.eql({
+      type: new GraphQLList(GraphQLDate),
       name: 'foo',
       description: '"foo" field of the "Bar" model with type "Array" of "Date"'
     });

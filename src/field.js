@@ -1,28 +1,16 @@
-import {isDate} from 'lodash';
+import {reduce, clone, isDate} from 'lodash';
 
 import {
   GraphQLString,
   GraphQLFloat,
   GraphQLBoolean,
-  GraphQLList
+  GraphQLList,
+  GraphQLObjectType
 }
 from 'graphql/type';
+import GraphQLDate from './date';
 
 import {getProjection} from './projection';
-
-/**
- * @method resolveDateType
- * @param {Date} value
- * @return {String}
- */
-function resolveDateType (value) {
-  if (isDate(value)) {
-    return value.toISOString();
-  }
-
-  // not a date
-  return value;
-}
 
 /**
  * @method getField
@@ -50,7 +38,7 @@ function getField(field, types, models, model) {
       graphQLfield.description += ` and reference to "${field.ref}" model`;
 
       graphQLfield.type = types[field.ref];
-      graphQLfield.resolve = (modelInstance, params, source, fieldASTs) => {
+      graphQLfield.resolve = (modelInstance, params, {source, fieldASTs}) => {
         var projections = getProjection(fieldASTs);
 
         return models[field.ref].model.findOne({
@@ -77,9 +65,7 @@ function getField(field, types, models, model) {
 
   // Date
   else if (field.instance === 'Date') {
-    graphQLfield.type = GraphQLString;
-    graphQLfield.resolve = (modelInstance, params, source, fieldASTs) =>
-      resolveDateType(modelInstance[fieldASTs.name.value]);
+    graphQLfield.type = GraphQLDate;
   }
 
   // Boolean
@@ -98,7 +84,7 @@ function getField(field, types, models, model) {
         graphQLfield.description += ` and reference to "${field.caster.ref}" model`;
 
         graphQLfield.type = new GraphQLList(types[field.caster.ref]);
-        graphQLfield.resolve = (modelInstance, params, source, fieldASTs) => {
+        graphQLfield.resolve = (modelInstance, params, {source, fieldASTs}) => {
           var projections = getProjection(fieldASTs);
           return models[field.caster.ref].model.find({
             _id: {
@@ -124,16 +110,19 @@ function getField(field, types, models, model) {
       } else if (field.caster.instance === 'Boolean') {
         graphQLfield.type = new GraphQLList(GraphQLBoolean);
       } else if (field.caster.instance === 'Date') {
-        graphQLfield.type = new GraphQLList(GraphQLString);
-        graphQLfield.resolve = (modelInstance, params, source, fieldASTs) =>
-          modelInstance[fieldASTs.name.value].map(resolveDateType);
+        graphQLfield.type = new GraphQLList(GraphQLDate);
       }
     }
   }
 
   // Object
   else if (field.instance === 'Object') {
-    // TODO: implement
+    var fieldCopy = clone(field, true);
+    fieldCopy.fields = reduce(fieldCopy.caster.fields, (result, subfield, key) => {
+      result[key] = getField(subfield, types, models, model);
+      return result;
+    }, {});
+    graphQLfield.type = new GraphQLObjectType(fieldCopy);
   }
 
   return graphQLfield;

@@ -41,6 +41,7 @@ describe('type', () => {
           description: '"Foo" type'
         },
         name: 'Foo',
+        isTypeOf: undefined,
         description: '"Foo" type'
       }
     });

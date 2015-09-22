@@ -7,7 +7,7 @@ import {find} from 'lodash';
  * @return {Object} projection
  */
 function getProjection(fieldASTs) {
-  const {selections} = fieldASTs.selectionSet;
+  const {selections} = Array.isArray(fieldASTs) ? fieldASTs[0].selectionSet : fieldASTs.selectionSet;
 
   /*
    * FIXME: there is no way currently to get the required fields from "FragmentSpread"

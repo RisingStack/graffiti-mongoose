@@ -27,7 +27,7 @@
     "ORM"
   ],
   "dependencies": {
-    "graphql": "0.2.2",
+    "graphql": "^0.4.4",
     "lodash": "^3.10.0"
   },
   "devDependencies": {
