@@ -1,3 +1,13 @@
+<a name="1.6.3"></a>
+## 1.6.3 (2015-09-23)
+
+
+### chore
+
+* chore(package): update graphql-js to latest ([0cef077](https://github.com/RisingStack/graffiti-mongoose/commit/0cef077))
+
+
+
 <a name="1.6.2"></a>
 ## 1.6.2 (2015-09-22)
 
