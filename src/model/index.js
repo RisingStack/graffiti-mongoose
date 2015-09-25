@@ -5,11 +5,11 @@ import {reduce, reduceRight, merge} from 'lodash';
  * @param schemaPaths
  * @return {Object} field
  */
-function getField (schemaPath) {
-  var options = schemaPath.options || {};
-  var name = schemaPath.path.split('.').pop();
+function getField(schemaPath) {
+  const options = schemaPath.options || {};
+  const name = schemaPath.path.split('.').pop();
 
-  var field = {
+  const field = {
     name: name,
     path: schemaPath.path,
     instance: schemaPath.instance,
@@ -18,7 +18,6 @@ function getField (schemaPath) {
 
   // Field options
   if (schemaPath.options) {
-
     // ObjectID ref
     if (schemaPath.options.ref) {
       field.ref = schemaPath.options.ref;
@@ -34,7 +33,6 @@ function getField (schemaPath) {
 
     // Caster options
     if (schemaPath.caster.options) {
-
       // ObjectID ref
       if (schemaPath.caster.options.ref) {
         field.caster.ref = schemaPath.caster.options.ref;
@@ -53,12 +51,12 @@ function getField (schemaPath) {
  * @return {Object} field
  */
 function extractPath(schemaPath, model) {
-  let subs = schemaPath.path.split('.');
-  var subNames = schemaPath.path.split('.');
+  const subs = schemaPath.path.split('.');
+  const subNames = schemaPath.path.split('.');
 
   return reduceRight(subs, (field, sub, key) => {
-    var path = subNames.join('.');
-    var obj = {};
+    const path = subNames.join('.');
+    const obj = {};
 
     if (key === (subs.length - 1)) {
       obj[sub] = getField(schemaPath);
@@ -88,7 +86,7 @@ function extractPath(schemaPath, model) {
  * @param {Object} model
  * @return {Object) extractedSchemaPaths
  */
-function extractPaths (schemaPaths, model) {
+function extractPaths(schemaPaths, model) {
   return reduce(schemaPaths, (fields, schemaPath) => {
     return merge(fields, extractPath(schemaPath, model));
   }, {});
@@ -100,10 +98,10 @@ function extractPaths (schemaPaths, model) {
  * @param {Object} mongooseModel
  * @return {Object} graffiti model
  */
-function getModel (mongooseModel) {
+function getModel(mongooseModel) {
   const schemaPaths = mongooseModel.schema.paths;
 
-  let fields = extractPaths(schemaPaths, {
+  const fields = extractPaths(schemaPaths, {
     name: mongooseModel.modelName
   });
 
@@ -119,7 +117,7 @@ function getModel (mongooseModel) {
  * @param {Array} mongooseModels
  * @return {Object} - graffiti models
  */
-function getModels (mongooseModels) {
+function getModels(mongooseModels) {
   return mongooseModels
     .map(getModel)
     .reduce((models, model) => {
@@ -128,7 +126,7 @@ function getModels (mongooseModels) {
     }, {});
 }
 
-export {
+export default {
   extractPath,
   extractPaths,
   getModel,

@@ -1,9 +1,9 @@
 import {expect} from 'chai';
-import {extractPath, extractPaths} from './model';
+import {extractPath, extractPaths} from './';
 
 describe('model', () => {
   it('should extract tree chunk from path', () => {
-    var treeChunk = extractPath({
+    const treeChunk = extractPath({
       path: 'foo.bar.so',
       instance: 'String'
     }, {
@@ -43,7 +43,7 @@ describe('model', () => {
   });
 
   it('should extract tree from paths', () => {
-    var tree = extractPaths({
+    const tree = extractPaths({
       'foo.bar.so': {
         path: 'foo.bar.so'
       },
@@ -53,12 +53,12 @@ describe('model', () => {
       'foo.grr': {
         path: 'foo.grr'
       },
-      'simple': {
+      simple: {
         path: 'simple'
       },
       'sub.sub': {
         path: 'sub.sub'
-      },
+      }
     }, {
       name: 'User'
     });

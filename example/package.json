@@ -1,8 +1,21 @@
 {
   "name": "graffiti-mongoose-example",
-  "version": "1.0.0",
-  "main": "index.js",
+  "description": "An example using graffiti-mongoose",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.js",
+    "prestart": "npm run build",
+    "build": ". build.sh"
+  },
+  "dependencies": {
+    "@risingstack/graffiti": "^1.0.2",
+    "@risingstack/graffiti-mongoose": "../",
+    "babel-runtime": "^5.8.20",
+    "graphiql": "^0.3.1",
+    "koa": "^1.0.0",
+    "koa-static": "^1.4.9",
+    "react": "0.13.3"
+  },
+  "devDependencies": {
+    "babel": "^5.8.21"
   }
 }

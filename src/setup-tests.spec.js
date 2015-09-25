@@ -1,5 +1,3 @@
-'use strict';
-
 import sinon from 'sinon';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
@@ -7,25 +5,25 @@ import chaiSubset from 'chai-subset';
 
 import mongoose from 'mongoose';
 
-before(function () {
+before(() => {
   chai.use(sinonChai);
   chai.use(chaiSubset);
 
-  mongoose.connect('mongodb://localhost/graffiti-test');
+  mongoose.connect('mongodb://localhost/graffiti-mongoose-test');
 
-  sinon.stub.returnsWithResolve = function (data) {
+  sinon.stub.returnsWithResolve = function returnsWithResolve(data) {
     return this.returns(Promise.resolve(data));
   };
 
-  sinon.stub.returnsWithReject = function (error) {
+  sinon.stub.returnsWithReject = function returnsWithReject(error) {
     return this.returns(Promise.reject(error));
   };
 });
 
-beforeEach(function () {
+beforeEach(function sandbox() {
   this.sandbox = sinon.sandbox.create();
 });
 
-afterEach(function () {
+afterEach(function sandbox() {
   this.sandbox.restore();
 });

@@ -1,41 +1,46 @@
+import koa from 'koa';
+import serve from 'koa-static';
 import mongoose from 'mongoose';
-import {getSchema, graphql} from '../src';
+import graffiti from '@risingstack/graffiti';
+import graffitiMongoose from '../src';
 
 import User from './user';
 
-var schema = getSchema([User]);
+const port = process.env.PORT || 8080;
 
-mongoose.connect('mongodb://localhost/graphql');
+mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost/graphql');
 
-var query = `
-  query GetUser {
-    user(_id: "559645cd1a38532d14349246") {
-      ...UserFragment
-      friends {
-        ...UserFragment
-      }
+User.remove();
+const users = [];
+for (let i = 0; i < 100; i++) {
+  const user = new User({
+    name: `User${i}`,
+    age: i,
+    createdAt: new Date() + i * 100,
+    friends: users.map((i) => i._id),
+    nums: [0, i],
+    bools: [true, false],
+    strings: ['foo', 'bar'],
+    removed: false,
+    body: {
+      eye: 'blue',
+      hair: 'yellow'
     }
-  }
+  });
+  users.push(user);
+  user.save();
+}
 
-  fragment UserFragment on User {
-    name
-    age
-  }
-`;
+const app = koa();
 
-// query = `{
-//   users(age: 19) {
-//     name
-//     age
-//     createdAt
-//     removed
-//     friends {
-//       name
-//       age
-//     }
-//   }
-// }`;
+// attach graffiti-mongoose middleware
+app.use(graffiti.koa({
+  prefix: '/graphql',
+  adapter: graffitiMongoose,
+  models: [User]
+}));
 
-graphql(schema, query)
-  .then((res) => console.log(JSON.stringify(res, false, 2)))
-  .catch((err) => console.error(err));
+app.use(serve(__dirname + '/dist'));
+
+app.listen(port);
+console.log(`Started on http://localhost:${port}/`);

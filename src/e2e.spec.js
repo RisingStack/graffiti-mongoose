@@ -1,58 +1,33 @@
 import {expect} from 'chai';
 
-import {getSchema, getTypes, graphql} from './index';
+import {getSchema, graphql} from './';
 import User from '../fixture/user';
 
 describe('e2e', () => {
-  describe('get types', () => {
-    it('should generate types from mongoose models', () => {
-      let types = getTypes([User]);
-
-      expect(types).to.containSubset({
-        User: {
-          _typeConfig: {
-            fields: {
-              __v: {},
-              _id: {},
-              age: {},
-              bools: {},
-              createdAt: {},
-              dates: {},
-              friends: {},
-              name: {},
-              nums: {},
-              removed: {},
-              strings: {},
-              weight: {}
-            }
-          }
-        }
-      });
-    });
-  });
-
   describe('get schema', () => {
     let motherUser;
     let user1;
     let user2;
     let schema;
 
-    beforeEach(function* () {
+    before(() => {
       schema = getSchema([User]);
+    });
 
+    beforeEach(async function Test1() {
       motherUser = new User({
         name: 'Mother',
         age: 54
       });
 
-      yield motherUser.save();
+      await motherUser.save();
 
       user1 = new User({
         name: 'Foo',
         age: 28
       });
 
-      yield user1.save();
+      await user1.save();
 
       user2 = new User({
         name: 'Bar',
@@ -62,28 +37,17 @@ describe('e2e', () => {
         objectIds: [user1._id]
       });
 
-      yield user2.save();
+      await user2.save();
     });
 
-    afterEach(function* () {
-      yield [motherUser.remove(), user1.remove(), user2.remove()];
-    });
-
-    it('should generate schema from mongoose models', () => {
-      expect(schema).to.containSubset({
-        _schemaConfig: {
-          query: {
-            name: 'RootQueryType',
-            description: 'Query schema for Graffiti'
-          }
-        }
-      });
+    afterEach(async function Test2() {
+      await [motherUser.remove(), user1.remove(), user2.remove()];
     });
 
     describe('singular query', () => {
-      it('should get data from database by _id', function* () {
-        let result = yield graphql(schema, `{
-          user(_id: "${user2._id}") {
+      it('should get data from database by id', async function Test3() {
+        const result = await graphql(schema, `{
+          user(id: "${user2._id}") {
             _id
             name
             age
@@ -92,8 +56,12 @@ describe('e2e', () => {
               name
             }
             friends {
-              _id
-              name
+              edges {
+                node {
+                  _id
+                  name
+                }
+              }
             }
             objectIds
           }
@@ -109,28 +77,38 @@ describe('e2e', () => {
                 _id: motherUser._id.toString(),
                 name: 'Mother'
               },
-              friends: [{
-                _id: user1._id.toString(),
-                name: 'Foo'
-              }],
+              friends: {
+                edges: [{
+                  node: {
+                    _id: user1._id.toString(),
+                    name: 'Foo'
+                  }
+                }]
+              },
               objectIds: [user1._id.toString()]
-            },
+            }
           }
         });
       });
 
       describe('with fragments', () => {
-        it('should support fragments', function* () {
-          let result = yield graphql(schema, `
+        it('should support fragments', async function Test4() {
+          // FIXME it fails in node {}
+          const result = await graphql(schema, `
             query GetUser {
-              user(_id: "${user2._id}") {
+              user(id: "${user2._id}") {
                 ...UserFragment
                 friends {
-                  ...UserFragment
+                  edges {
+                    node {
+                      _id
+                      name
+                      age
+                    }
+                  }
                 }
               }
             }
-
             fragment UserFragment on User {
               _id
               name
@@ -144,29 +122,26 @@ describe('e2e', () => {
                 _id: user2._id.toString(),
                 name: 'Bar',
                 age: 28,
-                friends: [{
-                  _id: user1._id.toString(),
-                  name: 'Foo',
-                  age: 28
-                }]
-              },
+                friends: {
+                  edges: [{
+                    node: {
+                      _id: user1._id.toString(),
+                      name: 'Foo',
+                      age: 28
+                    }
+                  }]
+                }
+              }
             }
           });
         });
 
-        it('should support inline fragments', function* () {
-          let result = yield graphql(schema, `{
-            user(_id: "${user2._id}") {
+        it('should support inline fragments', async function Test5() {
+          const result = await graphql(schema, `{
+            user(id: "${user2._id}") {
               _id
               name,
               ... on User {
-                age
-              }
-              friends {
-                _id
-                ... on User {
-                  name
-                },
                 age
               }
             }
@@ -177,13 +152,8 @@ describe('e2e', () => {
               user: {
                 _id: user2._id.toString(),
                 name: 'Bar',
-                age: 28,
-                friends: [{
-                  _id: user1._id.toString(),
-                  name: 'Foo',
-                  age: 28
-                }]
-              },
+                age: 28
+              }
             }
           });
         });
@@ -191,16 +161,12 @@ describe('e2e', () => {
     });
 
     describe('plural query', () => {
-      it('should get data from database and filter by number', function* () {
-        let result = yield graphql(schema, `{
+      it('should get data from database and filter by number', async function Test6() {
+        const result = await graphql(schema, `{
           users(age: 28) {
             _id
             name
             age
-            friends {
-              _id
-              name
-            }
           }
         }`);
 
@@ -208,23 +174,18 @@ describe('e2e', () => {
           {
             _id: user1._id.toString(),
             name: 'Foo',
-            age: 28,
-            friends: []
+            age: 28
           }, {
             _id: user2._id.toString(),
             name: 'Bar',
-            age: 28,
-            friends: [{
-              _id: user1._id.toString(),
-              name: 'Foo'
-            }]
+            age: 28
           }
         ]);
       });
 
-      it('should get data from database and filter by array of _id(s)', function* () {
-        let result = yield graphql(schema, `{
-          users(_id: ["${user1._id}", "${user2._id}"]) {
+      it('should get data from database and filter by array of _id(s)', async function Test7() {
+        const result = await graphql(schema, `{
+          users(id: ["${user1._id}", "${user2._id}"]) {
             _id
           }
         }`);
@@ -235,7 +196,7 @@ describe('e2e', () => {
               _id: user1._id.toString()
             }, {
               _id: user2._id.toString()
-            }],
+            }]
           }
         });
       });

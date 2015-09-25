@@ -1,33 +1,15 @@
 import {graphql} from 'graphql';
-
+import {getTypes} from './type';
+import {getSchema} from './field';
 import {getModels} from './model';
-import schema from './schema';
-import type from './type';
 
-/**
- * Public interface for schemas
- * @method getSchema
- * @param {Array} mongooseModels
- * @return {Object} GraphQL schema
- */
-function getSchema (mongooseModels) {
-  var models = getModels(mongooseModels);
-  return schema.getSchema(models);
+function _getTypes(collections) {
+  const graffitiModels = getModels(collections);
+  return getTypes(graffitiModels);
 }
 
-/**
- * Public interface for types
- * @method getTypes
- * @param {Array} mongooseModels
- * @return {Object} GraphQL types
- */
-function getTypes (mongooseModels) {
-  var models = getModels(mongooseModels);
-  return type.getTypes(models);
-}
-
-export {
+export default {
   graphql,
   getSchema,
-  getTypes
+  getTypes: _getTypes
 };
