@@ -27,8 +27,10 @@
     "ORM"
   ],
   "dependencies": {
-    "graphql": "^0.4.4",
     "lodash": "^3.10.0"
+  },
+  "peerDependencies": {
+    "graphql": "^0.4.4"
   },
   "devDependencies": {
     "babel": "^5.8.20",
