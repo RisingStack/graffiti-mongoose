@@ -1,3 +1,17 @@
+<a name="2.0.0"></a>
+# 2.0.0 (2015-09-29)
+
+
+### fix
+
+* fix(package): require graphql to be installed alongside graffiti ([71e2c85](https://github.com/RisingStack/graffiti-mongoose/commit/71e2c85))
+
+
+### BREAKING CHANGE
+
+* move graphql to peerDependencies
+
+
 <a name="1.6.3"></a>
 ## 1.6.3 (2015-09-23)
 
