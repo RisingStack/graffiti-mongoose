@@ -1,3 +1,13 @@
+<a name="3.0.0"></a>
+# 3.0.0 (2015-10-07)
+
+
+### chore
+
+* chore(relay): major refactor and basic Relay support: node(id), pagination ([89dc30a](https://github.com/RisingStack/graffiti-mongoose/commit/89dc30a))
+
+
+
 <a name="2.0.0"></a>
 # 2.0.0 (2015-09-29)
 
