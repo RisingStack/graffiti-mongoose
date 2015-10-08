@@ -1,10 +1,15 @@
 <a name="3.0.0"></a>
-# 3.0.0 (2015-10-07)
+# 3.0.0 (2015-10-08)
 
 
 ### chore
 
+* chore(package): bump version to 3.0.0 ([d573fc6](https://github.com/RisingStack/graffiti-mongoose/commit/d573fc6))
 * chore(relay): major refactor and basic Relay support: node(id), pagination ([89dc30a](https://github.com/RisingStack/graffiti-mongoose/commit/89dc30a))
+
+### docs
+
+* docs(readme): update docs for relay compatibility ([c406009](https://github.com/RisingStack/graffiti-mongoose/commit/c406009))
 
 
 
