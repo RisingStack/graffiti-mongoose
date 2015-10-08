@@ -70,8 +70,7 @@ describe('field', () => {
 
   describe('getFields', () => {
     it('should return query fields ; including node(id!)', function getFieldsTest() {
-      this.sandbox.stub(model, 'getModels').returns(graffitiModels);
-      const fields = getFields([]);
+      const fields = getFields(graffitiModels);
       expect(fields).to.containSubset({
         query: {
           name: 'RootQuery',
