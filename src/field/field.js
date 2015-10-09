@@ -93,11 +93,10 @@ function getFields(graffitiModels) {
   };
 }
 
-function getSchema(collections) {
-  const graffitiModels = getModels(collections);
+function getSchema(mongooseModels) {
+  const graffitiModels = getModels(mongooseModels);
   const fields = getFields(graffitiModels);
-  const res = new GraphQLSchema(fields);
-  return res;
+  return new GraphQLSchema(fields);
 }
 
 export default {
