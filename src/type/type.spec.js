@@ -29,7 +29,8 @@ describe('type', () => {
         },
         mother: {
           type: 'ObjectID',
-          reference: 'User'
+          reference: 'User',
+          description: 'The user\'s mother'
         },
         friends: {
           type: 'Array',
@@ -51,6 +52,10 @@ describe('type', () => {
         },
         unknownType: {
           type: 'Unknown'
+        },
+        hidden: {
+          type: 'String',
+          hidden: true
         },
         sub: {
           type: 'Object',
@@ -103,7 +108,8 @@ describe('type', () => {
         },
         mother: {
           name: 'mother',
-          type: GraphQLID
+          type: GraphQLID,
+          description: 'The user\'s mother'
         },
         friends: {
           name: 'friends',
@@ -158,6 +164,12 @@ describe('type', () => {
           type: GraphQLFloat
         }
       });
+    });
+
+    it('should not include hidden fields', () => {
+      const result = getType([], user);
+      const fields = result._typeConfig.fields();
+      expect(fields.hidden).to.be.eql(undefined);
     });
   });
 

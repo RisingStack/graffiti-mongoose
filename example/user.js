@@ -22,7 +22,7 @@ const UserSchema = new mongoose.Schema({
 
   body: {
     eye: String,
-    hair: Number,
+    hair: Number
   }
 });
 

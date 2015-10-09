@@ -12,7 +12,9 @@ function getField(schemaPath) {
   const field = {
     name: name,
     type: schemaPath.instance,
-    nonNull: options.index ? true : false
+    nonNull: options.index ? true : false,
+    description: options.description,
+    hidden: options.hidden
   };
 
   // Field options

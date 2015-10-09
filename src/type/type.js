@@ -64,21 +64,24 @@ export default function getType(graffitiModels, {name, description, fields}, roo
 
   // these references has to be resolved when all type definitions are avaiable
   resolveReference[graphQLType.name] = resolveReference[graphQLType.name] || {};
-  const graphQLTypeFields = reduce(fields, (result, {name, description, type, subtype, reference, nonNull, fields: subfields}, key) => {
+  const graphQLTypeFields = reduce(fields, (graphQLFields, {name, description, type, subtype, reference, nonNull, hidden, fields: subfields}, key) => {
+    if (hidden) {
+      return graphQLFields;
+    }
+
     name = name || key;
     const graphQLField = {name, description};
 
     if (type === 'Array') {
       graphQLField.type = new GraphQLList(stringToGraphQLType(subtype));
       if (reference) {
-        const typeName = reference;
         resolveReference[graphQLType.name][name] = {
           name: name,
-          type: typeName,
+          type: reference,
           args: connectionArgs,
           resolve: (rootValue, args, info) => {
             args.id = rootValue[name].map((i) => i.toString());
-            return connectionFromModel(graffitiModels[typeName], args, info);
+            return connectionFromModel(graffitiModels[reference], args, info);
           }
         };
       }
@@ -90,12 +93,11 @@ export default function getType(graffitiModels, {name, description, fields}, roo
     }
 
     if (reference && (graphQLField.type === GraphQLID || graphQLField.type === new GraphQLNonNull(GraphQLID))) {
-      const typeName = reference;
       resolveReference[graphQLType.name][name] = {
         name: name,
-        type: typeName,
+        type: reference,
         resolve: (rootValue, args, info) => {
-          const resolver = getOneResolver(graffitiModels[typeName]);
+          const resolver = getOneResolver(graffitiModels[reference]);
           return resolver(rootValue, {id: rootValue[name].toString()}, info);
         }
       };
@@ -105,8 +107,8 @@ export default function getType(graffitiModels, {name, description, fields}, roo
       graphQLField.type = new GraphQLNonNull(graphQLField.type);
     }
 
-    result[name] = graphQLField;
-    return result;
+    graphQLFields[name] = graphQLField;
+    return graphQLFields;
   }, {});
 
   if (root) {

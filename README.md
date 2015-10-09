@@ -36,7 +36,15 @@ import mongoose from 'mongoose';
 
 var UserSchema = new mongoose.Schema({
   name: {
-    type: String
+    type: String,
+    // field description
+    description: 'the full name of the user'
+  },
+  hiddenField: {
+    type: Date,
+    default: Date.now,
+    // the field is hidden, not available in GraphQL
+    hidden: true
   },
   age: {
     type: Number,

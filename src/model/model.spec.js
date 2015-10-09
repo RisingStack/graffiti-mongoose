@@ -10,7 +10,7 @@ describe('model', () => {
       name: 'User'
     });
 
-    expect(treeChunk).to.be.eql({
+    expect(treeChunk).to.containSubset({
       foo: {
         name: 'foo',
         nonNull: false,
