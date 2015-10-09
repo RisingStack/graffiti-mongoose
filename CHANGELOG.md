@@ -1,3 +1,30 @@
+<a name="3.0.1"></a>
+## 3.0.1 (2015-10-09)
+
+
+### chore
+
+* chore(package): bump version to 3.0.1 ([de701ed](https://github.com/RisingStack/graffiti-mongoose/commit/de701ed))
+
+### docs
+
+* docs(readme): fix usage, install graphql as peer dep ([d8c19c1](https://github.com/RisingStack/graffiti-mongoose/commit/d8c19c1))
+
+### feat
+
+* feat(fields): add support for `ids` argument on plural fields ([2a41753](https://github.com/RisingStack/graffiti-mongoose/commit/2a41753))
+
+### fix
+
+* fix(projection): fix `Field` fragment ([bafbb2f](https://github.com/RisingStack/graffiti-mongoose/commit/bafbb2f))
+
+### refactor
+
+* refactor(index): move logic out of index.js files ([26ddd10](https://github.com/RisingStack/graffiti-mongoose/commit/26ddd10))
+* refactor(model): change graffiti-model format ([e5b005e](https://github.com/RisingStack/graffiti-mongoose/commit/e5b005e))
+
+
+
 <a name="3.0.0"></a>
 # 3.0.0 (2015-10-08)
 
