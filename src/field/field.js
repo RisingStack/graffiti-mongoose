@@ -47,6 +47,10 @@ function getField(graffitiModel, type) {
         id: {
           type: new GraphQLList(GraphQLID),
           description: `The ID of a ${name}`
+        },
+        ids: {
+          type: new GraphQLList(GraphQLID),
+          description: `The ID of a ${name}`
         }
       }),
       resolve: getListResolver(graffitiModel)

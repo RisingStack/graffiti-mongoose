@@ -53,6 +53,11 @@ function getOneResolver(graffitiModel) {
 
 function getListResolver(graffitiModel) {
   return (root, args, info) => {
+    if (args && args.ids) {
+      args.id = args.ids;
+      delete args.ids;
+    }
+
     const collection = graffitiModel.model;
     if (collection) {
       return getList(collection, args, {}, info);
