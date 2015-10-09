@@ -13,9 +13,12 @@ function processId({id, _id = id}) {
 function getOne(collection, args, info) {
   const id = processId(args);
   const projection = getFieldList(info);
-  return collection.findById(id, projection).then((mObj) => {
-    if (mObj) {
-      return Object.assign({_type: collection.modelName}, mObj.toObject());
+  return collection.findById(id, projection).then((result) => {
+    if (result) {
+      return {
+        ...result.toObject(),
+        ...{_type: collection.modelName}
+      };
     }
 
     return null;
@@ -35,7 +38,10 @@ function getList(collection, selector, options = {}, info = null) {
   const projection = getFieldList(info);
   return collection.find(selector, projection, options).then((result) => {
     return result.map((value) => {
-      return Object.assign({_type: collection.modelName}, value.toObject());
+      return {
+        ...value.toObject(),
+        ...{_type: collection.modelName}
+      };
     });
   });
 }

@@ -25,9 +25,15 @@ describe('query', () => {
   const objArray = [];
   const resultArray = [];
   for (let i = 0; i < 10; i++) {
-    const objFields = Object.assign({_id: `${i}`.repeat(24)}, fields);
+    const objFields = {
+      ...{_id: `${i}`.repeat(24)},
+      ...fields
+    };
     objArray.push(new MongooseObject(objFields));
-    resultArray.push(Object.assign({_type: type}, objFields));
+    resultArray.push({
+      ...{_type: type},
+      ...objFields
+    });
   }
 
   const obj = objArray[0];

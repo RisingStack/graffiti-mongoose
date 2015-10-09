@@ -25,8 +25,10 @@ export default function getFieldList(context, fieldASTs) {
     switch (ast.kind) {
     case 'Field' :
       list[ast.name.value] = true;
-      Object.assign(list, getFieldList({fieldASTs: ast}));
-      return list;
+      return {
+        ...list,
+        ...getFieldList(context, ast)
+      };
     case 'InlineFragment':
       return {
         ...list,

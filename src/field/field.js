@@ -64,8 +64,10 @@ function getFields(graffitiModels) {
   const queries = reduce(types, (queries, type, key) => {
     type.name = type.name || key;
     const graffitiModel = graffitiModels[type.name];
-    Object.assign(queries, getField(graffitiModel, type));
-    return queries;
+    return {
+      ...queries,
+      ...getField(graffitiModel, type)
+    };
   }, {});
 
   queries.node = {
