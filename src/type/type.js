@@ -64,14 +64,14 @@ export default function getType(graffitiModels, {name, description, fields}, roo
 
   // these references has to be resolved when all type definitions are avaiable
   resolveReference[graphQLType.name] = resolveReference[graphQLType.name] || {};
-  const graphQLTypeFields = reduce(fields, (result, {name, description, instance, caster, ref}, key) => {
+  const graphQLTypeFields = reduce(fields, (result, {name, description, type, subtype, reference, nonNull, fields: subfields}, key) => {
     name = name || key;
     const graphQLField = {name, description};
 
-    if (instance === 'Array') {
-      graphQLField.type = new GraphQLList(stringToGraphQLType(caster.instance));
-      if (caster.ref) {
-        const typeName = caster.ref;
+    if (type === 'Array') {
+      graphQLField.type = new GraphQLList(stringToGraphQLType(subtype));
+      if (reference) {
+        const typeName = reference;
         resolveReference[graphQLType.name][name] = {
           name: name,
           type: typeName,
@@ -82,15 +82,15 @@ export default function getType(graffitiModels, {name, description, fields}, roo
           }
         };
       }
-    } else if (instance === 'Object') {
-      const fields = caster.fields;
+    } else if (type === 'Object') {
+      const fields = subfields;
       graphQLField.type = getType(graffitiModels, {name, description, fields}, false);
     } else {
-      graphQLField.type = stringToGraphQLType(instance);
+      graphQLField.type = stringToGraphQLType(type);
     }
 
-    if (ref && (graphQLField.type === GraphQLID || graphQLField.type === new GraphQLNonNull(GraphQLID))) {
-      const typeName = ref;
+    if (reference && (graphQLField.type === GraphQLID || graphQLField.type === new GraphQLNonNull(GraphQLID))) {
+      const typeName = reference;
       resolveReference[graphQLType.name][name] = {
         name: name,
         type: typeName,
@@ -99,6 +99,10 @@ export default function getType(graffitiModels, {name, description, fields}, roo
           return resolver(rootValue, {id: rootValue[name].toString()}, info);
         }
       };
+    }
+
+    if (nonNull && graphQLField.type) {
+      graphQLField.type = new GraphQLNonNull(graphQLField.type);
     }
 
     result[name] = graphQLField;

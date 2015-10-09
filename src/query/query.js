@@ -23,11 +23,13 @@ function getOne(collection, args, info) {
 }
 
 function getList(collection, selector, options = {}, info = null) {
-  if (selector && Array.isArray(selector.id)) {
-    selector._id = {
-      $in: selector.id
-    };
+  if (selector && (Array.isArray(selector.id) || Array.isArray(selector._id))) {
+    const {id, _id = id} = selector;
+    delete selector._id;
     delete selector.id;
+    selector._id = {
+      $in: _id.map((id) => processId({id}))
+    };
   }
 
   const projection = getFieldList(info);

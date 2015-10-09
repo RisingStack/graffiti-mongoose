@@ -22,61 +22,51 @@ describe('type', () => {
       name: 'User',
       fields: {
         name: {
-          instance: 'String'
+          type: 'String'
         },
         age: {
-          instance: 'Number'
+          type: 'Number'
         },
         mother: {
-          instance: 'ObjectID',
-          ref: 'User'
+          type: 'ObjectID',
+          reference: 'User'
         },
         friends: {
-          instance: 'Array',
-          caster: {
-            instance: 'ObjectID',
-            ref: 'User'
-          }
+          type: 'Array',
+          subtype: 'ObjectID',
+          reference: 'User'
         },
         weight: {
-          instance: 'Number'
+          type: 'Number'
         },
         createdAt: {
-          instance: 'Date'
+          type: 'Date'
         },
         removed: {
-          instance: 'Boolean'
+          type: 'Boolean'
         },
         nums: {
-          instance: 'Array',
-          caster: {
-            instance: 'Number'
-          }
+          type: 'Array',
+          subtype: 'Number'
         },
         unknownType: {
-          instance: 'Unknown'
+          type: 'Unknown'
         },
         sub: {
-          instance: 'Object',
-          caster: {
-            fields: {
-              foo: {
-                instance: 'String'
-              },
-              nums: {
-                instance: 'Array',
-                caster: {
-                  instance: 'Number'
-                }
-              },
-              subsub: {
-                instance: 'Object',
-                caster: {
-                  fields: {
-                    bar: {
-                      instance: 'Number'
-                    }
-                  }
+          type: 'Object',
+          fields: {
+            foo: {
+              type: 'String'
+            },
+            nums: {
+              type: 'Array',
+              subtype: 'Number'
+            },
+            subsub: {
+              type: 'Object',
+              fields: {
+                bar: {
+                  type: 'Number'
                 }
               }
             }

@@ -11,31 +11,27 @@ function getField(schemaPath) {
 
   const field = {
     name: name,
-    path: schemaPath.path,
-    instance: schemaPath.instance,
-    indexed: options.index ? true : false
+    type: schemaPath.instance,
+    nonNull: options.index ? true : false
   };
 
   // Field options
   if (schemaPath.options) {
     // ObjectID ref
     if (schemaPath.options.ref) {
-      field.ref = schemaPath.options.ref;
+      field.reference = schemaPath.options.ref;
     }
   }
 
   // Caster
   if (schemaPath.caster) {
-    field.caster = {
-      path: schemaPath.caster.path,
-      instance: schemaPath.caster.instance
-    };
+    field.subtype = schemaPath.caster.instance;
 
     // Caster options
     if (schemaPath.caster.options) {
       // ObjectID ref
       if (schemaPath.caster.options.ref) {
-        field.caster.ref = schemaPath.caster.options.ref;
+        field.reference = schemaPath.caster.options.ref;
       }
     }
   }
@@ -50,12 +46,11 @@ function getField(schemaPath) {
  * @param {Object} model
  * @return {Object} field
  */
-function extractPath(schemaPath, model) {
+function extractPath(schemaPath) {
   const subs = schemaPath.path.split('.');
   const subNames = schemaPath.path.split('.');
 
   return reduceRight(subs, (field, sub, key) => {
-    const path = subNames.join('.');
     const obj = {};
 
     if (key === (subs.length - 1)) {
@@ -63,13 +58,9 @@ function extractPath(schemaPath, model) {
     } else {
       obj[sub] = {
         name: sub,
-        path: path,
-        fullPath: `${model.name}.${path}`,
-        indexed: false,
-        instance: 'Object',
-        caster: {
-          fields: field
-        }
+        nonNull: false,
+        type: 'Object',
+        fields: field
       };
     }
 

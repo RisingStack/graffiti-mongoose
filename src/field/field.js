@@ -34,6 +34,10 @@ function getField(graffitiModel, type) {
     [pluralName]: {
       type: new GraphQLList(type),
       args: reduce(type._typeConfig.fields(), (args, field) => {
+        if (field.type instanceof GraphQLNonNull && field.name !== 'id') {
+          field.type = field.type.ofType;
+        }
+
         if (field.type instanceof GraphQLScalarType) {
           args[field.name] = field;
         }
