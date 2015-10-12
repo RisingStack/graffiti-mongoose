@@ -5,17 +5,20 @@ import {
   GraphQLID,
   GraphQLObjectType,
   GraphQLSchema,
-  GraphQLScalarType
+  GraphQLScalarType,
+  GraphQLInputObjectType
 } from 'graphql';
 import {getModels} from './../model';
 import {getTypes, nodeInterface} from './../type';
 import {
   getIdFetcher,
   getOneResolver,
-  getListResolver
+  getListResolver,
+  getAddOneResolver,
+  getUpdateOneResolver
 } from './../query';
 
-function getField(graffitiModel, type) {
+function getQueryField(graffitiModel, type) {
   const {name} = type;
   const singularName = name.toLowerCase();
   const pluralName = `${name.toLowerCase()}s`;
@@ -58,38 +61,157 @@ function getField(graffitiModel, type) {
   };
 }
 
+function getMutationField(graffitiModel, type) {
+  const {name} = type;
+
+  const allField = type._typeConfig.fields();
+  const args = reduce(allField, (args, field) => {
+    if (field.type instanceof GraphQLObjectType) {
+      if (field.type.name.endsWith('Connection')) {
+        args[field.name] = {
+          name: field.name,
+          type: new GraphQLList(GraphQLID)
+        };
+      }
+      // TODO support objects
+      // else {
+      //   args = {...args, ...field.type._typeConfig.fields()};
+      // }
+    }
+    if (!(field.type instanceof GraphQLObjectType) && field.name !== 'id' && !field.name.startsWith('_')) {
+      args[field.name] = field;
+    }
+    return args;
+  }, {});
+
+  const addInputType = new GraphQLNonNull(new GraphQLInputObjectType({
+    name: `${name}AddInput`,
+    fields: () => ({
+      ...args,
+      clientMutationId: {
+        name: 'clientMutationId',
+        type: new GraphQLNonNull(GraphQLID)
+      }
+    })
+  }));
+
+  const updateInputType = new GraphQLNonNull(new GraphQLInputObjectType({
+    name: `${name}UpdateInput`,
+    fields: () => ({
+      ...args,
+      clientMutationId: {
+        name: 'clientMutationId',
+        type: new GraphQLNonNull(GraphQLID)
+      },
+      id: {
+        type: new GraphQLNonNull(GraphQLID),
+        description: `The ID of a ${name}`
+      }
+    })
+  }));
+
+  const outputType = new GraphQLObjectType({
+    name: `${name}Payload`,
+    fields: () => ({
+      ...allField,
+      clientMutationId: {
+        name: 'clientMutationId',
+        type: new GraphQLNonNull(GraphQLID)
+      }
+    })
+  });
+
+  return {
+    [`add${name}`]: {
+      type: outputType,
+      args: {
+        input: {
+          name: 'input',
+          type: addInputType
+        }
+      },
+      resolve: (root, args, info) => {
+        const clientMutationId = args.input.clientMutationId;
+        delete args.input.clientMutationId;
+        return getAddOneResolver(graffitiModel)(root, args.input, info).then((result) => {
+          return {
+            clientMutationId,
+            ...result
+          };
+        });
+      },
+      resolveType: outputType
+    },
+    [`update${name}`]: {
+      type: outputType,
+      args: {
+        input: {
+          name: 'input',
+          type: updateInputType
+        }
+      },
+      resolve: (root, args, info) => {
+        const clientMutationId = args.input.clientMutationId;
+        delete args.input.clientMutationId;
+        return getUpdateOneResolver(graffitiModel)(root, {id: args.id, ...args.input}, info).then((result) => {
+          return {
+            clientMutationId,
+            ...result
+          };
+        });
+      },
+      resolveType: outputType
+    }
+  };
+}
+
 function getFields(graffitiModels) {
   const types = getTypes(graffitiModels);
 
-  const queries = reduce(types, (queries, type, key) => {
+  const {queries, mutations} = reduce(types, ({queries, mutations}, type, key) => {
     type.name = type.name || key;
     const graffitiModel = graffitiModels[type.name];
     return {
-      ...queries,
-      ...getField(graffitiModel, type)
+      queries: {
+        ...queries,
+        ...getQueryField(graffitiModel, type)
+      },
+      mutations: {
+        ...mutations,
+        ...getMutationField(graffitiModel, type)
+      }
     };
-  }, {});
-
-  queries.node = {
-    name: 'node',
-    description: 'Fetches an object given its ID',
-    type: nodeInterface,
-    args: {
-      id: {
-        type: new GraphQLNonNull(GraphQLID),
-        description: 'The ID of an object'
+  }, {
+    queries: {
+      node: {
+        name: 'node',
+        description: 'Fetches an object given its ID',
+        type: nodeInterface,
+        args: {
+          id: {
+            type: new GraphQLNonNull(GraphQLID),
+            description: 'The ID of an object'
+          }
+        },
+        resolve: getIdFetcher(graffitiModels)
       }
     },
-    resolve: getIdFetcher(graffitiModels)
-  };
+    mutations: {}
+  });
 
   const RootQuery = new GraphQLObjectType({
     name: 'RootQuery',
     fields: queries
   });
 
+  const RootMutation = new GraphQLObjectType({
+    name: 'RootMutation',
+    fields: mutations
+  });
+
   return {
-    query: RootQuery
+    query: RootQuery,
+    mutation: RootMutation
   };
 }
 
@@ -100,7 +222,8 @@ function getSchema(mongooseModels) {
 }
 
 export default {
-  getField,
+  getQueryField,
+  getMutationField,
   getFields,
   getSchema
 };

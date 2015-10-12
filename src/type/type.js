@@ -55,8 +55,6 @@ function stringToGraphQLType(type) {
 const resolveReference = {};
 
 /**
- * @method getType
- * @param {Object} collections
  * @return {Object} GraphQL type definition
  */
 export default function getType(graffitiModels, {name, description, fields}, root = true) {
@@ -65,11 +63,11 @@ export default function getType(graffitiModels, {name, description, fields}, roo
   // these references has to be resolved when all type definitions are avaiable
   resolveReference[graphQLType.name] = resolveReference[graphQLType.name] || {};
   const graphQLTypeFields = reduce(fields, (graphQLFields, {name, description, type, subtype, reference, nonNull, hidden, fields: subfields}, key) => {
-    if (hidden) {
+    name = name || key;
+    if (hidden || name.startsWith('__')) {
       return graphQLFields;
     }
 
-    name = name || key;
     const graphQLField = {name, description};
 
     if (type === 'Array') {

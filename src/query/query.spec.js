@@ -26,12 +26,12 @@ describe('query', () => {
   const resultArray = [];
   for (let i = 0; i < 10; i++) {
     const objFields = {
-      ...{_id: `${i}`.repeat(24)},
+      _id: `${i}`.repeat(24),
       ...fields
     };
     objArray.push(new MongooseObject(objFields));
     resultArray.push({
-      ...{_type: type},
+      _type: type,
       ...objFields
     });
   }

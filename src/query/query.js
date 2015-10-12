@@ -1,3 +1,4 @@
+import {forEach} from 'lodash';
 import {fromGlobalId} from 'graphql-relay';
 import getFieldList from './projection';
 
@@ -10,14 +11,14 @@ function processId({id, _id = id}) {
   return _id;
 }
 
-function getOne(collection, args, info) {
+function getOne(Collection, args, info) {
   const id = processId(args);
   const projection = getFieldList(info);
-  return collection.findById(id, projection).then((result) => {
+  return Collection.findById(id, projection).then((result) => {
     if (result) {
       return {
         ...result.toObject(),
-        ...{_type: collection.modelName}
+        _type: Collection.modelName
       };
     }
 
@@ -25,7 +26,40 @@ function getOne(collection, args, info) {
   });
 }
 
-function getList(collection, selector, options = {}, info = null) {
+function addOne(Collection, args) {
+  const instance = new Collection(args);
+  return instance.save().then((result) => {
+    if (result) {
+      return {
+        ...result.toObject(),
+        _type: Collection.modelName
+      };
+    }
+
+    return null;
+  });
+}
+
+function updateOne(Collection, args, info) {
+  const _id = processId(args);
+  delete args.id;
+  delete args._id;
+
+  forEach(args, (arg, key) => {
+    if (Array.isArray(arg)) {
+      args[key] = arg.map((id) => processId({id}));
+    }
+  });
+
+  return Collection.update({_id}, args).then((res) => {
+    if (res.ok) {
+      return getOne(Collection, {_id}, info);
+    }
+    return null;
+  });
+}
+
+function getList(Collection, selector, options = {}, info = null) {
   if (selector && (Array.isArray(selector.id) || Array.isArray(selector._id))) {
     const {id, _id = id} = selector;
     delete selector._id;
@@ -36,11 +70,11 @@ function getList(collection, selector, options = {}, info = null) {
   }
 
   const projection = getFieldList(info);
-  return collection.find(selector, projection, options).then((result) => {
+  return Collection.find(selector, projection, options).then((result) => {
     return result.map((value) => {
       return {
         ...value.toObject(),
-        ...{_type: collection.modelName}
+        _type: Collection.modelName
       };
     });
   });
@@ -48,9 +82,31 @@ function getList(collection, selector, options = {}, info = null) {
 
 function getOneResolver(graffitiModel) {
   return (root, args, info) => {
-    const collection = graffitiModel.model;
-    if (collection) {
-      return getOne(collection, args, info);
+    const Collection = graffitiModel.model;
+    if (Collection) {
+      return getOne(Collection, args, info);
+    }
+
+    return null;
+  };
+}
+
+function getAddOneResolver(graffitiModel) {
+  return (root, args, info) => {
+    const Collection = graffitiModel.model;
+    if (Collection) {
+      return addOne(Collection, args, info);
+    }
+
+    return null;
+  };
+}
+
+function getUpdateOneResolver(graffitiModel) {
+  return (root, args, info) => {
+    const Collection = graffitiModel.model;
+    if (Collection) {
+      return updateOne(Collection, args, info);
     }
 
     return null;
@@ -64,9 +120,9 @@ function getListResolver(graffitiModel) {
       delete args.ids;
     }
 
-    const collection = graffitiModel.model;
-    if (collection) {
-      return getList(collection, args, {}, info);
+    const Collection = graffitiModel.model;
+    if (Collection) {
+      return getList(Collection, args, {}, info);
     }
 
     return null;
@@ -74,10 +130,10 @@ function getListResolver(graffitiModel) {
 }
 
 /**
- * Returns the first element in a collection
+ * Returns the first element in a Collection
  */
-function getFirst(collection) {
-  return collection.findOne({}, {}, {sort: {_id: 1}});
+function getFirst(Collection) {
+  return Collection.findOne({}, {}, {sort: {_id: 1}});
 }
 
 /**
@@ -87,9 +143,9 @@ function getFirst(collection) {
 function getIdFetcher(graffitiModels) {
   return function idFetcher(obj, {id: globalId}, info) {
     const {type, id} = fromGlobalId(globalId);
-    const collection = graffitiModels[type].model;
-    if (collection) {
-      return getOne(collection, {id}, info);
+    const Collection = graffitiModels[type].model;
+    if (Collection) {
+      return getOne(Collection, {id}, info);
     }
 
     return null;
@@ -152,8 +208,8 @@ function getId(cursor) {
  * Returns a connection based on a graffitiModel
  */
 async function connectionFromModel(graffitiModel, args, info) {
-  const collection = graffitiModel.model;
-  if (!collection) {
+  const Collection = graffitiModel.model;
+  if (!Collection) {
     return emptyConnection();
   }
 
@@ -181,7 +237,7 @@ async function connectionFromModel(graffitiModel, args, info) {
     selector._id.$lt = end;
   }
 
-  const result = await getList(collection, selector, {
+  const result = await getList(Collection, selector, {
     skip: offset,
     limit: limit,
     sort: {_id: 1}
@@ -198,7 +254,7 @@ async function connectionFromModel(graffitiModel, args, info) {
     };
   });
 
-  const firstElement = await getFirst(collection);
+  const firstElement = await getFirst(Collection);
   return {
     edges: edges,
     pageInfo: {
@@ -214,6 +270,8 @@ export default {
   _idToCursor: idToCursor,
   getIdFetcher,
   getOneResolver,
+  getAddOneResolver,
+  getUpdateOneResolver,
   getListResolver,
   connectionFromModel
 };

@@ -8,11 +8,7 @@ describe('e2e', () => {
     let motherUser;
     let user1;
     let user2;
-    let schema;
-
-    before(() => {
-      schema = getSchema([User]);
-    });
+    const schema = getSchema([User]);
 
     beforeEach(async function Test1() {
       motherUser = new User({
@@ -101,9 +97,7 @@ describe('e2e', () => {
                 friends {
                   edges {
                     node {
-                      _id
-                      name
-                      age
+                      ...UserFragment
                     }
                   }
                 }
@@ -197,6 +191,55 @@ describe('e2e', () => {
             }, {
               _id: user2._id.toString()
             }]
+          }
+        });
+      });
+    });
+
+    describe('mutations', () => {
+      it('should add data to the database', async function Test8() {
+        const result = await graphql(schema, `
+          mutation addUserMutation {
+            addUser(input: {name: "Test User", clientMutationId: "1"}) {
+              _id
+              name
+            }
+          }
+        `);
+
+        expect(typeof result.data.addUser._id).to.be.eql('string');
+        expect(result).to.containSubset({
+          data: {
+            addUser: {
+              name: 'Test User'
+            }
+          }
+        });
+      });
+
+      it('should update data', async function Test9() {
+        let result = await graphql(schema, `
+          mutation addUserMutation {
+            addUser(input: {name: "Test User", clientMutationId: "1"}) {
+              _id
+              name
+            }
+          }
+        `);
+        const id = result.data.addUser._id;
+
+        result = await graphql(schema, `
+          mutation updateUserMutation {
+            updateUser(input: {id: "${id}", name: "Updated Test User", clientMutationId: "2"}) {
+              name
+            }
+          }
+        `);
+        expect(result).to.containSubset({
+          data: {
+            updateUser: {
+              name: 'Updated Test User'
+            }
           }
         });
       });

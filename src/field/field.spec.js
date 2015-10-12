@@ -8,46 +8,41 @@ import {
   GraphQLSchema
 } from 'graphql';
 import {
-  getField,
+  getQueryField,
+  getMutationField,
   getFields,
   getSchema
 } from './';
 import query from '../query';
 import model from '../model';
+import type from '../type';
 
 describe('field', () => {
-  const graffitiModels = {
-    Foo: {
-      name: 'Foo',
-      fields: {
+  const types = {
+    Qux: new GraphQLObjectType({
+      name: 'Qux',
+      fields: () => ({
         bar: {
           name: 'bar',
           type: GraphQLString
         },
         baz: {
           name: 'baz',
-          type: new GraphQLObjectType({name: 'baz'})
+          type: GraphQLID
         }
-      }
-    }
+      })
+    })
   };
 
-  describe('getField', () => {
-    it('should return a singular and a plural query field', function getFieldTest() {
+  describe('getQueryField', () => {
+    it('should return a singular and a plural query field', function getQueryFieldTest() {
       this.sandbox.stub(query, 'getOneResolver').returns(() => {});
       this.sandbox.stub(query, 'getListResolver').returns(() => {});
 
-      const graffitiModel = {
-        name: 'foo'
-      };
-
-      const model = Object.assign({}, graffitiModels.Foo);
-      model.fields = () => graffitiModels.Foo.fields;
-      const graphQLType = new GraphQLObjectType(model);
-
-      const fields = getField(graffitiModel, graphQLType);
+      const graphQLType = types.Qux;
+      const fields = getQueryField({Qux: {model: {}}}, graphQLType);
       expect(fields).to.containSubset({
-        foo: {
+        qux: {
           type: graphQLType,
           args: {
             id: {
@@ -55,7 +50,7 @@ describe('field', () => {
             }
           }
         },
-        foos: {
+        quxs: {
           type: new GraphQLList(graphQLType),
           args: {
             bar: {
@@ -68,16 +63,49 @@ describe('field', () => {
     });
   });
 
+  describe('getMutationField', () => {
+    it('should return an addXyz and an updateXyz field', function getMutationFieldTest() {
+      this.sandbox.stub(query, 'getAddOneResolver').returns(() => {});
+      this.sandbox.stub(query, 'getUpdateOneResolver').returns(() => {});
+      const graphQLType = types.Qux;
+      const fields = getMutationField({Qux: {model: {}}}, graphQLType);
+      const args = {
+        input: {
+          name: 'input'
+        }
+      };
+      expect(fields).to.containSubset({
+        addQux: {
+          args
+        },
+        updateQux: {
+          args
+        }
+      });
+      expect(fields.addQux.args.input.type.ofType._typeConfig.fields()).to.containSubset({
+        bar: {
+          name: 'bar',
+          type: GraphQLString
+        },
+        baz: {
+          name: 'baz',
+          type: GraphQLID
+        }
+      });
+    });
+  });
+
   describe('getFields', () => {
     it('should return query fields ; including node(id!)', function getFieldsTest() {
-      const fields = getFields(graffitiModels);
+      this.sandbox.stub(type, 'getTypes').returns(types);
+      const fields = getFields({});
       expect(fields).to.containSubset({
         query: {
           name: 'RootQuery',
           _typeConfig: {
             fields: {
-              foo: {},
-              foos: {},
+              qux: {},
+              quxs: {},
               node: {
                 name: 'node',
                 args: {
@@ -88,6 +116,15 @@ describe('field', () => {
               }
             }
           }
+        },
+        mutation: {
+          name: 'RootMutation',
+          _typeConfig: {
+            fields: {
+              addQux: {},
+              updateQux: {}
+            }
+          }
         }
       });
     });
@@ -95,10 +132,12 @@ describe('field', () => {
 
   describe('getSchema', () => {
     it('should return a GraphQL schema', function getSchemaTest() {
-      this.sandbox.stub(model, 'getModel').returns(graffitiModels);
+      this.sandbox.stub(model, 'getModels').returns({});
+      this.sandbox.stub(type, 'getTypes').returns(types);
       const schema = getSchema([]);
       expect(schema).instanceOf(GraphQLSchema);
       expect(schema._schemaConfig.query.name).to.be.equal('RootQuery');
+      expect(schema._schemaConfig.mutation.name).to.be.equal('RootMutation');
     });
   });
 });

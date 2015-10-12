@@ -3,8 +3,8 @@ import {getTypes} from './type';
 import {getSchema} from './field';
 import {getModels} from './model';
 
-function _getTypes(collections) {
-  const graffitiModels = getModels(collections);
+function _getTypes(mongooseModels) {
+  const graffitiModels = getModels(mongooseModels);
   return getTypes(graffitiModels);
 }
 
