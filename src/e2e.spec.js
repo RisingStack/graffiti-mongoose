@@ -243,6 +243,34 @@ describe('e2e', () => {
           }
         });
       });
+
+      it('should delete data', async function Test10() {
+        let result = await graphql(schema, `
+          mutation addUserMutation {
+            addUser(input: {name: "Test User", clientMutationId: "1"}) {
+              _id
+            }
+          }
+        `);
+        const id = result.data.addUser._id;
+
+        result = await graphql(schema, `
+          mutation deleteUserMutation {
+            deleteUser(input: {id: "${id}", clientMutationId: "2"}) {
+              clientMutationId
+              ok
+            }
+          }
+        `);
+        expect(result).to.containSubset({
+          data: {
+            deleteUser: {
+              clientMutationId: '2',
+              ok: true
+            }
+          }
+        });
+      });
     });
   });
 });

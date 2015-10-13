@@ -5,7 +5,8 @@ import {
   GraphQLID,
   GraphQLObjectType,
   GraphQLSchema,
-  GraphQLScalarType
+  GraphQLScalarType,
+  GraphQLBoolean
 } from 'graphql';
 import {mutationWithClientMutationId} from 'graphql-relay';
 import {getModels} from './../model';
@@ -14,8 +15,9 @@ import {
   getIdFetcher,
   getOneResolver,
   getListResolver,
-  getAddOneResolver,
-  getUpdateOneResolver
+  getAddOneMutateHandler,
+  getUpdateOneMutateHandler,
+  getDeleteOneMutateHandler
 } from './../query';
 
 function getQueryField(graffitiModel, type) {
@@ -86,15 +88,14 @@ function getMutationField(graffitiModel, type) {
 
   const addName = `add${name}`;
   const updateName = `update${name}`;
+  const deleteName = `delete${name}`;
 
   return {
     [addName]: mutationWithClientMutationId({
       name: addName,
       inputFields: args,
       outputFields: allFields,
-      mutateAndGetPayload: (args) => {
-        return getAddOneResolver(graffitiModel)(null, args);
-      }
+      mutateAndGetPayload: getAddOneMutateHandler(graffitiModel)
     }),
     [updateName]: mutationWithClientMutationId({
       name: updateName,
@@ -106,9 +107,20 @@ function getMutationField(graffitiModel, type) {
         }
       },
       outputFields: allFields,
-      mutateAndGetPayload: (args) => {
-        return getUpdateOneResolver(graffitiModel)(null, args);
-      }
+      mutateAndGetPayload: getUpdateOneMutateHandler(graffitiModel)
+    }),
+    [deleteName]: mutationWithClientMutationId({
+      name: deleteName,
+      inputFields: {
+        id: {
+          type: new GraphQLNonNull(GraphQLID),
+          description: `The ID of a ${name}`
+        }
+      },
+      outputFields: {
+        ok: {type: GraphQLBoolean}
+      },
+      mutateAndGetPayload: getDeleteOneMutateHandler(graffitiModel)
     })
   };
 }

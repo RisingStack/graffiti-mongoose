@@ -59,6 +59,15 @@ function updateOne(Collection, args, info) {
   });
 }
 
+function deleteOne(Collection, args) {
+  const _id = processId(args);
+  delete args.id;
+  delete args._id;
+  return Collection.remove({_id}).then(({result}) => {
+    return {ok: !!result.ok};
+  });
+}
+
 function getList(Collection, selector, options = {}, info = null) {
   if (selector && (Array.isArray(selector.id) || Array.isArray(selector._id))) {
     const {id, _id = id} = selector;
@@ -91,22 +100,33 @@ function getOneResolver(graffitiModel) {
   };
 }
 
-function getAddOneResolver(graffitiModel) {
-  return (root, args, info) => {
+function getAddOneMutateHandler(graffitiModel) {
+  return (args) => {
     const Collection = graffitiModel.model;
     if (Collection) {
-      return addOne(Collection, args, info);
+      return addOne(Collection, args);
     }
 
     return null;
   };
 }
 
-function getUpdateOneResolver(graffitiModel) {
-  return (root, args, info) => {
+function getUpdateOneMutateHandler(graffitiModel) {
+  return (args) => {
     const Collection = graffitiModel.model;
     if (Collection) {
-      return updateOne(Collection, args, info);
+      return updateOne(Collection, args);
+    }
+
+    return null;
+  };
+}
+
+function getDeleteOneMutateHandler(graffitiModel) {
+  return (args) => {
+    const Collection = graffitiModel.model;
+    if (Collection) {
+      return deleteOne(Collection, args);
     }
 
     return null;
@@ -270,8 +290,9 @@ export default {
   _idToCursor: idToCursor,
   getIdFetcher,
   getOneResolver,
-  getAddOneResolver,
-  getUpdateOneResolver,
+  getAddOneMutateHandler,
+  getUpdateOneMutateHandler,
+  getDeleteOneMutateHandler,
   getListResolver,
   connectionFromModel
 };

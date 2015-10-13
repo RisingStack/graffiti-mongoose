@@ -65,8 +65,8 @@ describe('field', () => {
 
   describe('getMutationField', () => {
     it('should return an addXyz and an updateXyz field', function getMutationFieldTest() {
-      this.sandbox.stub(query, 'getAddOneResolver').returns(() => {});
-      this.sandbox.stub(query, 'getUpdateOneResolver').returns(() => {});
+      this.sandbox.stub(query, 'getAddOneMutateHandler').returns(() => {});
+      this.sandbox.stub(query, 'getUpdateOneMutateHandler').returns(() => {});
       const graphQLType = types.Qux;
       const fields = getMutationField({Qux: {model: {}}}, graphQLType);
       const args = {
