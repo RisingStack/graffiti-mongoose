@@ -5,9 +5,9 @@ import {
   GraphQLID,
   GraphQLObjectType,
   GraphQLSchema,
-  GraphQLScalarType,
-  GraphQLInputObjectType
+  GraphQLScalarType
 } from 'graphql';
+import {mutationWithClientMutationId} from 'graphql-relay';
 import {getModels} from './../model';
 import {getTypes, nodeInterface} from './../type';
 import {
@@ -64,8 +64,8 @@ function getQueryField(graffitiModel, type) {
 function getMutationField(graffitiModel, type) {
   const {name} = type;
 
-  const allField = type._typeConfig.fields();
-  const args = reduce(allField, (args, field) => {
+  const allFields = type._typeConfig.fields();
+  const args = reduce(allFields, (args, field) => {
     if (field.type instanceof GraphQLObjectType) {
       if (field.type.name.endsWith('Connection')) {
         args[field.name] = {
@@ -84,84 +84,32 @@ function getMutationField(graffitiModel, type) {
     return args;
   }, {});
 
-  const addInputType = new GraphQLNonNull(new GraphQLInputObjectType({
-    name: `${name}AddInput`,
-    fields: () => ({
-      ...args,
-      clientMutationId: {
-        name: 'clientMutationId',
-        type: new GraphQLNonNull(GraphQLID)
-      }
-    })
-  }));
-
-  const updateInputType = new GraphQLNonNull(new GraphQLInputObjectType({
-    name: `${name}UpdateInput`,
-    fields: () => ({
-      ...args,
-      clientMutationId: {
-        name: 'clientMutationId',
-        type: new GraphQLNonNull(GraphQLID)
-      },
-      id: {
-        type: new GraphQLNonNull(GraphQLID),
-        description: `The ID of a ${name}`
-      }
-    })
-  }));
-
-  const outputType = new GraphQLObjectType({
-    name: `${name}Payload`,
-    fields: () => ({
-      ...allField,
-      clientMutationId: {
-        name: 'clientMutationId',
-        type: new GraphQLNonNull(GraphQLID)
-      }
-    })
-  });
+  const addName = `add${name}`;
+  const updateName = `update${name}`;
 
   return {
-    [`add${name}`]: {
-      type: outputType,
-      args: {
-        input: {
-          name: 'input',
-          type: addInputType
+    [addName]: mutationWithClientMutationId({
+      name: addName,
+      inputFields: args,
+      outputFields: allFields,
+      mutateAndGetPayload: (args) => {
+        return getAddOneResolver(graffitiModel)(null, args);
+      }
+    }),
+    [updateName]: mutationWithClientMutationId({
+      name: updateName,
+      inputFields: {
+        ...args,
+        id: {
+          type: new GraphQLNonNull(GraphQLID),
+          description: `The ID of a ${name}`
         }
       },
-      resolve: (root, args, info) => {
-        const clientMutationId = args.input.clientMutationId;
-        delete args.input.clientMutationId;
-        return getAddOneResolver(graffitiModel)(root, args.input, info).then((result) => {
-          return {
-            clientMutationId,
-            ...result
-          };
-        });
-      },
-      resolveType: outputType
-    },
-    [`update${name}`]: {
-      type: outputType,
-      args: {
-        input: {
-          name: 'input',
-          type: updateInputType
-        }
-      },
-      resolve: (root, args, info) => {
-        const clientMutationId = args.input.clientMutationId;
-        delete args.input.clientMutationId;
-        return getUpdateOneResolver(graffitiModel)(root, {id: args.id, ...args.input}, info).then((result) => {
-          return {
-            clientMutationId,
-            ...result
-          };
-        });
-      },
-      resolveType: outputType
-    }
+      outputFields: allFields,
+      mutateAndGetPayload: (args) => {
+        return getUpdateOneResolver(graffitiModel)(null, args);
+      }
+    })
   };
 }
 

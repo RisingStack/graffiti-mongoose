@@ -70,9 +70,7 @@ describe('field', () => {
       const graphQLType = types.Qux;
       const fields = getMutationField({Qux: {model: {}}}, graphQLType);
       const args = {
-        input: {
-          name: 'input'
-        }
+        input: {}
       };
       expect(fields).to.containSubset({
         addQux: {
@@ -82,7 +80,7 @@ describe('field', () => {
           args
         }
       });
-      expect(fields.addQux.args.input.type.ofType._typeConfig.fields()).to.containSubset({
+      expect(fields.addQux.args.input.type.ofType._typeConfig.fields).to.containSubset({
         bar: {
           name: 'bar',
           type: GraphQLString
