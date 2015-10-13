@@ -161,7 +161,15 @@ function getFields(graffitiModels) {
 
   const RootQuery = new GraphQLObjectType({
     name: 'RootQuery',
-    fields: queries
+    fields: {
+      viewer: {
+        type: new GraphQLObjectType({
+          name: 'Viewer',
+          fields: queries
+        })
+      },
+      ...queries
+    }
   });
 
   const RootMutation = new GraphQLObjectType({

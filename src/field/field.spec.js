@@ -104,6 +104,16 @@ describe('field', () => {
             fields: {
               qux: {},
               quxs: {},
+              viewer: {
+                type: {
+                  _typeConfig: {
+                    fields: {
+                      qux: {},
+                      quxs: {}
+                    }
+                  }
+                }
+              },
               node: {
                 name: 'node',
                 args: {

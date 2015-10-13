@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "start": "node --harmony src/index.js",
-    "test": "NODE_ENV=test mocha --harmony --compilers js:babel/register --require co-mocha $(find src -name \"*.spec.js\") && npm run eslint",
+    "test": "NODE_ENV=test mocha --compilers js:babel/register --require co-mocha 'src/**/*.spec.js'",
     "eslint": "eslint src",
     "prepublish": "npm test && npm run build",
     "build": "rm -rf lib/* && babel src --ignore *.spec.js --out-dir lib"
@@ -45,7 +45,8 @@
     "mongoose": "^4.1.8",
     "pre-commit": "^1.1.1",
     "sinon": "^1.15.4",
-    "sinon-chai": "^2.8.0"
+    "sinon-chai": "^2.8.0",
+    "graphql": "^0.4.4"
   },
   "pre-commit": [
     "test"
