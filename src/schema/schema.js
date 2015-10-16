@@ -125,7 +125,7 @@ function getMutationField(graffitiModel, type) {
   };
 }
 
-function getFields(graffitiModels) {
+function getFields(graffitiModels, {mutation} = {mutation: true}) {
   const types = getTypes(graffitiModels);
 
   const {queries, mutations} = reduce(types, ({queries, mutations}, type, key) => {
@@ -177,15 +177,20 @@ function getFields(graffitiModels) {
     fields: mutations
   });
 
-  return {
-    query: RootQuery,
-    mutation: RootMutation
+  const fields = {
+    query: RootQuery
   };
+
+  if (mutation) {
+    fields.mutation = RootMutation;
+  }
+
+  return fields;
 }
 
-function getSchema(mongooseModels) {
+function getSchema(mongooseModels, options) {
   const graffitiModels = getModels(mongooseModels);
-  const fields = getFields(graffitiModels);
+  const fields = getFields(graffitiModels, options);
   return new GraphQLSchema(fields);
 }
 

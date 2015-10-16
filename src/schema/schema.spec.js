@@ -147,5 +147,14 @@ describe('field', () => {
       expect(schema._schemaConfig.query.name).to.be.equal('RootQuery');
       expect(schema._schemaConfig.mutation.name).to.be.equal('RootMutation');
     });
+
+    it('should return a GraphQL schema without mutations', function getSchemaTest() {
+      this.sandbox.stub(model, 'getModels').returns({});
+      this.sandbox.stub(type, 'getTypes').returns(types);
+      const schema = getSchema([], {mutation: false});
+      expect(schema).instanceOf(GraphQLSchema);
+      expect(schema._schemaConfig.query.name).to.be.equal('RootQuery');
+      expect(schema._schemaConfig.mutation).to.be.equal(undefined);
+    });
   });
 });
