@@ -27,26 +27,26 @@
     "ORM"
   ],
   "dependencies": {
-    "graphql-relay": "^0.3.2",
-    "lodash": "^3.10.0"
+    "graphql-relay": "^0.3.3",
+    "lodash": "^3.10.1"
   },
   "peerDependencies": {
-    "graphql": "^0.4.4"
+    "graphql": "^0.4.7"
   },
   "devDependencies": {
-    "babel": "^5.8.20",
+    "babel": "^5.8.23",
     "babel-eslint": "^4.1.3",
-    "chai": "^3.2.0",
-    "chai-subset": "^1.0.1",
+    "chai": "^3.3.0",
+    "chai-subset": "^1.1.0",
     "co-mocha": "^1.1.2",
     "eslint": "^1.6.0",
     "eslint-config-airbnb": "^0.1.0",
-    "mocha": "^2.2.5",
-    "mongoose": "^4.1.8",
+    "mocha": "^2.3.3",
+    "mongoose": "^4.1.11",
     "pre-commit": "^1.1.1",
-    "sinon": "^1.15.4",
+    "sinon": "^1.17.1",
     "sinon-chai": "^2.8.0",
-    "graphql": "^0.4.4"
+    "graphql": "^0.4.7"
   },
   "pre-commit": [
     "test"
