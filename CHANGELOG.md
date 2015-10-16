@@ -1,3 +1,25 @@
+<a name="3.1.1"></a>
+## 3.1.1 (2015-10-16)
+
+
+### chore
+
+* chore(package): bumping version to 3.1.1 ([0b44a27](https://github.com/RisingStack/graffiti-mongoose/commit/0b44a27))
+
+### docs
+
+* docs(readme): add npm version badge ([fe2a0ab](https://github.com/RisingStack/graffiti-mongoose/commit/fe2a0ab))
+
+### fix
+
+* fix(viewer): fix viewer query field ([a9627bb](https://github.com/RisingStack/graffiti-mongoose/commit/a9627bb))
+
+### refactor
+
+* refactor(index): export statement in one line ([8ff21d7](https://github.com/RisingStack/graffiti-mongoose/commit/8ff21d7))
+
+
+
 <a name="3.1.0"></a>
 # 3.1.0 (2015-10-16)
 
@@ -5,7 +27,7 @@
 ### chore
 
 * chore(changelog): update CHANGELOG.md ([cb9009f](https://github.com/RisingStack/graffiti-mongoose/commit/cb9009f))
-* chore(package): bumping version to 3.1.0 ([503a43c](https://github.com/RisingStack/graffiti-mongoose/commit/503a43c))
+* chore(package): bumping version to 3.1.0 ([9259f4d](https://github.com/RisingStack/graffiti-mongoose/commit/9259f4d))
 * chore(package): update dependencies ([a0054ae](https://github.com/RisingStack/graffiti-mongoose/commit/a0054ae))
 
 ### docs
