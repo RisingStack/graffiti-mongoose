@@ -1,6 +1,7 @@
 # graffiti-mongoose
 
 [![Build Status](https://travis-ci.org/RisingStack/graffiti-mongoose.svg)](https://travis-ci.org/RisingStack/graffiti-mongoose)
+[![npm version](https://badge.fury.io/js/%40risingstack%2Fgraffiti-mongoose.svg)](https://badge.fury.io/js/%40risingstack%2Fgraffiti-mongoose)
 
 [Mongoose](http://mongoosejs.com) (MongoDB) adapter for the [graffiti](https://github.com/RisingStack/graffiti) [GraphQL](https://github.com/graphql/graphql-js) ORM.  
 
