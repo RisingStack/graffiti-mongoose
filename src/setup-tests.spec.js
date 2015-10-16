@@ -5,11 +5,13 @@ import chaiSubset from 'chai-subset';
 
 import mongoose from 'mongoose';
 
-before(() => {
+before((done) => {
   chai.use(sinonChai);
   chai.use(chaiSubset);
 
-  mongoose.connect('mongodb://localhost/graffiti-mongoose-test');
+  mongoose.connect('mongodb://localhost/graffiti-mongoose-test', () => {
+    mongoose.connection.db.dropDatabase(done);
+  });
 
   sinon.stub.returnsWithResolve = function returnsWithResolve(data) {
     return this.returns(Promise.resolve(data));

@@ -10,7 +10,7 @@ describe('e2e', () => {
     let user2;
     const schema = getSchema([User]);
 
-    beforeEach(async function Test1() {
+    beforeEach(async function BeforeEach() {
       motherUser = new User({
         name: 'Mother',
         age: 54
@@ -36,12 +36,12 @@ describe('e2e', () => {
       await user2.save();
     });
 
-    afterEach(async function Test2() {
+    afterEach(async function AfterEach() {
       await [motherUser.remove(), user1.remove(), user2.remove()];
     });
 
     describe('singular query', () => {
-      it('should get data from database by id', async function Test3() {
+      it('should get data from database by id', async function Test() {
         const result = await graphql(schema, `{
           user(id: "${user2._id}") {
             _id
@@ -88,7 +88,7 @@ describe('e2e', () => {
       });
 
       describe('with fragments', () => {
-        it('should support fragments', async function Test4() {
+        it('should support fragments', async function Test() {
           // FIXME it fails in node {}
           const result = await graphql(schema, `
             query GetUser {
@@ -130,7 +130,7 @@ describe('e2e', () => {
           });
         });
 
-        it('should support inline fragments', async function Test5() {
+        it('should support inline fragments', async function Test() {
           const result = await graphql(schema, `{
             user(id: "${user2._id}") {
               _id
@@ -155,7 +155,7 @@ describe('e2e', () => {
     });
 
     describe('plural query', () => {
-      it('should get data from database and filter by number', async function Test6() {
+      it('should get data from database and filter by number', async function Test() {
         const result = await graphql(schema, `{
           users(age: 28) {
             _id
@@ -177,7 +177,7 @@ describe('e2e', () => {
         ]);
       });
 
-      it('should get data from database and filter by array of _id(s)', async function Test7() {
+      it('should get data from database and filter by array of _id(s)', async function Test() {
         const result = await graphql(schema, `{
           users(id: ["${user1._id}", "${user2._id}"]) {
             _id
@@ -194,10 +194,22 @@ describe('e2e', () => {
           }
         });
       });
+
+      it('should support viewer field', async function Test() {
+        const result = await graphql(schema, `{
+          viewer {
+            users {
+              name
+            }
+          }
+        }`);
+
+        expect(result.data.viewer.users).to.eql([{ name: 'Mother' }, { name: 'Foo' }, { name: 'Bar' }]);
+      });
     });
 
     describe('mutations', () => {
-      it('should add data to the database', async function Test8() {
+      it('should add data to the database', async function Test() {
         const result = await graphql(schema, `
           mutation addUserMutation {
             addUser(input: {name: "Test User", clientMutationId: "1"}) {
@@ -217,7 +229,7 @@ describe('e2e', () => {
         });
       });
 
-      it('should update data', async function Test9() {
+      it('should update data', async function Test() {
         let result = await graphql(schema, `
           mutation addUserMutation {
             addUser(input: {name: "Test User", clientMutationId: "1"}) {
@@ -244,7 +256,7 @@ describe('e2e', () => {
         });
       });
 
-      it('should delete data', async function Test10() {
+      it('should delete data', async function Test() {
         let result = await graphql(schema, `
           mutation addUserMutation {
             addUser(input: {name: "Test User", clientMutationId: "1"}) {

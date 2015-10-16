@@ -142,7 +142,21 @@ function getFields(graffitiModels, {mutation} = {mutation: true}) {
       }
     };
   }, {
-    queries: {
+    queries: {},
+    mutations: {}
+  });
+
+  const RootQuery = new GraphQLObjectType({
+    name: 'RootQuery',
+    fields: {
+      viewer: {
+        name: 'viewer',
+        type: new GraphQLObjectType({
+          name: 'Viewer',
+          fields: queries
+        }),
+        resolve: () => ({})
+      },
       node: {
         name: 'node',
         description: 'Fetches an object given its ID',
@@ -154,19 +168,6 @@ function getFields(graffitiModels, {mutation} = {mutation: true}) {
           }
         },
         resolve: getIdFetcher(graffitiModels)
-      }
-    },
-    mutations: {}
-  });
-
-  const RootQuery = new GraphQLObjectType({
-    name: 'RootQuery',
-    fields: {
-      viewer: {
-        type: new GraphQLObjectType({
-          name: 'Viewer',
-          fields: queries
-        })
       },
       ...queries
     }
