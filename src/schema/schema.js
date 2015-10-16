@@ -8,7 +8,11 @@ import {
   GraphQLScalarType,
   GraphQLBoolean
 } from 'graphql';
-import {mutationWithClientMutationId} from 'graphql-relay';
+import {
+  mutationWithClientMutationId,
+  connectionArgs,
+  connectionDefinitions
+} from 'graphql-relay';
 import {getModels} from './../model';
 import {getTypes, nodeInterface} from './../type';
 import {
@@ -17,13 +21,13 @@ import {
   getListResolver,
   getAddOneMutateHandler,
   getUpdateOneMutateHandler,
-  getDeleteOneMutateHandler
+  getDeleteOneMutateHandler,
+  connectionFromModel
 } from './../query';
 
-function getQueryField(graffitiModel, type) {
+function getSingularQueryField(graffitiModel, type) {
   const {name} = type;
   const singularName = name.toLowerCase();
-  const pluralName = `${name.toLowerCase()}s`;
 
   return {
     [singularName]: {
@@ -35,7 +39,15 @@ function getQueryField(graffitiModel, type) {
         }
       },
       resolve: getOneResolver(graffitiModel)
-    },
+    }
+  };
+}
+
+function getPluralQueryField(graffitiModel, type) {
+  const {name} = type;
+  const pluralName = `${name.toLowerCase()}s`;
+
+  return {
     [pluralName]: {
       type: new GraphQLList(type),
       args: reduce(type._typeConfig.fields(), (args, field) => {
@@ -59,6 +71,27 @@ function getQueryField(graffitiModel, type) {
         }
       }),
       resolve: getListResolver(graffitiModel)
+    }
+  };
+}
+
+function getQueryField(graffitiModel, type) {
+  return {
+    ...getSingularQueryField(graffitiModel, type),
+    ...getPluralQueryField(graffitiModel, type)
+  };
+}
+
+function getConnectionField(graffitiModel, type) {
+  const {name} = type;
+  const pluralName = `${name.toLowerCase()}s`;
+  const {connectionType} = connectionDefinitions({name: name, nodeType: type});
+
+  return {
+    [pluralName]: {
+      args: connectionArgs,
+      type: connectionType,
+      resolve: (rootValue, args, info) => connectionFromModel(graffitiModel, args, info)
     }
   };
 }
@@ -153,7 +186,15 @@ function getFields(graffitiModels, {mutation} = {mutation: true}) {
         name: 'viewer',
         type: new GraphQLObjectType({
           name: 'Viewer',
-          fields: queries
+          fields: reduce(types, (fields, type, key) => {
+            type.name = type.name || key;
+            const graffitiModel = graffitiModels[type.name];
+            return {
+              ...fields,
+              ...getConnectionField(graffitiModel, type),
+              ...getSingularQueryField(graffitiModel, type)
+            };
+          }, {})
         }),
         resolve: () => ({})
       },

@@ -199,12 +199,22 @@ describe('e2e', () => {
         const result = await graphql(schema, `{
           viewer {
             users {
-              name
+              edges {
+                cursor
+                node {
+                  name
+                }
+              }
             }
           }
         }`);
 
-        expect(result.data.viewer.users).to.eql([{ name: 'Mother' }, { name: 'Foo' }, { name: 'Bar' }]);
+        const users = result.data.viewer.users.edges;
+        expect(users).to.containSubset([
+          {node: {name: 'Mother'}},
+          {node: {name: 'Foo'}},
+          {node: {name: 'Bar'}}
+        ]);
       });
     });
 
