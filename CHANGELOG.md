@@ -1,10 +1,24 @@
+<a name="3.2.0"></a>
+# 3.2.0 (2015-10-16)
+
+
+### chore
+
+* chore(package): bumping version to 3.2.0 ([c074a07](https://github.com/RisingStack/graffiti-mongoose/commit/c074a07))
+
+### feat
+
+* feat(schema): use connection type on plural fields on viewer query ([4fda024](https://github.com/RisingStack/graffiti-mongoose/commit/4fda024))
+
+
+
 <a name="3.1.1"></a>
 ## 3.1.1 (2015-10-16)
 
 
 ### chore
 
-* chore(package): bumping version to 3.1.1 ([0b44a27](https://github.com/RisingStack/graffiti-mongoose/commit/0b44a27))
+* chore(package): bumping version to 3.1.1 ([367305c](https://github.com/RisingStack/graffiti-mongoose/commit/367305c))
 
 ### docs
 
