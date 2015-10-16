@@ -34,7 +34,7 @@ This adapter is written in `ES6` and `ES7` with [Babel](https://babeljs.io) but 
 ```javascript
 import mongoose from 'mongoose';
 
-var UserSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
   name: {
     type: String,
     // field description
@@ -56,17 +56,22 @@ var UserSchema = new mongoose.Schema({
   }]
 });
 
-var User = mongoose.model('User', UserSchema);
+const User = mongoose.model('User', UserSchema);
+export default User;
 ```
 
 ##### graffiti-mongoose
 ```javascript
 import {getSchema} from '@risingstack/graffiti-mongoose';
 import graphql from 'graphql';
+import User from './User';
 
-var schema = getSchema([User]);
+const options = {
+  mutation: false // mutation fields can be disabled
+};
+const schema = getSchema([User], options);
 
-var query = `{
+const query = `{
     users(age: 28) {
       name
       friends(first: 2) {
@@ -112,6 +117,7 @@ graphql(schema, query)
   * singular: for example `user`
   * plural: for example `users`
   * [node](https://facebook.github.io/relay/docs/graphql-object-identification.html): takes a single argument, a unique `!ID`, and returns a `Node`
+  * viewer: singular and plural queries as fields
 
 ## Supported query arguments
 
@@ -127,6 +133,46 @@ user(id: "mongoId1") {}
 user(id: "relayId") {}
 users(id: ["mongoId", "mongoId2"]) {}
 users(id: ["relayId1", "relayId2"]) {}
+```
+
+## Supported mutation types
+
+* mutation
+  * addX: for example `addUser`
+  * updateX: for example `updateUser`
+  * deleteX: for example `deleteUser`
+
+## Supported mutation arguments
+
+* scalar types
+* references
+
+Examples:
+```
+mutation addX {
+  addUser(input: {name: "X", age: 11, clientMutationId: "1"}) {
+    id
+    name
+  }
+}
+```
+
+```
+mutation updateX {
+  updateUser(input: {id: "xpmsdfonasd", age: 10, clientMutationId: "2"}) {
+    id
+    name
+    age
+  }
+}
+```
+
+```
+mutation deleteX {
+  deleteUser(input: {id: "xpmsdfonasd", clientMutationId: "3"}) {
+    ok
+  }
+}
 ```
 
 ## Test
