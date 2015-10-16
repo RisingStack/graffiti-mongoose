@@ -1,2 +1,1 @@
-import schema from './schema';
-export default schema;
+export default from './schema';

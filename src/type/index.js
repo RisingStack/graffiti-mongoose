@@ -1,2 +1,1 @@
-import type from './type';
-export default type;
+export default from './type';

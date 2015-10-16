@@ -145,6 +145,7 @@ users(id: ["relayId1", "relayId2"]) {}
 ## Supported mutation arguments
 
 * scalar types
+* arrays
 * references
 
 Examples:

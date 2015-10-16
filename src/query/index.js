@@ -1,2 +1,1 @@
-import query from './query';
-export default query;
+export default from './query';
