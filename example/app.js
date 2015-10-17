@@ -10,10 +10,11 @@ const port = process.env.PORT || 8080;
 
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost/graphql');
 
+// Generate sample data
 User.remove();
 const users = [];
 for (let i = 0; i < 100; i++) {
-  const user = new User({
+  users.push(new User({
     name: `User${i}`,
     age: i,
     createdAt: new Date() + i * 100,
@@ -26,11 +27,12 @@ for (let i = 0; i < 100; i++) {
       eye: 'blue',
       hair: 'yellow'
     }
-  });
-  users.push(user);
-  user.save();
+  }));
 }
 
+User.create(users);
+
+// Set up example server
 const app = koa();
 
 // attach graffiti-mongoose middleware
@@ -43,4 +45,5 @@ app.use(graffiti.koa({
 app.use(serve(__dirname + '/dist'));
 
 app.listen(port);
+
 console.log(`Started on http://localhost:${port}/`);
