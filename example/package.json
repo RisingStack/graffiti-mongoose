@@ -11,9 +11,9 @@
     "@risingstack/graffiti-mongoose": "../",
     "babel-runtime": "^5.8.20",
     "graphiql": "^0.3.1",
-    "koa": "^1.0.0",
-    "koa-static": "^1.4.9",
-    "react": "0.13.3"
+    "koa": "^1.1.0",
+    "koa-static": "^1.5.1",
+    "react": "0.14.0"
   },
   "devDependencies": {
     "babel": "^5.8.21"
