@@ -39,7 +39,7 @@
     "chai": "^3.3.0",
     "chai-subset": "^1.1.0",
     "co-mocha": "^1.1.2",
-    "eslint": "^1.6.0",
+    "eslint": "^1.7.1",
     "eslint-config-airbnb": "^0.1.0",
     "mocha": "^2.3.3",
     "mongoose": "^4.1.11",
