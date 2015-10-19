@@ -1,5 +1,5 @@
 import {forEach} from 'lodash';
-import {fromGlobalId} from 'graphql-relay';
+import {fromGlobalId, toGlobalId} from 'graphql-relay';
 import getFieldList from './projection';
 
 function processId({id, _id = id}) {
@@ -77,7 +77,10 @@ function deleteOne(Collection, args) {
   delete args.id;
   delete args._id;
   return Collection.remove({_id}).then(({result}) => {
-    return {ok: !!result.ok};
+    return {
+      id: toGlobalId(Collection.modelName, _id),
+      ok: !!result.ok
+    };
   });
 }
 

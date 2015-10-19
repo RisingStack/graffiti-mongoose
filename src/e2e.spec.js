@@ -214,7 +214,7 @@ describe('e2e', () => {
         }`);
 
         const {id, users} = result.data.viewer;
-        expect(id).to.be.ok;
+        expect(id).to.be.ok; // eslint-disable-line
         expect(users.count).to.be.equal(3);
 
         expect(users.edges).to.containSubset([
@@ -262,23 +262,14 @@ describe('e2e', () => {
         result = await graphql(schema, `
           mutation updateUserMutation {
             updateUser(input: {id: "${id}", name: "Updated Test User", clientMutationId: "2"}) {
-              changedUserEdge {
-                node {
-                  _id
-                  name
-                }
-              }
+              name
             }
           }
         `);
         expect(result).to.containSubset({
           data: {
             updateUser: {
-              changedUserEdge: {
-                node: {
-                  name: 'Updated Test User'
-                }
-              }
+              name: 'Updated Test User'
             }
           }
         });
@@ -290,27 +281,29 @@ describe('e2e', () => {
             addUser(input: {name: "Test User", clientMutationId: "1"}) {
               changedUserEdge {
                 node {
-                  _id
+                  id
                 }
               }
             }
           }
         `);
-        const id = result.data.addUser.changedUserEdge.node._id;
+        const {id} = result.data.addUser.changedUserEdge.node;
 
         result = await graphql(schema, `
           mutation deleteUserMutation {
             deleteUser(input: {id: "${id}", clientMutationId: "2"}) {
-              clientMutationId
+              id
               ok
+              clientMutationId
             }
           }
         `);
         expect(result).to.containSubset({
           data: {
             deleteUser: {
-              clientMutationId: '2',
-              ok: true
+              id,
+              ok: true,
+              clientMutationId: '2'
             }
           }
         });

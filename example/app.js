@@ -46,4 +46,4 @@ app.use(serve(__dirname + '/dist'));
 
 app.listen(port);
 
-console.log(`Started on http://localhost:${port}/`);
+console.log(`Started on http://localhost:${port}/`); // eslint-disable-line

@@ -27,6 +27,11 @@ import {
   connectionFromModel
 } from './../query';
 
+const idField = {
+  name: 'id',
+  type: new GraphQLNonNull(GraphQLID)
+};
+
 function getSingularQueryField(graffitiModel, type) {
   const {name} = type;
   const singularName = name.toLowerCase();
@@ -35,10 +40,7 @@ function getSingularQueryField(graffitiModel, type) {
     [singularName]: {
       type: type,
       args: {
-        id: {
-          type: new GraphQLNonNull(GraphQLID),
-          description: `The ID of a ${name}`
-        }
+        id: idField
       },
       resolve: getOneResolver(graffitiModel)
     }
@@ -128,19 +130,6 @@ function getMutationField(graffitiModel, type, viewer) {
 
   const Name = name[0].toUpperCase() + name.slice(1);
   const edgeName = `changed${Name}Edge`;
-  const outputFields = {
-    viewer,
-    [edgeName]: {
-      type: connectionDefinitions({name: edgeName, nodeType: new GraphQLObjectType({
-        name: edgeName,
-        fields
-      })}).edgeType,
-      resolve: (node) => ({
-        node,
-        cursor: idToCursor(node.id)
-      })
-    }
-  };
 
   const addName = `add${name}`;
   const updateName = `update${name}`;
@@ -150,31 +139,40 @@ function getMutationField(graffitiModel, type, viewer) {
     [addName]: mutationWithClientMutationId({
       name: addName,
       inputFields,
-      outputFields,
+      outputFields: {
+        viewer,
+        [edgeName]: {
+          type: connectionDefinitions({name: edgeName, nodeType: new GraphQLObjectType({
+            name: edgeName,
+            fields
+          })}).edgeType,
+          resolve: (node) => ({
+            node,
+            cursor: idToCursor(node.id)
+          })
+        }
+      },
       mutateAndGetPayload: getAddOneMutateHandler(graffitiModel)
     }),
     [updateName]: mutationWithClientMutationId({
       name: updateName,
       inputFields: {
         ...inputFields,
-        id: {
-          type: new GraphQLNonNull(GraphQLID),
-          description: `The ID of a ${name}`
-        }
+        id: idField
       },
-      outputFields,
+      outputFields: fields,
       mutateAndGetPayload: getUpdateOneMutateHandler(graffitiModel)
     }),
     [deleteName]: mutationWithClientMutationId({
       name: deleteName,
       inputFields: {
-        id: {
-          type: new GraphQLNonNull(GraphQLID),
-          description: `The ID of a ${name}`
-        }
+        id: idField
       },
       outputFields: {
-        ok: {type: GraphQLBoolean}
+        ok: {
+          type: GraphQLBoolean
+        },
+        id: idField
       },
       mutateAndGetPayload: getDeleteOneMutateHandler(graffitiModel)
     })
@@ -197,10 +195,7 @@ function getFields(graffitiModels, {mutation} = {mutation: true}) {
           ...getSingularQueryField(graffitiModel, type)
         };
       }, {
-        id: {
-          name: 'id',
-          type: GraphQLID
-        }
+        id: idField
       })
     }),
     resolve: () => ({id: 'viewer'})
