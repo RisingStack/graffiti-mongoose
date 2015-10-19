@@ -6,7 +6,8 @@ import {
   GraphQLObjectType,
   GraphQLSchema,
   GraphQLScalarType,
-  GraphQLBoolean
+  GraphQLBoolean,
+  GraphQLFloat
 } from 'graphql';
 import {
   mutationWithClientMutationId,
@@ -86,7 +87,12 @@ function getQueryField(graffitiModel, type) {
 function getConnectionField(graffitiModel, type) {
   const {name} = type;
   const pluralName = `${name.toLowerCase()}s`;
-  const {connectionType} = connectionDefinitions({name: name, nodeType: type});
+  const {connectionType} = connectionDefinitions({name: name, nodeType: type, connectionFields: {
+    count: {
+      name: 'count',
+      type: GraphQLFloat
+    }
+  }});
 
   return {
     [pluralName]: {
@@ -190,9 +196,14 @@ function getFields(graffitiModels, {mutation} = {mutation: true}) {
           ...getConnectionField(graffitiModel, type),
           ...getSingularQueryField(graffitiModel, type)
         };
-      }, {})
+      }, {
+        id: {
+          name: 'id',
+          type: GraphQLID
+        }
+      })
     }),
-    resolve: () => ({})
+    resolve: () => ({id: 'viewer'})
   };
 
   const {queries, mutations} = reduce(types, ({queries, mutations}, type, key) => {

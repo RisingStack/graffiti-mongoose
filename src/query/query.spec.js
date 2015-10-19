@@ -56,6 +56,10 @@ describe('query', () => {
 
         find() {
           return Promise.resolve(objArray);
+        },
+
+        count() {
+          return Promise.resolve(objArray.length);
         }
       }
     }
@@ -123,6 +127,7 @@ describe('query', () => {
       const startCursor = edges[0].cursor;
       const endCursor = edges[edges.length - 1].cursor;
       expect(result).to.containSubset({
+        count: resultArray.length,
         edges,
         pageInfo: {
           startCursor,

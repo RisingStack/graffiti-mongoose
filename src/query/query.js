@@ -11,6 +11,19 @@ function processId({id, _id = id}) {
   return _id;
 }
 
+function getCount(Collection, selector) {
+  if (selector && (Array.isArray(selector.id) || Array.isArray(selector._id))) {
+    const {id, _id = id} = selector;
+    delete selector._id;
+    delete selector.id;
+    selector._id = {
+      $in: _id.map((id) => processId({id}))
+    };
+  }
+
+  return Collection.count(selector);
+}
+
 function getOne(Collection, args, info) {
   const id = processId(args);
   const projection = getFieldList(info);
@@ -177,6 +190,7 @@ function getIdFetcher(graffitiModels) {
  */
 function emptyConnection() {
   return {
+    count: 0,
     edges: [],
     pageInfo: {
       startCursor: null,
@@ -262,6 +276,7 @@ async function connectionFromModel(graffitiModel, args, info) {
     limit: limit,
     sort: {_id: 1}
   }, info);
+  const count = await getCount(Collection, selector);
 
   if (result.length === 0) {
     return emptyConnection();
@@ -276,6 +291,7 @@ async function connectionFromModel(graffitiModel, args, info) {
 
   const firstElement = await getFirst(Collection);
   return {
+    count,
     edges: edges,
     pageInfo: {
       startCursor: edges[0].cursor,

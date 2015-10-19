@@ -95,6 +95,7 @@ describe('e2e', () => {
               user(id: "${user2._id}") {
                 ...UserFragment
                 friends {
+                  count
                   edges {
                     node {
                       ...UserFragment
@@ -117,6 +118,7 @@ describe('e2e', () => {
                 name: 'Bar',
                 age: 28,
                 friends: {
+                  count: 1,
                   edges: [{
                     node: {
                       _id: user1._id.toString(),
@@ -198,7 +200,9 @@ describe('e2e', () => {
       it('should support viewer field', async function Test() {
         const result = await graphql(schema, `{
           viewer {
+            id
             users {
+              count
               edges {
                 cursor
                 node {
@@ -209,8 +213,11 @@ describe('e2e', () => {
           }
         }`);
 
-        const users = result.data.viewer.users.edges;
-        expect(users).to.containSubset([
+        const {id, users} = result.data.viewer;
+        expect(id).to.be.ok;
+        expect(users.count).to.be.equal(3);
+
+        expect(users.edges).to.containSubset([
           {node: {name: 'Mother'}},
           {node: {name: 'Foo'}},
           {node: {name: 'Bar'}}

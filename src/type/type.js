@@ -141,7 +141,12 @@ function getTypes(graffitiModels) {
       forEach(fields, (field, fieldName) => {
         if (field.args === connectionArgs) {
           // it's a connection
-          const {connectionType} = connectionDefinitions({name: fieldName, nodeType: types[field.type]});
+          const {connectionType} = connectionDefinitions({name: fieldName, nodeType: types[field.type], connectionFields: {
+            count: {
+              name: 'count',
+              type: GraphQLFloat
+            }
+          }});
           field.type = connectionType;
         } else {
           // it's an object reference
