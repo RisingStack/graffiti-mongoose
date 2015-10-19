@@ -16,6 +16,7 @@ import {
 import {getModels} from './../model';
 import {getTypes, nodeInterface} from './../type';
 import {
+  idToCursor,
   getIdFetcher,
   getOneResolver,
   getListResolver,
@@ -96,14 +97,14 @@ function getConnectionField(graffitiModel, type) {
   };
 }
 
-function getMutationField(graffitiModel, type) {
+function getMutationField(graffitiModel, type, viewer) {
   const {name} = type;
 
-  const allFields = type._typeConfig.fields();
-  const args = reduce(allFields, (args, field) => {
+  const fields = type._typeConfig.fields();
+  const inputFields = reduce(fields, (inputFields, field) => {
     if (field.type instanceof GraphQLObjectType) {
       if (field.type.name.endsWith('Connection')) {
-        args[field.name] = {
+        inputFields[field.name] = {
           name: field.name,
           type: new GraphQLList(GraphQLID)
         };
@@ -114,10 +115,26 @@ function getMutationField(graffitiModel, type) {
       // }
     }
     if (!(field.type instanceof GraphQLObjectType) && field.name !== 'id' && !field.name.startsWith('_')) {
-      args[field.name] = field;
+      inputFields[field.name] = field;
     }
-    return args;
+    return inputFields;
   }, {});
+
+  const Name = name[0].toUpperCase() + name.slice(1);
+  const edgeName = `changed${Name}Edge`;
+  const outputFields = {
+    viewer,
+    [edgeName]: {
+      type: connectionDefinitions({name: edgeName, nodeType: new GraphQLObjectType({
+        name: edgeName,
+        fields
+      })}).edgeType,
+      resolve: (node) => ({
+        node,
+        cursor: idToCursor(node.id)
+      })
+    }
+  };
 
   const addName = `add${name}`;
   const updateName = `update${name}`;
@@ -126,20 +143,20 @@ function getMutationField(graffitiModel, type) {
   return {
     [addName]: mutationWithClientMutationId({
       name: addName,
-      inputFields: args,
-      outputFields: allFields,
+      inputFields,
+      outputFields,
       mutateAndGetPayload: getAddOneMutateHandler(graffitiModel)
     }),
     [updateName]: mutationWithClientMutationId({
       name: updateName,
       inputFields: {
-        ...args,
+        ...inputFields,
         id: {
           type: new GraphQLNonNull(GraphQLID),
           description: `The ID of a ${name}`
         }
       },
-      outputFields: allFields,
+      outputFields,
       mutateAndGetPayload: getUpdateOneMutateHandler(graffitiModel)
     }),
     [deleteName]: mutationWithClientMutationId({
@@ -161,6 +178,23 @@ function getMutationField(graffitiModel, type) {
 function getFields(graffitiModels, {mutation} = {mutation: true}) {
   const types = getTypes(graffitiModels);
 
+  const viewer = {
+    name: 'viewer',
+    type: new GraphQLObjectType({
+      name: 'Viewer',
+      fields: reduce(types, (fields, type, key) => {
+        type.name = type.name || key;
+        const graffitiModel = graffitiModels[type.name];
+        return {
+          ...fields,
+          ...getConnectionField(graffitiModel, type),
+          ...getSingularQueryField(graffitiModel, type)
+        };
+      }, {})
+    }),
+    resolve: () => ({})
+  };
+
   const {queries, mutations} = reduce(types, ({queries, mutations}, type, key) => {
     type.name = type.name || key;
     const graffitiModel = graffitiModels[type.name];
@@ -171,7 +205,7 @@ function getFields(graffitiModels, {mutation} = {mutation: true}) {
       },
       mutations: {
         ...mutations,
-        ...getMutationField(graffitiModel, type)
+        ...getMutationField(graffitiModel, type, viewer)
       }
     };
   }, {
@@ -182,22 +216,7 @@ function getFields(graffitiModels, {mutation} = {mutation: true}) {
   const RootQuery = new GraphQLObjectType({
     name: 'RootQuery',
     fields: {
-      viewer: {
-        name: 'viewer',
-        type: new GraphQLObjectType({
-          name: 'Viewer',
-          fields: reduce(types, (fields, type, key) => {
-            type.name = type.name || key;
-            const graffitiModel = graffitiModels[type.name];
-            return {
-              ...fields,
-              ...getConnectionField(graffitiModel, type),
-              ...getSingularQueryField(graffitiModel, type)
-            };
-          }, {})
-        }),
-        resolve: () => ({})
-      },
+      viewer,
       node: {
         name: 'node',
         description: 'Fetches an object given its ID',

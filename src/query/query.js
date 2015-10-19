@@ -288,6 +288,7 @@ async function connectionFromModel(graffitiModel, args, info) {
 
 export default {
   _idToCursor: idToCursor,
+  idToCursor,
   getIdFetcher,
   getOneResolver,
   getAddOneMutateHandler,

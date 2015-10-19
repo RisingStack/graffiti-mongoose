@@ -223,44 +223,55 @@ describe('e2e', () => {
         const result = await graphql(schema, `
           mutation addUserMutation {
             addUser(input: {name: "Test User", clientMutationId: "1"}) {
-              _id
-              name
+              changedUserEdge {
+                node {
+                  _id
+                  name
+                }
+              }
             }
           }
         `);
 
-        expect(typeof result.data.addUser._id).to.be.eql('string');
-        expect(result).to.containSubset({
-          data: {
-            addUser: {
-              name: 'Test User'
-            }
-          }
-        });
+        const node = result.data.addUser.changedUserEdge.node;
+        expect(typeof node._id).to.be.equal('string');
+        expect(node.name).to.be.equal('Test User');
       });
 
       it('should update data', async function Test() {
         let result = await graphql(schema, `
           mutation addUserMutation {
             addUser(input: {name: "Test User", clientMutationId: "1"}) {
-              _id
-              name
+              changedUserEdge {
+                node {
+                  _id
+                }
+              }
             }
           }
         `);
-        const id = result.data.addUser._id;
+        const id = result.data.addUser.changedUserEdge.node._id;
 
         result = await graphql(schema, `
           mutation updateUserMutation {
             updateUser(input: {id: "${id}", name: "Updated Test User", clientMutationId: "2"}) {
-              name
+              changedUserEdge {
+                node {
+                  _id
+                  name
+                }
+              }
             }
           }
         `);
         expect(result).to.containSubset({
           data: {
             updateUser: {
-              name: 'Updated Test User'
+              changedUserEdge: {
+                node: {
+                  name: 'Updated Test User'
+                }
+              }
             }
           }
         });
@@ -270,11 +281,15 @@ describe('e2e', () => {
         let result = await graphql(schema, `
           mutation addUserMutation {
             addUser(input: {name: "Test User", clientMutationId: "1"}) {
-              _id
+              changedUserEdge {
+                node {
+                  _id
+                }
+              }
             }
           }
         `);
-        const id = result.data.addUser._id;
+        const id = result.data.addUser.changedUserEdge.node._id;
 
         result = await graphql(schema, `
           mutation deleteUserMutation {
