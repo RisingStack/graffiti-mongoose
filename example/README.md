@@ -1,3 +1,13 @@
+### Running the example
+
+```shell
+cd graffiti-mongoose
+npm install # install dependencies in the main folder
+cd example
+npm install # install dependencies in the example folder
+npm start # run the example application and open your browser: http://localhost:8080
+```
+
 ### Mongoose schema
 
 ```javascript
