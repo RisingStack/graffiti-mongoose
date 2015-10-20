@@ -1,7 +1,6 @@
-# graffiti-mongoose
+# graffiti-mongoose [![npm version](https://badge.fury.io/js/%40risingstack%2Fgraffiti-mongoose.svg)](https://badge.fury.io/js/%40risingstack%2Fgraffiti-mongoose)
 
-[![Build Status](https://travis-ci.org/RisingStack/graffiti-mongoose.svg)](https://travis-ci.org/RisingStack/graffiti-mongoose)
-[![npm version](https://badge.fury.io/js/%40risingstack%2Fgraffiti-mongoose.svg)](https://badge.fury.io/js/%40risingstack%2Fgraffiti-mongoose)
+[![Codeship Status for RisingStack/graffiti-mongoose](https://codeship.com/projects/f7a22cd0-5968-0133-d2b0-0e957d4e7dfa/status?branch=master)](https://codeship.com/projects/110028)
 
 [Mongoose](http://mongoosejs.com) (MongoDB) adapter for the [graffiti](https://github.com/RisingStack/graffiti) [GraphQL](https://github.com/graphql/graphql-js) ORM.  
 
