@@ -1,10 +1,38 @@
+<a name="4.0.0"></a>
+# 4.0.0 (2015-10-20)
+
+
+### chore
+
+* chore(package): add coverage reporter ([e426611](https://github.com/RisingStack/graffiti-mongoose/commit/e426611))
+* chore(package): bumping version to 4.0.0 ([f4fe0e8](https://github.com/RisingStack/graffiti-mongoose/commit/f4fe0e8))
+* chore(package): update eslint ([8cab848](https://github.com/RisingStack/graffiti-mongoose/commit/8cab848))
+* chore(package): update example dependencies ([132ac9e](https://github.com/RisingStack/graffiti-mongoose/commit/132ac9e))
+
+### docs
+
+* docs(example): fix example start ([21a476d](https://github.com/RisingStack/graffiti-mongoose/commit/21a476d))
+
+### feat
+
+* feat(connection): add count field to connections ([7c6c82a](https://github.com/RisingStack/graffiti-mongoose/commit/7c6c82a))
+* feat(mutation): add viewer and edge fields to payloads ([e0031ef](https://github.com/RisingStack/graffiti-mongoose/commit/e0031ef))
+* feat(mutations): add id field to the delete mutation payload ([3255ab9](https://github.com/RisingStack/graffiti-mongoose/commit/3255ab9))
+* feat(update): change update payload format ([691cc71](https://github.com/RisingStack/graffiti-mongoose/commit/691cc71))
+
+### refactor
+
+* refactor(example): optimise seed data persist ([4b71175](https://github.com/RisingStack/graffiti-mongoose/commit/4b71175))
+
+
+
 <a name="3.2.0"></a>
 # 3.2.0 (2015-10-16)
 
 
 ### chore
 
-* chore(package): bumping version to 3.2.0 ([c074a07](https://github.com/RisingStack/graffiti-mongoose/commit/c074a07))
+* chore(package): bumping version to 3.2.0 ([f22cc8f](https://github.com/RisingStack/graffiti-mongoose/commit/f22cc8f))
 
 ### feat
 
