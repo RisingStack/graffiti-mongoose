@@ -25,7 +25,8 @@
     "GraphQL",
     "graffiti",
     "mongoose",
-    "ORM"
+    "ORM",
+    "Relay"
   ],
   "dependencies": {
     "graphql-relay": "^0.3.3",

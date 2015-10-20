@@ -31,6 +31,8 @@ npm start # run the example application and open your browser: http://localhost:
 
 This adapter is written in `ES6` and `ES7` with [Babel](https://babeljs.io) but it's published as transpiled `ES5` JavaScript code to `npm`, which means you don't need `ES7` support in your application to run it.  
 
+__Example queries can be found in the [example folder](https://github.com/RisingStack/graffiti-mongoose/blob/master/example/queries.md).__
+
 ##### usual mongoose model(s)
 ```javascript
 import mongoose from 'mongoose';
@@ -76,7 +78,7 @@ const query = `{
     users(age: 28) {
       name
       friends(first: 2) {
-        egdes {
+        edges {
           cursor
           node {
             name
