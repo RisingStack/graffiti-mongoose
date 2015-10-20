@@ -262,14 +262,18 @@ describe('e2e', () => {
         result = await graphql(schema, `
           mutation updateUserMutation {
             updateUser(input: {id: "${id}", name: "Updated Test User", clientMutationId: "2"}) {
-              name
+              changedUser {
+                name
+              }
             }
           }
         `);
         expect(result).to.containSubset({
           data: {
             updateUser: {
-              name: 'Updated Test User'
+              changedUser: {
+                name: 'Updated Test User'
+              }
             }
           }
         });

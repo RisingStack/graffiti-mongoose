@@ -129,7 +129,8 @@ function getMutationField(graffitiModel, type, viewer) {
   }, {});
 
   const Name = name[0].toUpperCase() + name.slice(1);
-  const edgeName = `changed${Name}Edge`;
+  const changedName = `changed${Name}`;
+  const edgeName = `${changedName}Edge`;
 
   const addName = `add${name}`;
   const updateName = `update${name}`;
@@ -160,7 +161,15 @@ function getMutationField(graffitiModel, type, viewer) {
         ...inputFields,
         id: idField
       },
-      outputFields: fields,
+      outputFields: {
+        [changedName]: {
+          type: new GraphQLObjectType({
+            fields,
+            name: changedName
+          }),
+          resolve: (node) => node
+        }
+      },
       mutateAndGetPayload: getUpdateOneMutateHandler(graffitiModel)
     }),
     [deleteName]: mutationWithClientMutationId({
@@ -169,6 +178,7 @@ function getMutationField(graffitiModel, type, viewer) {
         id: idField
       },
       outputFields: {
+        viewer,
         ok: {
           type: GraphQLBoolean
         },
