@@ -30,7 +30,7 @@ npm start # run the example application and open your browser: http://localhost:
 
 This adapter is written in `ES6` and `ES7` with [Babel](https://babeljs.io) but it's published as transpiled `ES5` JavaScript code to `npm`, which means you don't need `ES7` support in your application to run it.  
 
-__Example queries can be found in the [example folder](https://github.com/RisingStack/graffiti-mongoose/blob/master/example/queries.md).__
+__Example queries can be found in the [example folder](https://github.com/RisingStack/graffiti-mongoose/tree/master/example#example-queries).__
 
 ##### usual mongoose model(s)
 ```javascript
