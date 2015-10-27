@@ -144,8 +144,8 @@ describe('field', () => {
       this.sandbox.stub(type, 'getTypes').returns(types);
       const schema = getSchema([]);
       expect(schema).instanceOf(GraphQLSchema);
-      expect(schema._schemaConfig.query.name).to.be.equal('RootQuery');
-      expect(schema._schemaConfig.mutation.name).to.be.equal('RootMutation');
+      expect(schema._queryType.name).to.be.equal('RootQuery');
+      expect(schema._mutationType.name).to.be.equal('RootMutation');
     });
 
     it('should return a GraphQL schema without mutations', function getSchemaTest() {
@@ -153,8 +153,8 @@ describe('field', () => {
       this.sandbox.stub(type, 'getTypes').returns(types);
       const schema = getSchema([], {mutation: false});
       expect(schema).instanceOf(GraphQLSchema);
-      expect(schema._schemaConfig.query.name).to.be.equal('RootQuery');
-      expect(schema._schemaConfig.mutation).to.be.equal(undefined);
+      expect(schema._queryType.name).to.be.equal('RootQuery');
+      expect(schema._mutationType).to.be.equal(undefined);
     });
   });
 });
