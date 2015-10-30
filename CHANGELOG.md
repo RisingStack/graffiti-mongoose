@@ -1,3 +1,24 @@
+<a name="4.0.1"></a>
+## 4.0.1 (2015-10-30)
+
+
+### chore
+
+* chore(ci): use codeship instead of travis ([47e01fe](https://github.com/RisingStack/graffiti-mongoose/commit/47e01fe))
+* chore(package): bumping version to 4.0.1 ([eb86297](https://github.com/RisingStack/graffiti-mongoose/commit/eb86297))
+* chore(package): update dependencies ([3d5715b](https://github.com/RisingStack/graffiti-mongoose/commit/3d5715b))
+
+### docs
+
+* docs(example): add example queries ([b276a0b](https://github.com/RisingStack/graffiti-mongoose/commit/b276a0b))
+* docs(readme): update example queries link ([9d5d284](https://github.com/RisingStack/graffiti-mongoose/commit/9d5d284))
+
+### refactor
+
+* refactor(example): rename queries.md to README.md ([0611696](https://github.com/RisingStack/graffiti-mongoose/commit/0611696))
+
+
+
 <a name="4.0.0"></a>
 # 4.0.0 (2015-10-20)
 
@@ -5,7 +26,7 @@
 ### chore
 
 * chore(package): add coverage reporter ([e426611](https://github.com/RisingStack/graffiti-mongoose/commit/e426611))
-* chore(package): bumping version to 4.0.0 ([f4fe0e8](https://github.com/RisingStack/graffiti-mongoose/commit/f4fe0e8))
+* chore(package): bumping version to 4.0.0 ([88baa18](https://github.com/RisingStack/graffiti-mongoose/commit/88baa18))
 * chore(package): update eslint ([8cab848](https://github.com/RisingStack/graffiti-mongoose/commit/8cab848))
 * chore(package): update example dependencies ([132ac9e](https://github.com/RisingStack/graffiti-mongoose/commit/132ac9e))
 

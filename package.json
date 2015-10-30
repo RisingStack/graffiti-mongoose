@@ -1,6 +1,6 @@
 {
   "name": "@risingstack/graffiti-mongoose",
-  "version": "4.0.0",
+  "version": "4.0.1",
   "description": "Mongoose adapter for graffiti (Node.js GraphQL ORM)",
   "main": "lib/index.js",
   "scripts": {
