@@ -117,20 +117,24 @@ function getMutationField(graffitiModel, type, viewer) {
           type: new GraphQLList(GraphQLID)
         };
       }
+
       // TODO support objects
       // else {
       //   args = {...args, ...field.type._typeConfig.fields()};
       // }
     }
+
     if (!(field.type instanceof GraphQLObjectType) && field.name !== 'id' && !field.name.startsWith('_')) {
       inputFields[field.name] = field;
     }
+
     return inputFields;
   }, {});
 
   const Name = name[0].toUpperCase() + name.slice(1);
   const changedName = `changed${Name}`;
   const edgeName = `${changedName}Edge`;
+  const nodeName = `${changedName}Node`;
 
   const addName = `add${name}`;
   const updateName = `update${name}`;
@@ -143,8 +147,8 @@ function getMutationField(graffitiModel, type, viewer) {
       outputFields: {
         viewer,
         [edgeName]: {
-          type: connectionDefinitions({name: edgeName, nodeType: new GraphQLObjectType({
-            name: edgeName,
+          type: connectionDefinitions({name: changedName, nodeType: new GraphQLObjectType({
+            name: nodeName,
             fields
           })}).edgeType,
           resolve: (node) => ({
@@ -189,7 +193,7 @@ function getMutationField(graffitiModel, type, viewer) {
   };
 }
 
-function getFields(graffitiModels, {mutation} = {mutation: true}) {
+function getFields(graffitiModels, {mutation = true} = {}) {
   const types = getTypes(graffitiModels);
 
   const viewer = {
