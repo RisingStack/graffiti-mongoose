@@ -1,6 +1,7 @@
 import {forEach} from 'lodash';
 import {fromGlobalId, toGlobalId} from 'graphql-relay';
 import getFieldList from './projection';
+import viewer from '../model/viewer';
 
 function processId({id, _id = id}) {
   // global or mongo id
@@ -68,6 +69,7 @@ function updateOne(Collection, args, info) {
     if (res.ok) {
       return getOne(Collection, {_id}, info);
     }
+
     return null;
   });
 }
@@ -179,8 +181,11 @@ function getFirst(Collection) {
 function getIdFetcher(graffitiModels) {
   return function idFetcher(obj, {id: globalId}, info) {
     const {type, id} = fromGlobalId(globalId);
-    const Collection = graffitiModels[type].model;
-    if (Collection) {
+
+    if (type === 'Viewer') {
+      return viewer;
+    } else if (graffitiModels[type]) {
+      const Collection = graffitiModels[type].model;
       return getOne(Collection, {id}, info);
     }
 

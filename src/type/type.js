@@ -29,6 +29,18 @@ const {nodeInterface} = nodeDefinitions(null, (obj) => {
   return obj._type ? types[obj._type] : null;
 });
 
+function addType(name, type) {
+  types[name] = type;
+}
+
+const GraphQLViewer = new GraphQLObjectType({
+  name: 'Viewer',
+  interfaces: [nodeInterface]
+});
+
+// register viewer type
+addType('Viewer', GraphQLViewer);
+
 /**
  * Returns a GraphQL type based on a String representation.
  */
@@ -121,7 +133,7 @@ export default function getType(graffitiModels, {name, description, fields}, roo
 
   // register type
   if (root) {
-    types[name] = GraphQLObjectTypeDefinition;
+    addType(name, GraphQLObjectTypeDefinition);
   }
 
   return GraphQLObjectTypeDefinition;
@@ -163,9 +175,11 @@ function getTypes(graffitiModels) {
 }
 
 export default {
+  GraphQLViewer,
   GraphQLDate,
   GraphQLGeneric,
   getType,
   getTypes,
+  addType,
   nodeInterface
 };

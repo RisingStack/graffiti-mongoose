@@ -77,6 +77,14 @@ describe('query', () => {
       const result = await idFetcher({}, {id});
       expect(result).to.eql(resultObj);
     });
+
+    it('should return the Viewer instance', async function getIdFetcherTest() {
+      const id = toGlobalId('Viewer', 'viewer');
+
+      const idFetcher = getIdFetcher(graffitiModels);
+      const result = await idFetcher({}, {id});
+      expect(result).to.eql({_type: 'Viewer', id: 'viewer'});
+    });
   });
 
   describe('getOneResolver', () => {
