@@ -1,3 +1,22 @@
+<a name="4.0.2"></a>
+## 4.0.2 (2015-11-05)
+
+
+### chore
+
+* chore(package): bumping version to 4.0.2 ([52eb65e](https://github.com/RisingStack/graffiti-mongoose/commit/52eb65e))
+
+### fix
+
+* fix(schema): add nodeInterface to viewer field, resolve viewer from node field ([03b3c05](https://github.com/RisingStack/graffiti-mongoose/commit/03b3c05))
+* fix(schema): fix edge and node type names ([736fed4](https://github.com/RisingStack/graffiti-mongoose/commit/736fed4))
+
+### refactor
+
+* refactor(example): use latest graffiti ([6917d92](https://github.com/RisingStack/graffiti-mongoose/commit/6917d92))
+
+
+
 <a name="4.0.1"></a>
 ## 4.0.1 (2015-10-30)
 
@@ -5,7 +24,7 @@
 ### chore
 
 * chore(ci): use codeship instead of travis ([47e01fe](https://github.com/RisingStack/graffiti-mongoose/commit/47e01fe))
-* chore(package): bumping version to 4.0.1 ([eb86297](https://github.com/RisingStack/graffiti-mongoose/commit/eb86297))
+* chore(package): bumping version to 4.0.1 ([bd09316](https://github.com/RisingStack/graffiti-mongoose/commit/bd09316))
 * chore(package): update dependencies ([3d5715b](https://github.com/RisingStack/graffiti-mongoose/commit/3d5715b))
 
 ### docs
