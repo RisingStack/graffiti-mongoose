@@ -5,7 +5,6 @@ import {
   GraphQLID,
   GraphQLObjectType,
   GraphQLSchema,
-  GraphQLScalarType,
   GraphQLBoolean,
   GraphQLFloat
 } from 'graphql';
@@ -16,7 +15,13 @@ import {
   globalIdField
 } from 'graphql-relay';
 import {getModels} from './../model';
-import {getTypes, GraphQLViewer, nodeInterface} from './../type';
+import {
+  getTypes,
+  GraphQLViewer,
+  nodeInterface,
+  getTypeFields,
+  getArguments
+} from './../type';
 import {
   idToCursor,
   getIdFetcher,
@@ -56,17 +61,7 @@ function getPluralQueryField(graffitiModel, type) {
   return {
     [pluralName]: {
       type: new GraphQLList(type),
-      args: reduce(type._typeConfig.fields(), (args, field) => {
-        if (field.type instanceof GraphQLNonNull && field.name !== 'id') {
-          field.type = field.type.ofType;
-        }
-
-        if (field.type instanceof GraphQLScalarType) {
-          args[field.name] = field;
-        }
-
-        return args;
-      }, {
+      args: getArguments(type, {
         id: {
           type: new GraphQLList(GraphQLID),
           description: `The ID of a ${name}`
@@ -100,7 +95,7 @@ function getConnectionField(graffitiModel, type) {
 
   return {
     [pluralName]: {
-      args: connectionArgs,
+      args: getArguments(type, connectionArgs),
       type: connectionType,
       resolve: (rootValue, args, info) => connectionFromModel(graffitiModel, args, info)
     }
@@ -110,7 +105,7 @@ function getConnectionField(graffitiModel, type) {
 function getMutationField(graffitiModel, type, viewer) {
   const {name} = type;
 
-  const fields = type._typeConfig.fields();
+  const fields = getTypeFields(type);
   const inputFields = reduce(fields, (inputFields, field) => {
     if (field.type instanceof GraphQLObjectType) {
       if (field.type.name.endsWith('Connection')) {
@@ -122,7 +117,7 @@ function getMutationField(graffitiModel, type, viewer) {
 
       // TODO support objects
       // else {
-      //   args = {...args, ...field.type._typeConfig.fields()};
+      //   args = {...args, ...getTypeFields(field.type)};
       // }
     }
 

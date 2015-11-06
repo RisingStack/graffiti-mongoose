@@ -1,5 +1,8 @@
-import {reduce, forEach} from 'lodash';
-
+import {
+  reduce,
+  forEach,
+  isFunction
+} from 'lodash';
 import {
   globalIdField,
   connectionArgs,
@@ -13,7 +16,8 @@ import {
   GraphQLID,
   GraphQLList,
   GraphQLObjectType,
-  GraphQLNonNull
+  GraphQLNonNull,
+  GraphQLScalarType
 } from 'graphql/type';
 import GraphQLDate from './custom/date';
 import GraphQLBuffer from './custom/buffer';
@@ -61,6 +65,30 @@ function stringToGraphQLType(type) {
   default:
     return GraphQLGeneric;
   }
+}
+
+function getTypeFields(type) {
+  const fields = type._typeConfig.fields;
+  return isFunction(fields) ? fields() : fields;
+}
+
+function setTypeFields(type, fields) {
+  type._typeConfig.fields = () => fields;
+}
+
+function getArguments(type, args = {}) {
+  const fields = getTypeFields(type);
+  return reduce(fields, (args, field) => {
+    if (field.type instanceof GraphQLNonNull && field.name !== 'id') {
+      field.type = field.type.ofType;
+    }
+
+    if (field.type instanceof GraphQLScalarType) {
+      args[field.name] = field;
+    }
+
+    return args;
+  }, args);
 }
 
 // holds references to fields that later has to be resolved
@@ -149,7 +177,7 @@ function getTypes(graffitiModels) {
   forEach(resolveReference, (fields, typeName) => {
     const type = types[typeName];
     if (type) {
-      const typeFields = type._typeConfig.fields();
+      const typeFields = getTypeFields(type);
       forEach(fields, (field, fieldName) => {
         if (field.args === connectionArgs) {
           // it's a connection
@@ -167,7 +195,7 @@ function getTypes(graffitiModels) {
 
         typeFields[fieldName] = field;
       });
-      type._typeConfig.fields = () => typeFields;
+      setTypeFields(type, typeFields);
     }
   });
 
@@ -181,5 +209,7 @@ export default {
   getType,
   getTypes,
   addType,
-  nodeInterface
+  nodeInterface,
+  getTypeFields,
+  getArguments
 };

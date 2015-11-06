@@ -255,15 +255,13 @@ async function connectionFromModel(graffitiModel, args, info) {
     return emptyConnection();
   }
 
-  const {before, after, first, last, id} = args;
+  const {before, after, first, last, id, ...selector} = args;
 
   const begin = getId(after);
   const end = getId(before);
 
   const offset = (first - last) || 0;
   const limit = last || first;
-
-  const selector = {};
 
   if (id) {
     selector.id = id;

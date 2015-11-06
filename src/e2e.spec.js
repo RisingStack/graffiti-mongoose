@@ -223,6 +223,28 @@ describe('e2e', () => {
           {node: {name: 'Bar'}}
         ]);
       });
+
+      it('should filter connections by arguments', async function Test() {
+        const result = await graphql(schema, `{
+          viewer {
+            users(name: "Foo") {
+              count
+              edges {
+                node {
+                  name
+                }
+              }
+            }
+          }
+        }`);
+
+        const {users} = result.data.viewer;
+        expect(users.count).to.be.eql(1);
+
+        expect(users.edges).to.containSubset([
+          {node: {name: 'Foo'}}
+        ]);
+      });
     });
 
     describe('mutations', () => {
