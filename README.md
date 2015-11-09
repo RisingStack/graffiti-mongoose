@@ -178,6 +178,63 @@ mutation deleteX {
 }
 ```
 
+## Resolve hooks
+
+You can specify pre- and post-resolve hooks on fields in order to manipulate arguments and data passed in to the database resolve function, and returned by the GraphQL resolve function.
+
+Examples:
+```javascript
+const UserSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    hooks: {
+      pre: (next, root, args, {rootValue}) => {
+        const {request} = rootValue;
+        // authorize the logged in user based on the request
+        // throws error if the user has no right to request the user names
+        authorize(request);
+        next();
+      },
+      // manipulate response
+      post: [
+        (next, name) => next(`${name} first hook`),
+        (next, name) => next(`${name} & second hook`)
+      ]
+    }
+  }
+});
+```
+```
+query UsersQuery {
+  viewer {
+    users(first: 1) {
+      edges {
+        node {
+          name
+        }
+      }
+    }
+  }
+}
+```
+```json
+{
+  "data": {
+    "viewer": {
+      "users": {
+        "edges": [
+          {
+            "node": {
+              "name": "User0 first hook & second hook"
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+```
+
 ## Test
 
 ```shell

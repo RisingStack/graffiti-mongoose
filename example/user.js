@@ -8,22 +8,16 @@ const UserSchema = new mongoose.Schema({
     type: Number,
     index: true
   },
-  createdAt: Date,
+  createdAt: {
+    type: Date,
+    default: Date.now()
+  },
   friends: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User'
     }
-  ],
-  nums: [Number],
-  bools: [Boolean],
-  strings: [String],
-  removed: Boolean,
-
-  body: {
-    eye: String,
-    hair: Number
-  }
+  ]
 });
 
 const User = mongoose.model('User', UserSchema);

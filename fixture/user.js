@@ -24,7 +24,14 @@ const UserSchema = new mongoose.Schema({
   removed: Boolean,
   nums: [Number],
   strings: [String],
-  bools: [Boolean],
+  bools: {
+    type: [Boolean],
+    hooks: {
+      post: [(next, result) => {
+        next(result.map((el) => !el));
+      }]
+    }
+  },
   dates: [Date],
   sub: {
     foo: String,

@@ -14,7 +14,8 @@ function getField(schemaPath) {
     type: schemaPath.instance,
     nonNull: options.index ? true : false,
     description: options.description,
-    hidden: options.hidden
+    hidden: options.hidden,
+    hooks: options.hooks
   };
 
   // Field options

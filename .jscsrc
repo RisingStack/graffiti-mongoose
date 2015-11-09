@@ -1,4 +1,5 @@
 {
 	"preset": "airbnb",
-	"requireTrailingComma": false
+	"requireTrailingComma": false,
+	"requirePaddingNewLinesAfterBlocks": false
 }

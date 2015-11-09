@@ -13,7 +13,8 @@ describe('e2e', () => {
     beforeEach(async function BeforeEach() {
       motherUser = new User({
         name: 'Mother',
-        age: 54
+        age: 54,
+        bools: [true, true]
       });
 
       await motherUser.save();
@@ -50,6 +51,7 @@ describe('e2e', () => {
             mother {
               _id
               name
+              bools
             }
             friends {
               edges {
@@ -71,7 +73,8 @@ describe('e2e', () => {
               age: 28,
               mother: {
                 _id: motherUser._id.toString(),
-                name: 'Mother'
+                name: 'Mother',
+                bools: [false, false]
               },
               friends: {
                 edges: [{

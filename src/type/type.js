@@ -19,6 +19,7 @@ import {
   GraphQLNonNull,
   GraphQLScalarType
 } from 'graphql/type';
+import {Middleware} from '../utils';
 import GraphQLDate from './custom/date';
 import GraphQLBuffer from './custom/buffer';
 import GraphQLGeneric from './custom/generic';
@@ -91,6 +92,16 @@ function getArguments(type, args = {}) {
   }, args);
 }
 
+function addHooks(resolver, {pre, post} = {}) {
+  return async function resolve(...args) {
+    const preMiddleware = new Middleware(pre);
+    await preMiddleware.compose(...args);
+    const postMiddleware = new Middleware(post);
+    const result = await resolver(...args);
+    return await postMiddleware.compose(result) || result;
+  };
+}
+
 // holds references to fields that later has to be resolved
 const resolveReference = {};
 
@@ -102,7 +113,7 @@ export default function getType(graffitiModels, {name, description, fields}, roo
 
   // these references has to be resolved when all type definitions are avaiable
   resolveReference[graphQLType.name] = resolveReference[graphQLType.name] || {};
-  const graphQLTypeFields = reduce(fields, (graphQLFields, {name, description, type, subtype, reference, nonNull, hidden, fields: subfields}, key) => {
+  const graphQLTypeFields = reduce(fields, (graphQLFields, {name, description, type, subtype, reference, nonNull, hidden, hooks, fields: subfields}, key) => {
     name = name || key;
     if (hidden || name.startsWith('__')) {
       return graphQLFields;
@@ -117,10 +128,10 @@ export default function getType(graffitiModels, {name, description, fields}, roo
           name: name,
           type: reference,
           args: connectionArgs,
-          resolve: (rootValue, args, info) => {
+          resolve: addHooks((rootValue, args, info) => {
             args.id = rootValue[name].map((i) => i.toString());
             return connectionFromModel(graffitiModels[reference], args, info);
-          }
+          }, hooks)
         };
       }
     } else if (type === 'Object') {
@@ -134,15 +145,21 @@ export default function getType(graffitiModels, {name, description, fields}, roo
       resolveReference[graphQLType.name][name] = {
         name: name,
         type: reference,
-        resolve: (rootValue, args, info) => {
+        resolve: addHooks((rootValue, args, info) => {
           const resolver = getOneResolver(graffitiModels[reference]);
           return resolver(rootValue, {id: rootValue[name].toString()}, info);
-        }
+        }, hooks)
       };
     }
 
     if (nonNull && graphQLField.type) {
       graphQLField.type = new GraphQLNonNull(graphQLField.type);
+    }
+
+    if (!graphQLField.resolve) {
+      graphQLField.resolve = addHooks((source) => {
+        return source[name];
+      }, hooks);
     }
 
     graphQLFields[name] = graphQLField;
