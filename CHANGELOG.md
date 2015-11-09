@@ -1,10 +1,20 @@
+<a name="4.0.3"></a>
+## 4.0.3 (2015-11-09)
+
+
+### fix
+
+* fix(schema): add arguments to connections based on the fields of the type ([b6f6684](https://github.com/RisingStack/graffiti-mongoose/commit/b6f6684))
+
+
+
 <a name="4.0.2"></a>
 ## 4.0.2 (2015-11-05)
 
 
 ### chore
 
-* chore(package): bumping version to 4.0.2 ([52eb65e](https://github.com/RisingStack/graffiti-mongoose/commit/52eb65e))
+* chore(package): bumping version to 4.0.2 ([f1e1ace](https://github.com/RisingStack/graffiti-mongoose/commit/f1e1ace))
 
 ### fix
 
@@ -526,3 +536,5 @@
 * project name changed to "graffiti-mongoose"
 * query argument "id" rename to "_id"
 * user resource name instead of "findOneResource"
+
+
