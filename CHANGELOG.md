@@ -1,6 +1,20 @@
+<a name="4.1.0"></a>
+# 4.1.0 (2015-11-10)
+
+
+### feat
+
+* feat(resolve): support for custom resolve write and read middleware ([53b0a67](https://github.com/RisingStack/graffiti-mongoose/commit/53b0a67))
+
+
+
 <a name="4.0.3"></a>
 ## 4.0.3 (2015-11-09)
 
+
+### chore
+
+* chore(package): bump version to 4.0.3 ([b36e1c3](https://github.com/RisingStack/graffiti-mongoose/commit/b36e1c3))
 
 ### fix
 
