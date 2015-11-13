@@ -31,7 +31,20 @@ User.remove().then(() => {
   User.create(users);
 });
 
-const schema = getSchema([User]);
+const hooks = {
+  viewer: {
+    pre: (next, root, args, {rootValue}) => {
+      const {request} = rootValue;
+      console.log(request);
+      next();
+    },
+    post: (next, value) => {
+      console.log(value);
+      next();
+    }
+  }
+};
+const schema = getSchema([User], {hooks});
 
 // Set up example server
 const app = koa();

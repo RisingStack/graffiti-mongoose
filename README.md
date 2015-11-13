@@ -182,7 +182,41 @@ mutation deleteX {
 
 You can specify pre- and post-resolve hooks on fields in order to manipulate arguments and data passed in to the database resolve function, and returned by the GraphQL resolve function.
 
+You can add hooks to type fields and query fields (singular & plural queries, mutations) too.
+
 Examples:
+- Query, mutation hooks (`viewer`, `singular`, `plural`, `mutation`)
+```javascript
+const hooks = {
+  viewer: {
+    pre: (next, root, args, {rootValue}) => {
+      const {request} = rootValue;
+      // authorize the logged in user based on the request
+      authorize(request);
+      next();
+    },
+    post: (next, value) => {
+      console.log(value);
+      next();
+    }
+  },
+  // singular: {
+  //   pre: (next, root, args, {rootValue}) => next(),
+  //   post: (next, value) => next()
+  // },
+  // plural: {
+  //   pre: (next, root, args, {rootValue}) => next(),
+  //   post: (next, value) => next()
+  // },
+  // mutation: {
+  //   pre: (next, args, {rootValue}) => next(),
+  //   post: (next, value) => next()
+  // }
+};
+const schema = getSchema([User], {hooks});
+```
+
+- Field hooks
 ```javascript
 const UserSchema = new mongoose.Schema({
   name: {
@@ -190,6 +224,7 @@ const UserSchema = new mongoose.Schema({
     hooks: {
       pre: (next, root, args, {rootValue}) => {
         const {request} = rootValue;
+
         // authorize the logged in user based on the request
         // throws error if the user has no right to request the user names
         authorize(request);

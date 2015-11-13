@@ -1,4 +1,5 @@
 import {expect} from 'chai';
+import {spy} from 'sinon';
 
 import {getSchema, graphql} from './';
 import User from '../fixture/user';
@@ -8,7 +9,26 @@ describe('e2e', () => {
     let motherUser;
     let user1;
     let user2;
-    const schema = getSchema([User]);
+    const hooks = {
+      viewer: {
+        pre: spy(),
+        post: spy()
+      },
+      singular: {
+        pre: spy(),
+        post: spy()
+      },
+      plural: {
+        pre: spy(),
+        post: spy()
+      },
+      mutation: {
+        pre: spy(),
+        post: spy()
+      }
+    };
+    const options = {hooks};
+    const schema = getSchema([User], options);
 
     beforeEach(async function BeforeEach() {
       motherUser = new User({
@@ -336,6 +356,80 @@ describe('e2e', () => {
             }
           }
         });
+      });
+    });
+
+    describe('hooks', () => {
+      it('should call viewer hooks on a viewer query', async () => {
+        const {pre, post} = hooks.viewer;
+        pre.reset();
+        post.reset();
+
+        expect(pre.called).to.be.false; // eslint-disable-line
+        expect(post.called).to.be.false; // eslint-disable-line
+        await graphql(schema, `{
+          viewer {
+            users {
+              count
+            }
+          }
+        }`);
+        expect(pre.called).to.be.true; // eslint-disable-line
+        expect(post.called).to.be.true; // eslint-disable-line
+      });
+
+      it('should call singular hooks on a singular query', async () => {
+        const {pre, post} = hooks.singular;
+        pre.reset();
+        post.reset();
+
+        expect(pre.called).to.be.false; // eslint-disable-line
+        expect(post.called).to.be.false; // eslint-disable-line
+        await graphql(schema, `{
+          user(id: "${user2._id}") {
+            _id
+          }
+        }`);
+        expect(pre.called).to.be.true; // eslint-disable-line
+        expect(post.called).to.be.true; // eslint-disable-line
+      });
+
+      it('should call plural hooks on a plural query', async () => {
+        const {pre, post} = hooks.plural;
+        pre.reset();
+        post.reset();
+
+        expect(pre.called).to.be.false; // eslint-disable-line
+        expect(post.called).to.be.false; // eslint-disable-line
+        await graphql(schema, `{
+          users(age: 28) {
+            _id
+          }
+        }`);
+        expect(pre.called).to.be.true; // eslint-disable-line
+        expect(post.called).to.be.true; // eslint-disable-line
+      });
+
+      it('should call mutation hooks on a mutation', async () => {
+        const {pre, post} = hooks.mutation;
+        pre.reset();
+        post.reset();
+
+        expect(pre.called).to.be.false; // eslint-disable-line
+        expect(post.called).to.be.false; // eslint-disable-line
+        await graphql(schema, `
+          mutation addUserMutation {
+            addUser(input: {name: "Test User", clientMutationId: "1"}) {
+              changedUserEdge {
+                node {
+                  id
+                }
+              }
+            }
+          }
+        `);
+        expect(pre.called).to.be.true; // eslint-disable-line
+        expect(post.called).to.be.true; // eslint-disable-line
       });
     });
   });

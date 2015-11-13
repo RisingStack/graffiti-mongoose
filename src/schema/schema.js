@@ -32,15 +32,17 @@ import {
   getDeleteOneMutateHandler,
   connectionFromModel
 } from './../query';
-import viewer from '../model/viewer';
+import {addHooks} from '../utils';
+import viewerInstance from '../model/viewer';
 
 const idField = {
   name: 'id',
   type: new GraphQLNonNull(GraphQLID)
 };
 
-function getSingularQueryField(graffitiModel, type) {
+function getSingularQueryField(graffitiModel, type, hooks = {}) {
   const {name} = type;
+  const {singular} = hooks;
   const singularName = name.toLowerCase();
 
   return {
@@ -49,13 +51,14 @@ function getSingularQueryField(graffitiModel, type) {
       args: {
         id: idField
       },
-      resolve: getOneResolver(graffitiModel)
+      resolve: addHooks(getOneResolver(graffitiModel), singular)
     }
   };
 }
 
-function getPluralQueryField(graffitiModel, type) {
+function getPluralQueryField(graffitiModel, type, hooks = {}) {
   const {name} = type;
+  const {plural} = hooks;
   const pluralName = `${name.toLowerCase()}s`;
 
   return {
@@ -71,20 +74,21 @@ function getPluralQueryField(graffitiModel, type) {
           description: `The ID of a ${name}`
         }
       }),
-      resolve: getListResolver(graffitiModel)
+      resolve: addHooks(getListResolver(graffitiModel), plural)
     }
   };
 }
 
-function getQueryField(graffitiModel, type) {
+function getQueryField(graffitiModel, type, hooks) {
   return {
-    ...getSingularQueryField(graffitiModel, type),
-    ...getPluralQueryField(graffitiModel, type)
+    ...getSingularQueryField(graffitiModel, type, hooks),
+    ...getPluralQueryField(graffitiModel, type, hooks)
   };
 }
 
-function getConnectionField(graffitiModel, type) {
+function getConnectionField(graffitiModel, type, hooks = {}) {
   const {name} = type;
+  const {plural} = hooks;
   const pluralName = `${name.toLowerCase()}s`;
   const {connectionType} = connectionDefinitions({name: name, nodeType: type, connectionFields: {
     count: {
@@ -97,13 +101,14 @@ function getConnectionField(graffitiModel, type) {
     [pluralName]: {
       args: getArguments(type, connectionArgs),
       type: connectionType,
-      resolve: (rootValue, args, info) => connectionFromModel(graffitiModel, args, info)
+      resolve: addHooks((rootValue, args, info) => connectionFromModel(graffitiModel, args, info), plural)
     }
   };
 }
 
-function getMutationField(graffitiModel, type, viewer) {
+function getMutationField(graffitiModel, type, viewer, hooks = {}) {
   const {name} = type;
+  const {mutation} = hooks;
 
   const fields = getTypeFields(type);
   const inputFields = reduce(fields, (inputFields, field) => {
@@ -154,7 +159,7 @@ function getMutationField(graffitiModel, type, viewer) {
           })
         }
       },
-      mutateAndGetPayload: getAddOneMutateHandler(graffitiModel)
+      mutateAndGetPayload: addHooks(getAddOneMutateHandler(graffitiModel), mutation)
     }),
     [updateName]: mutationWithClientMutationId({
       name: updateName,
@@ -171,7 +176,7 @@ function getMutationField(graffitiModel, type, viewer) {
           resolve: (node) => node
         }
       },
-      mutateAndGetPayload: getUpdateOneMutateHandler(graffitiModel)
+      mutateAndGetPayload: addHooks(getUpdateOneMutateHandler(graffitiModel), mutation)
     }),
     [deleteName]: mutationWithClientMutationId({
       name: deleteName,
@@ -185,30 +190,31 @@ function getMutationField(graffitiModel, type, viewer) {
         },
         id: idField
       },
-      mutateAndGetPayload: getDeleteOneMutateHandler(graffitiModel)
+      mutateAndGetPayload: addHooks(getDeleteOneMutateHandler(graffitiModel), mutation)
     })
   };
 }
 
-function getFields(graffitiModels, {mutation = true} = {}) {
+function getFields(graffitiModels, {hooks = {}, mutation = true} = {}) {
   const types = getTypes(graffitiModels);
+  const {viewer, singular} = hooks;
 
   GraphQLViewer._typeConfig.fields = reduce(types, (fields, type, key) => {
     type.name = type.name || key;
     const graffitiModel = graffitiModels[type.name];
     return {
       ...fields,
-      ...getConnectionField(graffitiModel, type),
-      ...getSingularQueryField(graffitiModel, type)
+      ...getConnectionField(graffitiModel, type, hooks),
+      ...getSingularQueryField(graffitiModel, type, hooks)
     };
   }, {
     id: globalIdField('Viewer')
   });
 
   const viewerField = {
-    name: viewer,
+    name: 'Viewer',
     type: GraphQLViewer,
-    resolve: () => viewer
+    resolve: addHooks(() => viewerInstance, viewer)
   };
 
   const {queries, mutations} = reduce(types, ({queries, mutations}, type, key) => {
@@ -217,11 +223,11 @@ function getFields(graffitiModels, {mutation = true} = {}) {
     return {
       queries: {
         ...queries,
-        ...getQueryField(graffitiModel, type)
+        ...getQueryField(graffitiModel, type, hooks)
       },
       mutations: {
         ...mutations,
-        ...getMutationField(graffitiModel, type, viewerField)
+        ...getMutationField(graffitiModel, type, viewerField, hooks)
       }
     };
   }, {
@@ -243,7 +249,7 @@ function getFields(graffitiModels, {mutation = true} = {}) {
             description: 'The ID of an object'
           }
         },
-        resolve: getIdFetcher(graffitiModels)
+        resolve: addHooks(getIdFetcher(graffitiModels), singular)
       },
       ...queries
     }

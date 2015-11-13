@@ -19,7 +19,7 @@ import {
   GraphQLNonNull,
   GraphQLScalarType
 } from 'graphql/type';
-import {Middleware} from '../utils';
+import {addHooks} from '../utils';
 import GraphQLDate from './custom/date';
 import GraphQLBuffer from './custom/buffer';
 import GraphQLGeneric from './custom/generic';
@@ -90,16 +90,6 @@ function getArguments(type, args = {}) {
 
     return args;
   }, args);
-}
-
-function addHooks(resolver, {pre, post} = {}) {
-  return async function resolve(...args) {
-    const preMiddleware = new Middleware(pre);
-    await preMiddleware.compose(...args);
-    const postMiddleware = new Middleware(post);
-    const result = await resolver(...args);
-    return await postMiddleware.compose(result) || result;
-  };
 }
 
 // holds references to fields that later has to be resolved
