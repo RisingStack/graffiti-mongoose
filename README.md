@@ -183,6 +183,7 @@ mutation deleteX {
 You can specify pre- and post-resolve hooks on fields in order to manipulate arguments and data passed in to the database resolve function, and returned by the GraphQL resolve function.
 
 You can add hooks to type fields and query fields (singular & plural queries, mutations) too.
+By passing arguments to the `next` function, you can modify the parameters of the next hook or the return value of the `resolve` function.
 
 Examples:
 - Query, mutation hooks (`viewer`, `singular`, `plural`, `mutation`)
