@@ -1,6 +1,24 @@
+<a name="4.2.0"></a>
+# 4.2.0 (2015-11-16)
+
+
+### docs
+
+* docs(hooks): pass values to the next function ([c12fa8e](https://github.com/RisingStack/graffiti-mongoose/commit/c12fa8e))
+
+### feat
+
+* feat(hooks): support query, mutation hooks ([a822459](https://github.com/RisingStack/graffiti-mongoose/commit/a822459))
+
+
+
 <a name="4.1.0"></a>
 # 4.1.0 (2015-11-10)
 
+
+### chore
+
+* chore(package): bump version to 4.1.0 ([c424eca](https://github.com/RisingStack/graffiti-mongoose/commit/c424eca))
 
 ### feat
 
@@ -550,5 +568,3 @@
 * project name changed to "graffiti-mongoose"
 * query argument "id" rename to "_id"
 * user resource name instead of "findOneResource"
-
-
