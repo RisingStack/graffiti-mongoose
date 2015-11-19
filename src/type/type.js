@@ -17,7 +17,8 @@ import {
   GraphQLList,
   GraphQLObjectType,
   GraphQLNonNull,
-  GraphQLScalarType
+  GraphQLScalarType,
+  GraphQLEnumType
 } from 'graphql/type';
 import {addHooks} from '../utils';
 import GraphQLDate from './custom/date';
@@ -77,14 +78,43 @@ function setTypeFields(type, fields) {
   type._typeConfig.fields = () => fields;
 }
 
+const orderByTypes = {};
+function getOrderByType({name}, fields) {
+  if (!orderByTypes[name]) {
+    orderByTypes[name] = new GraphQLEnumType({
+      name: `orderBy${name}`,
+      values: reduce(fields, (values, field) => {
+        if (field.type instanceof GraphQLScalarType) {
+          const upperCaseName = field.name.toUpperCase();
+          values[`${upperCaseName}_ASC`] = {
+            [field.name]: 1
+          };
+          values[`${upperCaseName}_DESC`] = {
+            [field.name]: -1
+          };
+        }
+
+        return values;
+      }, {})
+    });
+  }
+  return orderByTypes[name];
+}
+
 function getArguments(type, args = {}) {
   const fields = getTypeFields(type);
+
+  fields.orderBy = {
+    name: 'orderBy',
+    type: getOrderByType(type, fields)
+  };
+
   return reduce(fields, (args, field) => {
     if (field.type instanceof GraphQLNonNull && field.name !== 'id') {
       field.type = field.type.ofType;
     }
 
-    if (field.type instanceof GraphQLScalarType) {
+    if (field.type instanceof GraphQLScalarType || field.type instanceof GraphQLEnumType) {
       args[field.name] = field;
     }
 
@@ -115,7 +145,7 @@ export default function getType(graffitiModels, {name, description, fields}, roo
       graphQLField.type = new GraphQLList(stringToGraphQLType(subtype));
       if (reference) {
         resolveReference[graphQLType.name][name] = {
-          name: name,
+          name,
           type: reference,
           args: connectionArgs,
           resolve: addHooks((rootValue, args, info) => {
@@ -133,7 +163,7 @@ export default function getType(graffitiModels, {name, description, fields}, roo
 
     if (reference && (graphQLField.type === GraphQLID || graphQLField.type === new GraphQLNonNull(GraphQLID))) {
       resolveReference[graphQLType.name][name] = {
-        name: name,
+        name,
         type: reference,
         resolve: addHooks((rootValue, args, info) => {
           const resolver = getOneResolver(graffitiModels[reference]);

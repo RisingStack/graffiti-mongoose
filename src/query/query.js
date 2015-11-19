@@ -255,7 +255,7 @@ async function connectionFromModel(graffitiModel, args, info) {
     return emptyConnection();
   }
 
-  const {before, after, first, last, id, ...selector} = args;
+  const {before, after, first, last, id, orderBy = {_id: 1}, ...selector} = args;
 
   const begin = getId(after);
   const end = getId(before);
@@ -280,7 +280,7 @@ async function connectionFromModel(graffitiModel, args, info) {
   const result = await getList(Collection, selector, {
     skip: offset,
     limit: limit,
-    sort: {_id: 1}
+    sort: orderBy
   }, info);
   const count = await getCount(Collection, selector);
 

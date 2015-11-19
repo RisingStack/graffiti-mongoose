@@ -268,6 +268,45 @@ describe('e2e', () => {
           {node: {name: 'Foo'}}
         ]);
       });
+
+      it('should return results in ascending order', async function Test() {
+        const result = await graphql(schema, `{
+          viewer {
+            users(orderBy: NAME_ASC) {
+              edges {
+                node {
+                  name
+                }
+              }
+            }
+          }
+       }`);
+
+        expect(result.data.viewer.users.edges).to.be.eql([
+          { node: { name: 'Bar' } },
+          { node: { name: 'Foo' } },
+          { node: { name: 'Mother' } }
+        ]);
+      });
+
+      it('should return results in descending order', async function Test() {
+        const result = await graphql(schema, `{
+          viewer {
+            users(orderBy: NAME_DESC, first: 2) {
+              edges {
+                node {
+                  name
+                }
+              }
+            }
+          }
+        }`);
+
+        expect(result.data.viewer.users.edges).to.be.eql([
+          { node: { name: 'Mother' } },
+          { node: { name: 'Foo' } }
+        ]);
+      });
     });
 
     describe('mutations', () => {
