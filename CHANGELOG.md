@@ -1,6 +1,20 @@
+<a name="4.3.0"></a>
+# 4.3.0 (2015-11-20)
+
+
+### feat
+
+* feat(sort): support orderBy argument ([480ca7c](https://github.com/RisingStack/graffiti-mongoose/commit/480ca7c))
+
+
+
 <a name="4.2.0"></a>
 # 4.2.0 (2015-11-16)
 
+
+### chore
+
+* chore(package): bump version to 4.2.0 ([6de5888](https://github.com/RisingStack/graffiti-mongoose/commit/6de5888))
 
 ### docs
 
