@@ -5,7 +5,8 @@ export default function getFieldList(context, fieldASTs) {
 
   fieldASTs = fieldASTs || context.fieldASTs;
 
-  // for recursion...Fragments doesn't have many sets...
+  // for recursion
+  // Fragments doesn't have many sets
   let asts = fieldASTs;
   if (!Array.isArray(asts)) {
     asts = [asts];
@@ -22,9 +23,11 @@ export default function getFieldList(context, fieldASTs) {
 
   // return fields
   return selections.reduce((list, ast) => {
-    switch (ast.kind) {
-    case 'Field' :
-      list[ast.name.value] = true;
+    const {name, kind} = ast;
+
+    switch (kind) {
+    case 'Field':
+      list[name.value] = true;
       return {
         ...list,
         ...getFieldList(context, ast)
@@ -37,7 +40,7 @@ export default function getFieldList(context, fieldASTs) {
     case 'FragmentSpread':
       return {
         ...list,
-        ...getFieldList(context, context.fragments[ast.name.value])
+        ...getFieldList(context, context.fragments[name.value])
       };
     default:
       throw new Error('Unsuported query selection');

@@ -1,4 +1,4 @@
-import {reduce} from 'lodash';
+import {reduce, isArray} from 'lodash';
 import {
   GraphQLList,
   GraphQLNonNull,
@@ -20,7 +20,8 @@ import {
   GraphQLViewer,
   nodeInterface,
   getTypeFields,
-  getArguments
+  getArguments,
+  setTypeFields
 } from './../type';
 import {
   idToCursor,
@@ -47,7 +48,7 @@ function getSingularQueryField(graffitiModel, type, hooks = {}) {
 
   return {
     [singularName]: {
-      type: type,
+      type,
       args: {
         id: idField
       },
@@ -90,7 +91,7 @@ function getConnectionField(graffitiModel, type, hooks = {}) {
   const {name} = type;
   const {plural} = hooks;
   const pluralName = `${name.toLowerCase()}s`;
-  const {connectionType} = connectionDefinitions({name: name, nodeType: type, connectionFields: {
+  const {connectionType} = connectionDefinitions({name, nodeType: type, connectionFields: {
     count: {
       name: 'count',
       type: GraphQLFloat
@@ -195,11 +196,17 @@ function getMutationField(graffitiModel, type, viewer, hooks = {}) {
   };
 }
 
+/**
+ * Returns query and mutation root fields
+ * @param  {Array} graffitiModels
+ * @param  {{Object, Boolean}} {hooks, mutation}
+ * @return {Object}
+ */
 function getFields(graffitiModels, {hooks = {}, mutation = true} = {}) {
   const types = getTypes(graffitiModels);
   const {viewer, singular} = hooks;
 
-  GraphQLViewer._typeConfig.fields = reduce(types, (fields, type, key) => {
+  const viewerFields = reduce(types, (fields, type, key) => {
     type.name = type.name || key;
     const graffitiModel = graffitiModels[type.name];
     return {
@@ -210,6 +217,7 @@ function getFields(graffitiModels, {hooks = {}, mutation = true} = {}) {
   }, {
     id: globalIdField('Viewer')
   });
+  setTypeFields(GraphQLViewer, viewerFields);
 
   const viewerField = {
     name: 'Viewer',
@@ -271,7 +279,16 @@ function getFields(graffitiModels, {hooks = {}, mutation = true} = {}) {
   return fields;
 }
 
+/**
+ * Returns a GraphQL schema including query and mutation fields
+ * @param  {Array} mongooseModels
+ * @param  {Object} options
+ * @return {GraphQLSchema}
+ */
 function getSchema(mongooseModels, options) {
+  if (!isArray(mongooseModels)) {
+    mongooseModels = [mongooseModels];
+  }
   const graffitiModels = getModels(mongooseModels);
   const fields = getFields(graffitiModels, options);
   return new GraphQLSchema(fields);

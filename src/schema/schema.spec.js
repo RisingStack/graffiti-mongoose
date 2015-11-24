@@ -104,16 +104,7 @@ describe('schema', () => {
             fields: {
               qux: {},
               quxs: {},
-              viewer: {
-                type: {
-                  _typeConfig: {
-                    fields: {
-                      qux: {},
-                      quxs: {}
-                    }
-                  }
-                }
-              },
+              viewer: {},
               node: {
                 name: 'node',
                 args: {
@@ -141,6 +132,10 @@ describe('schema', () => {
             }
           }
         }
+      });
+      expect(fields.query._typeConfig.fields.viewer.type._typeConfig.fields()).to.containSubset({
+        qux: {},
+        quxs: {}
       });
     });
   });

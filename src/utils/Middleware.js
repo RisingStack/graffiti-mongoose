@@ -11,6 +11,10 @@ export default class Middleware {
     this.use(middleware);
   }
 
+  /**
+   * Add middleware
+   * @param  {Function} middleware
+   */
   use(middleware) {
     if (!isArray(middleware)) {
       middleware = [middleware];
@@ -23,6 +27,10 @@ export default class Middleware {
     this.middleware = [...this.middleware, ...middleware];
   }
 
+  /**
+   * Compose all middleware
+   * @return {Function}
+   */
   compose(...args) {
     let lastResult;
     return reduceRight(this.middleware, (mw, fn) => {

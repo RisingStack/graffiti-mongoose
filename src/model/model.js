@@ -6,36 +6,42 @@ import {reduce, reduceRight, merge} from 'lodash';
  * @return {Object} field
  */
 function getField(schemaPath) {
-  const options = schemaPath.options || {};
+  const {
+    description,
+    hidden,
+    hooks,
+    ref,
+    index
+  } = schemaPath.options || {};
   const name = schemaPath.path.split('.').pop();
 
   const field = {
-    name: name,
+    name,
+    description,
+    hidden,
+    hooks,
     type: schemaPath.instance,
-    nonNull: options.index ? true : false,
-    description: options.description,
-    hidden: options.hidden,
-    hooks: options.hooks
+    nonNull: !!index
   };
 
-  // Field options
-  if (schemaPath.options) {
-    // ObjectID ref
-    if (schemaPath.options.ref) {
-      field.reference = schemaPath.options.ref;
-    }
+  // ObjectID ref
+  if (ref) {
+    field.reference = ref;
   }
 
   // Caster
   if (schemaPath.caster) {
-    field.subtype = schemaPath.caster.instance;
+    const {
+      instance,
+      options
+    } = schemaPath.caster;
+    const {ref} = options || {};
 
-    // Caster options
-    if (schemaPath.caster.options) {
-      // ObjectID ref
-      if (schemaPath.caster.options.ref) {
-        field.reference = schemaPath.caster.options.ref;
-      }
+    field.subtype = instance;
+
+    // ObjectID ref
+    if (ref) {
+      field.reference = ref;
     }
   }
 
@@ -89,20 +95,19 @@ function extractPaths(schemaPaths, model) {
 /**
  * Turn mongoose model to graffiti model
  * @method getModel
- * @param {Object} mongooseModel
+ * @param {Object} model Mongoose model
  * @return {Object} graffiti model
  */
-function getModel(mongooseModel) {
-  const schemaPaths = mongooseModel.schema.paths;
+function getModel(model) {
+  const schemaPaths = model.schema.paths;
+  const name = model.modelName;
 
-  const fields = extractPaths(schemaPaths, {
-    name: mongooseModel.modelName
-  });
+  const fields = extractPaths(schemaPaths, {name});
 
   return {
-    name: mongooseModel.modelName,
-    fields: fields,
-    model: mongooseModel
+    name,
+    fields,
+    model
   };
 }
 
