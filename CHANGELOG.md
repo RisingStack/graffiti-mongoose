@@ -1,6 +1,28 @@
+<a name="4.3.1"></a>
+## 4.3.1 (2015-12-03)
+
+
+### chore
+
+* chore(package): update dependencies ([63d8263](https://github.com/RisingStack/graffiti-mongoose/commit/63d8263))
+
+### fix
+
+* fix(hooks): add arguments to post hooks too ([d083b76](https://github.com/RisingStack/graffiti-mongoose/commit/d083b76))
+
+### refactor
+
+* refactor(package): cleanup code ([db24cf4](https://github.com/RisingStack/graffiti-mongoose/commit/db24cf4))
+
+
+
 <a name="4.3.0"></a>
 # 4.3.0 (2015-11-20)
 
+
+### chore
+
+* chore(package): bump version to 4.3.0 ([33e2c80](https://github.com/RisingStack/graffiti-mongoose/commit/33e2c80))
 
 ### feat
 
@@ -582,3 +604,5 @@
 * project name changed to "graffiti-mongoose"
 * query argument "id" rename to "_id"
 * user resource name instead of "findOneResource"
+
+
