@@ -6,7 +6,7 @@ function addHooks(resolver, {pre, post} = {}) {
     await preMiddleware.compose(...args);
     const postMiddleware = new Middleware(post);
     const result = await resolver(...args);
-    return await postMiddleware.compose(result) || result;
+    return await postMiddleware.compose(result, ...args) || result;
   };
 }
 

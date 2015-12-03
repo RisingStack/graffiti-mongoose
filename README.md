@@ -202,16 +202,16 @@ const hooks = {
     }
   },
   // singular: {
-  //   pre: (next, root, args, {rootValue}) => next(),
-  //   post: (next, value) => next()
+  //   pre: (next, root, args, context) => next(),
+  //   post: (next, value, args, context) => next()
   // },
   // plural: {
-  //   pre: (next, root, args, {rootValue}) => next(),
-  //   post: (next, value) => next()
+  //   pre: (next, root, args, context) => next(),
+  //   post: (next, value, args, context) => next()
   // },
   // mutation: {
-  //   pre: (next, args, {rootValue}) => next(),
-  //   post: (next, value) => next()
+  //   pre: (next, args, context) => next(),
+  //   post: (next, value, args, context) => next()
   // }
 };
 const schema = getSchema([User], {hooks});

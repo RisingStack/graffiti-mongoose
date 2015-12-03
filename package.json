@@ -41,7 +41,7 @@
     "chai": "^3.4.0",
     "chai-subset": "^1.1.0",
     "co-mocha": "^1.1.2",
-    "eslint": "^1.10.2",
+    "eslint": "^1.10.3",
     "eslint-config-airbnb": "^1.0.2",
     "graphql": "^0.4.12",
     "mocha": "^2.3.3",

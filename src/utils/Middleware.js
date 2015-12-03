@@ -34,9 +34,12 @@ export default class Middleware {
   compose(...args) {
     let lastResult;
     return reduceRight(this.middleware, (mw, fn) => {
-      const next = async (result) => {
-        lastResult = result;
-        await mw.call(this, result);
+      const next = async (...result) => {
+        if (!result.length) {
+          result = args;
+        }
+        lastResult = result[0];
+        await mw.call(this, ...result);
       };
       return async (...result) => {
         if (!result.length) {
