@@ -72,8 +72,31 @@ describe('type', () => {
               fields: {
                 bar: {
                   type: 'Number'
+                },
+                sister: {
+                  type: 'ObjectID',
+                  reference: 'User',
+                  description: 'The user\'s sister'
                 }
               }
+            }
+          }
+        },
+        subArray: {
+          type: 'Array',
+          subtype: 'Object',
+          fields: {
+            foo: {
+              type: 'String'
+            },
+            nums: {
+              type: 'Array',
+              subtype: 'Number'
+            },
+            brother: {
+              type: 'ObjectID',
+              reference: 'User',
+              description: 'The user\'s brother'
             }
           }
         }
@@ -96,7 +119,7 @@ describe('type', () => {
 
     it('should specify the fields', () => {
       const result = getType([], user);
-      let fields = result._typeConfig.fields();
+      const fields = result._typeConfig.fields();
       expect(fields).to.containSubset({
         name: {
           name: 'name',
@@ -141,8 +164,8 @@ describe('type', () => {
       });
 
       // sub
-      fields = fields.sub.type._typeConfig.fields();
-      expect(fields).to.containSubset({
+      const subFields = fields.sub.type._typeConfig.fields();
+      expect(subFields).to.containSubset({
         foo: {
           name: 'foo',
           type: GraphQLString
@@ -157,11 +180,33 @@ describe('type', () => {
       });
 
       // subsub
-      fields = fields.subsub.type._typeConfig.fields();
-      expect(fields).to.containSubset({
+      const subsubFields = subFields.subsub.type._typeConfig.fields();
+      expect(subsubFields).to.containSubset({
         bar: {
           name: 'bar',
           type: GraphQLFloat
+        },
+        sister: {
+          name: 'sister',
+          type: GraphQLID,
+          description: 'The user\'s sister'
+        }
+      });
+
+      const subArrayFields = fields.subArray.type.ofType._typeConfig.fields();
+      expect(subArrayFields).to.containSubset({
+        foo: {
+          name: 'foo',
+          type: GraphQLString
+        },
+        nums: {
+          name: 'nums',
+          type: new GraphQLList(GraphQLFloat)
+        },
+        brother: {
+          name: 'brother',
+          type: GraphQLID,
+          description: 'The user\'s brother'
         }
       });
     });
@@ -180,6 +225,8 @@ describe('type', () => {
       const fields = userType._typeConfig.fields();
 
       expect(fields.mother.type).to.be.equal(userType);
+      expect(fields.sub.type._fields.subsub.type._fields.sister.type).to.be.equal(userType);
+      expect(fields.subArray.type.ofType._typeConfig.fields().brother.type).to.be.equal(userType);
 
       // connection type
       const nodeField = fields.friends.type._typeConfig.fields().edges.type.ofType._typeConfig.fields().node;

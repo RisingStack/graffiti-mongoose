@@ -39,7 +39,15 @@ const UserSchema = new mongoose.Schema({
     subsub: {
       bar: Number
     }
-  }
+  },
+  subArray: [{
+    foo: String,
+    nums: [Number],
+    brother: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'User'
+    }
+  }]
 });
 
 const User = mongoose.model('User', UserSchema);

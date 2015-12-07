@@ -123,7 +123,9 @@ function getMutationField(graffitiModel, type, viewer, hooks = {}) {
       }
     }
 
-    if (!(field.type instanceof GraphQLObjectType) && field.name !== 'id' && !field.name.startsWith('_')) {
+    if (field.type instanceof GraphQLList && field.type.ofType instanceof GraphQLObjectType) {
+      // TODO support objects nested in lists
+    } else if (!(field.type instanceof GraphQLObjectType) && field.name !== 'id' && !field.name.startsWith('_')) {
       inputFields[field.name] = field;
     }
 

@@ -165,13 +165,16 @@ const resolveReference = {};
  * @param  {Boolean} root
  * @return {GraphQLObjectType}
  */
-export default function getType(graffitiModels, {name, description, fields}, root = true) {
+export default function getType(graffitiModels, {name, description, fields}, path = [], rootType = null) {
+  const root = path.length === 0;
   const graphQLType = {name, description};
+  rootType = rootType || graphQLType;
 
-  // These references has to be resolved when all type definitions are avaiable
+  // These references have to be resolved when all type definitions are avaiable
   resolveReference[graphQLType.name] = resolveReference[graphQLType.name] || {};
   const graphQLTypeFields = reduce(fields, (graphQLFields, {name, description, type, subtype, reference, nonNull, hidden, hooks, fields: subfields}, key) => {
     name = name || key;
+    const newPath = [...path, name];
 
     // Don't add hidden fields to the GraphQLObjectType
     if (hidden || name.startsWith('__')) {
@@ -181,27 +184,32 @@ export default function getType(graffitiModels, {name, description, fields}, roo
     const graphQLField = {name, description};
 
     if (type === 'Array') {
-      graphQLField.type = new GraphQLList(stringToGraphQLType(subtype));
-      if (reference) {
-        resolveReference[graphQLType.name][name] = {
-          name,
-          type: reference,
-          args: connectionArgs,
-          resolve: addHooks((rootValue, args, info) => {
-            args.id = rootValue[name].map((i) => i.toString());
-            return connectionFromModel(graffitiModels[reference], args, info);
-          }, hooks)
-        };
+      if (subtype === 'Object') {
+        const fields = subfields;
+        graphQLField.type = new GraphQLList(getType(graffitiModels, {name, description, fields}, newPath, rootType));
+      } else {
+        graphQLField.type = new GraphQLList(stringToGraphQLType(subtype));
+        if (reference) {
+          resolveReference[rootType.name][name] = {
+            name,
+            type: reference,
+            args: connectionArgs,
+            resolve: addHooks((rootValue, args, info) => {
+              args.id = rootValue[name].map((i) => i.toString());
+              return connectionFromModel(graffitiModels[reference], args, info);
+            }, hooks)
+          };
+        }
       }
     } else if (type === 'Object') {
       const fields = subfields;
-      graphQLField.type = getType(graffitiModels, {name, description, fields}, false);
+      graphQLField.type = getType(graffitiModels, {name, description, fields}, newPath, rootType);
     } else {
       graphQLField.type = stringToGraphQLType(type);
     }
 
     if (reference && (graphQLField.type === GraphQLID || graphQLField.type === new GraphQLNonNull(GraphQLID))) {
-      resolveReference[graphQLType.name][name] = {
+      resolveReference[rootType.name][newPath.join('.')] = {
         name,
         type: reference,
         resolve: addHooks((rootValue, args, info) => {
@@ -270,10 +278,29 @@ function getTypes(graffitiModels) {
           field.type = types[field.type];
         }
 
-        return {
-          ...typeFields,
-          [fieldName]: field
-        };
+        // deeply find the path of the field we want to resolve the reference of
+        const path = fieldName.split('.');
+        const newTypeFields = {...typeFields};
+        let parent = newTypeFields;
+        let segment;
+
+        while (path.length > 0) {
+          segment = path.shift();
+
+          if (parent[segment]) {
+            if (parent[segment].type instanceof GraphQLObjectType) {
+              parent = parent[segment].type.getFields();
+            } else if (parent[segment].type instanceof GraphQLList &&
+               parent[segment].type.ofType instanceof GraphQLObjectType) {
+              parent = getTypeFields(parent[segment].type.ofType);
+            }
+          }
+        }
+
+        if (path.length === 0) {
+          parent[segment] = field;
+        }
+        return newTypeFields;
       }, getTypeFields(type));
 
       // Add new fields

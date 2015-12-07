@@ -1,4 +1,5 @@
 import {reduce, reduceRight, merge} from 'lodash';
+import mongoose from 'mongoose';
 
 /**
  * @method getField
@@ -62,7 +63,17 @@ function extractPath(schemaPath) {
   return reduceRight(subs, (field, sub, key) => {
     const obj = {};
 
-    if (key === (subs.length - 1)) {
+    if (schemaPath instanceof mongoose.Schema.Types.DocumentArray) {
+      const subSchemaPaths = schemaPath.schema.paths;
+      const fields = extractPaths(subSchemaPaths, {name: sub}); // eslint-disable-line no-use-before-define
+      obj[sub] = {
+        name: sub,
+        nonNull: false,
+        type: 'Array',
+        subtype: 'Object',
+        fields
+      };
+    } else if (key === (subs.length - 1)) {
       obj[sub] = getField(schemaPath);
     } else {
       obj[sub] = {
