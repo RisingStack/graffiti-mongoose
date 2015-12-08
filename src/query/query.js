@@ -1,11 +1,11 @@
-import {forEach} from 'lodash';
+import {forEach, isArray, isString} from 'lodash';
 import {fromGlobalId, toGlobalId} from 'graphql-relay';
 import getFieldList from './projection';
 import viewer from '../model/viewer';
 
 function processId({id, _id = id}) {
   // global or mongo id
-  if (_id && _id.length !== 24) {
+  if (isString(_id) && _id.length === 40 && _id.endsWith('=')) {
     return fromGlobalId(_id).id;
   }
 
@@ -13,7 +13,7 @@ function processId({id, _id = id}) {
 }
 
 function getCount(Collection, selector) {
-  if (selector && (Array.isArray(selector.id) || Array.isArray(selector._id))) {
+  if (selector && (isArray(selector.id) || isArray(selector._id))) {
     const {id, _id = id} = selector;
     delete selector._id;
     delete selector.id;
@@ -41,6 +41,14 @@ function getOne(Collection, args, info) {
 }
 
 function addOne(Collection, args) {
+  forEach(args, (arg, key) => {
+    if (isArray(arg)) {
+      args[key] = arg.map((id) => processId({id}));
+    } else {
+      args[key] = processId({id: arg});
+    }
+  });
+
   const instance = new Collection(args);
   return instance.save().then((result) => {
     if (result) {
@@ -60,8 +68,10 @@ function updateOne(Collection, args, info) {
   delete args._id;
 
   forEach(args, (arg, key) => {
-    if (Array.isArray(arg)) {
+    if (isArray(arg)) {
       args[key] = arg.map((id) => processId({id}));
+    } else {
+      args[key] = processId({id: arg});
     }
   });
 
@@ -87,7 +97,7 @@ function deleteOne(Collection, args) {
 }
 
 function getList(Collection, selector, options = {}, info = null) {
-  if (selector && (Array.isArray(selector.id) || Array.isArray(selector._id))) {
+  if (selector && (isArray(selector.id) || isArray(selector._id))) {
     const {id, _id = id} = selector;
     delete selector._id;
     delete selector.id;

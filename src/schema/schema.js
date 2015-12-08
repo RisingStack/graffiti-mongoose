@@ -119,12 +119,12 @@ function getMutationField(graffitiModel, type, viewer, hooks = {}) {
           name: field.name,
           type: new GraphQLList(GraphQLID)
         };
+      } else {
+        inputFields[field.name] = {
+          name: field.name,
+          type: GraphQLID
+        };
       }
-
-      // TODO support objects
-      // else {
-      //   args = {...args, ...getTypeFields(field.type)};
-      // }
     }
 
     if (!(field.type instanceof GraphQLObjectType) && field.name !== 'id' && !field.name.startsWith('_')) {

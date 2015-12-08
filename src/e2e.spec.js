@@ -311,11 +311,12 @@ describe('e2e', () => {
 
     describe('mutations', () => {
       it('should add data to the database', async function Test() {
-        const result = await graphql(schema, `
+        let result = await graphql(schema, `
           mutation addUserMutation {
             addUser(input: {name: "Test User", clientMutationId: "1"}) {
               changedUserEdge {
                 node {
+                  id
                   _id
                   name
                 }
@@ -325,8 +326,23 @@ describe('e2e', () => {
         `);
 
         const node = result.data.addUser.changedUserEdge.node;
+        const {id} = node;
         expect(typeof node._id).to.be.equal('string');
         expect(node.name).to.be.equal('Test User');
+
+        result = await graphql(schema, `
+          mutation addUserMutation {
+            addUser(input: {name: "Test User", friends: ["${id}"], mother: "${id}", clientMutationId: "2"}) {
+              changedUserEdge {
+                node {
+                  id
+                }
+              }
+            }
+          }
+        `);
+
+        expect(result.errors).not.to.be.ok; // eslint-disable-line
       });
 
       it('should update data', async function Test() {
