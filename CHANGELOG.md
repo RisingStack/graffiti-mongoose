@@ -1,9 +1,20 @@
+<a name="4.3.2"></a>
+## 4.3.2 (2015-12-08)
+
+
+### fix
+
+* fix(mutation): fix query and add reference support for mutations ([a7c97a4](https://github.com/RisingStack/graffiti-mongoose/commit/a7c97a4))
+
+
+
 <a name="4.3.1"></a>
 ## 4.3.1 (2015-12-03)
 
 
 ### chore
 
+* chore(package): bump version to 4.3.1 ([3d43c04](https://github.com/RisingStack/graffiti-mongoose/commit/3d43c04))
 * chore(package): update dependencies ([63d8263](https://github.com/RisingStack/graffiti-mongoose/commit/63d8263))
 
 ### fix
