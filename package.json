@@ -42,10 +42,10 @@
     "chai-subset": "^1.1.0",
     "co-mocha": "^1.1.2",
     "eslint": "^1.10.3",
-    "eslint-config-airbnb": "^1.0.2",
+    "eslint-config-airbnb": "^2.0.0",
     "graphql": "^0.4.12",
     "mocha": "^2.3.3",
-    "mongoose": "^4.2.8",
+    "mongoose": "^4.3.0",
     "pre-commit": "^1.1.2",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.8.0"
