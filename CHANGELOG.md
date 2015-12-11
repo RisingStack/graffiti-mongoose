@@ -1,6 +1,24 @@
+<a name="4.3.3"></a>
+## 4.3.3 (2015-12-11)
+
+
+### chore
+
+* chore(package): update dependencies ([d6e080c](https://github.com/RisingStack/graffiti-mongoose/commit/d6e080c))
+
+### fix
+
+* fix(update): use original type on update mutation ([bdc7fed](https://github.com/RisingStack/graffiti-mongoose/commit/bdc7fed))
+
+
+
 <a name="4.3.2"></a>
 ## 4.3.2 (2015-12-08)
 
+
+### chore
+
+* chore(package): bump version to 4.3.2 ([1504f51](https://github.com/RisingStack/graffiti-mongoose/commit/1504f51))
 
 ### fix
 
