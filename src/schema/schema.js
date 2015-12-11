@@ -134,8 +134,7 @@ function getMutationField(graffitiModel, type, viewer, hooks = {}) {
     return inputFields;
   }, {});
 
-  const Name = name[0].toUpperCase() + name.slice(1);
-  const changedName = `changed${Name}`;
+  const changedName = `changed${name}`;
   const edgeName = `${changedName}Edge`;
   const nodeName = `${changedName}Node`;
 
@@ -170,10 +169,7 @@ function getMutationField(graffitiModel, type, viewer, hooks = {}) {
       },
       outputFields: {
         [changedName]: {
-          type: new GraphQLObjectType({
-            fields,
-            name: changedName
-          }),
+          type,
           resolve: (node) => node
         }
       },
