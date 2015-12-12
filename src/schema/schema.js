@@ -14,25 +14,21 @@ import {
   connectionDefinitions,
   globalIdField
 } from 'graphql-relay';
-import {getModels} from './../model';
+import model from './../model';
 import {
-  getTypes,
   GraphQLViewer,
   nodeInterface,
   getTypeFields,
   getArguments,
   setTypeFields
 } from './../type';
+import type from './../type';
 import {
   idToCursor,
   getIdFetcher,
-  getOneResolver,
-  getListResolver,
-  getAddOneMutateHandler,
-  getUpdateOneMutateHandler,
-  getDeleteOneMutateHandler,
   connectionFromModel
 } from './../query';
+import query from './../query';
 import {addHooks} from '../utils';
 import viewerInstance from '../model/viewer';
 
@@ -52,7 +48,7 @@ function getSingularQueryField(graffitiModel, type, hooks = {}) {
       args: {
         id: idField
       },
-      resolve: addHooks(getOneResolver(graffitiModel), singular)
+      resolve: addHooks(query.getOneResolver(graffitiModel), singular)
     }
   };
 }
@@ -75,7 +71,7 @@ function getPluralQueryField(graffitiModel, type, hooks = {}) {
           description: `The ID of a ${name}`
         }
       }),
-      resolve: addHooks(getListResolver(graffitiModel), plural)
+      resolve: addHooks(query.getListResolver(graffitiModel), plural)
     }
   };
 }
@@ -159,7 +155,7 @@ function getMutationField(graffitiModel, type, viewer, hooks = {}) {
           })
         }
       },
-      mutateAndGetPayload: addHooks(getAddOneMutateHandler(graffitiModel), mutation)
+      mutateAndGetPayload: addHooks(query.getAddOneMutateHandler(graffitiModel), mutation)
     }),
     [updateName]: mutationWithClientMutationId({
       name: updateName,
@@ -173,7 +169,7 @@ function getMutationField(graffitiModel, type, viewer, hooks = {}) {
           resolve: (node) => node
         }
       },
-      mutateAndGetPayload: addHooks(getUpdateOneMutateHandler(graffitiModel), mutation)
+      mutateAndGetPayload: addHooks(query.getUpdateOneMutateHandler(graffitiModel), mutation)
     }),
     [deleteName]: mutationWithClientMutationId({
       name: deleteName,
@@ -187,7 +183,7 @@ function getMutationField(graffitiModel, type, viewer, hooks = {}) {
         },
         id: idField
       },
-      mutateAndGetPayload: addHooks(getDeleteOneMutateHandler(graffitiModel), mutation)
+      mutateAndGetPayload: addHooks(query.getDeleteOneMutateHandler(graffitiModel), mutation)
     })
   };
 }
@@ -199,7 +195,7 @@ function getMutationField(graffitiModel, type, viewer, hooks = {}) {
  * @return {Object}
  */
 function getFields(graffitiModels, {hooks = {}, mutation = true} = {}) {
-  const types = getTypes(graffitiModels);
+  const types = type.getTypes(graffitiModels);
   const {viewer, singular} = hooks;
 
   const viewerFields = reduce(types, (fields, type, key) => {
@@ -285,12 +281,12 @@ function getSchema(mongooseModels, options) {
   if (!isArray(mongooseModels)) {
     mongooseModels = [mongooseModels];
   }
-  const graffitiModels = getModels(mongooseModels);
+  const graffitiModels = model.getModels(mongooseModels);
   const fields = getFields(graffitiModels, options);
   return new GraphQLSchema(fields);
 }
 
-export default {
+export {
   getQueryField,
   getMutationField,
   getFields,

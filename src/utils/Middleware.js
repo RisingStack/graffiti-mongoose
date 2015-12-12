@@ -7,7 +7,7 @@ import {
 export default class Middleware {
   middleware = []
 
-  constructor(middleware = []) {
+  constructor(middleware) {
     this.use(middleware);
   }
 
@@ -15,7 +15,7 @@ export default class Middleware {
    * Add middleware
    * @param  {Function} middleware
    */
-  use(middleware) {
+  use(middleware = []) {
     if (!isArray(middleware)) {
       middleware = [middleware];
     }
@@ -34,14 +34,14 @@ export default class Middleware {
   compose(...args) {
     let lastResult;
     return reduceRight(this.middleware, (mw, fn) => {
-      const next = async (...result) => {
+      const next = async function next(...result) {
         if (!result.length) {
           result = args;
         }
         lastResult = result[0];
         await mw.call(this, ...result);
       };
-      return async (...result) => {
+      return async function composed(...result) {
         if (!result.length) {
           result = args;
         }

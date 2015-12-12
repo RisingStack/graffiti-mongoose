@@ -24,7 +24,7 @@ import {addHooks} from '../utils';
 import GraphQLDate from './custom/date';
 import GraphQLBuffer from './custom/buffer';
 import GraphQLGeneric from './custom/generic';
-import {connectionFromModel, getOneResolver} from './../query';
+import {connectionFromModel, getOneResolver} from '../query';
 
 // Registered types will be saved, we can access them later to resolve types
 const types = [];
@@ -285,6 +285,10 @@ function getTypes(graffitiModels) {
 }
 
 export default {
+  getTypes
+};
+
+export {
   GraphQLViewer,
   GraphQLDate,
   GraphQLGeneric,

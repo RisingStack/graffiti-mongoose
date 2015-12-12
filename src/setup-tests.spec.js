@@ -2,7 +2,6 @@ import sinon from 'sinon';
 import chai from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiSubset from 'chai-subset';
-import 'babel/polyfill';
 
 import mongoose from 'mongoose';
 

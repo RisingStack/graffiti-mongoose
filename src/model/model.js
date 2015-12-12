@@ -126,6 +126,10 @@ function getModels(mongooseModels) {
 }
 
 export default {
+  getModels
+};
+
+export {
   extractPath,
   extractPaths,
   getModel,

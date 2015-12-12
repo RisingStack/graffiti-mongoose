@@ -14,3 +14,8 @@ export default {
   Middleware,
   addHooks
 };
+
+export {
+  Middleware,
+  addHooks
+};

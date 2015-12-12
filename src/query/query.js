@@ -319,7 +319,15 @@ async function connectionFromModel(graffitiModel, args, info) {
 }
 
 export default {
-  _idToCursor: idToCursor,
+  getOneResolver,
+  getListResolver,
+  getAddOneMutateHandler,
+  getUpdateOneMutateHandler,
+  getDeleteOneMutateHandler
+};
+
+export {
+  idToCursor as _idToCursor,
   idToCursor,
   getIdFetcher,
   getOneResolver,

@@ -96,6 +96,7 @@ describe('schema', () => {
   describe('getFields', () => {
     it('should return query fields ; including node(id!)', function getFieldsTest() {
       this.sandbox.stub(type, 'getTypes').returns(types);
+
       const fields = getFields({});
       expect(fields).to.containSubset({
         query: {
@@ -141,19 +142,20 @@ describe('schema', () => {
   });
 
   describe('getSchema', () => {
-    it('should return a GraphQL schema', function getSchemaTest() {
+    beforeEach(function beforeEach() {
       this.sandbox.stub(model, 'getModels').returns({});
       this.sandbox.stub(type, 'getTypes').returns(types);
-      const schema = getSchema([]);
+    });
+
+    it('should return a GraphQL schema', function getSchemaTest() {
+      const schema = getSchema({});
       expect(schema).instanceOf(GraphQLSchema);
       expect(schema._queryType.name).to.be.equal('RootQuery');
       expect(schema._mutationType.name).to.be.equal('RootMutation');
     });
 
     it('should return a GraphQL schema without mutations', function getSchemaTest() {
-      this.sandbox.stub(model, 'getModels').returns({});
-      this.sandbox.stub(type, 'getTypes').returns(types);
-      const schema = getSchema([], {mutation: false});
+      const schema = getSchema({}, {mutation: false});
       expect(schema).instanceOf(GraphQLSchema);
       expect(schema._queryType.name).to.be.equal('RootQuery');
       expect(schema._mutationType).to.be.equal(undefined);

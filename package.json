@@ -4,7 +4,7 @@
   "description": "Mongoose adapter for graffiti (Node.js GraphQL ORM)",
   "main": "lib/index.js",
   "scripts": {
-    "test": "NODE_ENV=test mocha --compilers js:babel/register 'src/**/*.spec.js'",
+    "test": "NODE_ENV=test mocha --compilers js:babel-register --require babel-polyfill 'src/**/*.spec.js'",
     "eslint": "eslint src",
     "prepublish": "npm test && npm run build",
     "build": "rm -rf lib/* && babel src --ignore *.spec.js --out-dir lib",
@@ -35,16 +35,21 @@
     "graphql": "^0.4.14"
   },
   "devDependencies": {
-    "babel": "^5.8.29",
-    "babel-eslint": "^4.1.3",
+    "babel": "^6.3.13",
+    "babel-cli": "^6.3.17",
+    "babel-eslint": "^5.0.0-beta6",
     "babel-istanbul": "^0.5.9",
+    "babel-polyfill": "^6.3.14",
+    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-stage-0": "^6.3.13",
+    "babel-register": "^6.3.13",
     "chai": "^3.4.1",
     "chai-subset": "^1.2.0",
     "eslint": "^1.10.3",
     "eslint-config-airbnb": "^2.0.0",
     "graphql": "^0.4.14",
     "mocha": "^2.3.4",
-    "mongoose": "^4.3.0",
+    "mongoose": "^4.3.1",
     "pre-commit": "^1.1.2",
     "sinon": "^1.17.2",
     "sinon-chai": "^2.8.0"
@@ -53,6 +58,9 @@
     "test"
   ],
   "babel": {
-    "stage": 0
+    "presets": [
+      "es2015",
+      "stage-0"
+    ]
   }
 }

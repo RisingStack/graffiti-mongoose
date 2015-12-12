@@ -9,26 +9,29 @@ describe('e2e', () => {
     let motherUser;
     let user1;
     let user2;
-    const hooks = {
-      viewer: {
-        pre: spy(),
-        post: spy()
-      },
-      singular: {
-        pre: spy(),
-        post: spy()
-      },
-      plural: {
-        pre: spy(),
-        post: spy()
-      },
-      mutation: {
-        pre: spy(),
-        post: spy()
-      }
-    };
-    const options = {hooks};
-    const schema = getSchema([User], options);
+    let schema;
+    let hooks;
+    before(function beforeAll() {
+      hooks = {
+        viewer: {
+          pre: spy(),
+          post: spy()
+        },
+        singular: {
+          pre: spy(),
+          post: spy()
+        },
+        plural: {
+          pre: spy(),
+          post: spy()
+        },
+        mutation: {
+          pre: spy(),
+          post: spy()
+        }
+      };
+      schema = getSchema([User], {hooks});
+    });
 
     beforeEach(async function BeforeEach() {
       motherUser = new User({
