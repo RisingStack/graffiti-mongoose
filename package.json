@@ -32,7 +32,8 @@
     "lodash": "^3.10.1"
   },
   "peerDependencies": {
-    "graphql": "^0.4.14"
+    "graphql": "^0.4.14",
+    "babel-polyfill": "^6.3.14"
   },
   "devDependencies": {
     "babel": "^6.3.13",
