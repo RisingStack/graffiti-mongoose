@@ -512,9 +512,13 @@ mutation AddUser {
   age: Float,
   createdAt: Date,
   friends: [ID],
+  friends_add: [ID],
   nums: [Float],
+  nums_add: [Float],
   bools: [Boolean],
+  bools_add: [Boolean],
   strings: [String],
+  strings_add: [String],
   removed: Boolean,
   id: ID!,
   clientMutationId: String!
@@ -539,6 +543,104 @@ mutation UpdateUser {
         "id": "VXNlcjo1NjI2NDE1MjU2NWQ2Y2E3NGUzNzc4NDM=",
         "name": "New Name",
         "createdAt": null
+      }
+    }
+  }
+}
+```
+
+Append to array (`fieldName_add`):
+
+```
+mutation UpdateUser {
+	updateUser(input: {clientMutationId: "1", id: "VXNlcjo1NjI2NDE1MjU2NWQ2Y2E3NGUzNzc4NDM=", friends_add: ["VXNlcjo1NjZlYmI1MWRmZGRmYjYyYmFjNTRkYjQ=", "VXNlcjo1NjZlYmI1MWRmZGRmYjYyYmFjNTRkYjk="]}) {
+    changedUser {
+      id
+      friends {
+        count
+        edges {
+          node {
+            name
+            id
+          }
+        }
+      }
+    }
+  }
+}
+```
+```json
+{
+  "data": {
+    "updateUser": {
+      "clientMutationId": "1",
+      "changedUser": {
+        "id": "VXNlcjo1NjZlYmI1MWRmZGRmYjYyYmFjNTRkYTM=",
+        "friends": {
+          "count": 10,
+          "edges": [
+            {
+              "node": {
+                "id": "VXNlcjo1NjZlYmI1MWRmZGRmYjYyYmFjNTRkOWI=",
+                "name": "User0"
+              }
+            },
+            {
+              "node": {
+                "id": "VXNlcjo1NjZlYmI1MWRmZGRmYjYyYmFjNTRkOWM=",
+                "name": "User1"
+              }
+            },
+            {
+              "node": {
+                "id": "VXNlcjo1NjZlYmI1MWRmZGRmYjYyYmFjNTRkOWQ=",
+                "name": "User2"
+              }
+            },
+            {
+              "node": {
+                "id": "VXNlcjo1NjZlYmI1MWRmZGRmYjYyYmFjNTRkOWU=",
+                "name": "User3"
+              }
+            },
+            {
+              "node": {
+                "id": "VXNlcjo1NjZlYmI1MWRmZGRmYjYyYmFjNTRkOWY=",
+                "name": "User4"
+              }
+            },
+            {
+              "node": {
+                "id": "VXNlcjo1NjZlYmI1MWRmZGRmYjYyYmFjNTRkYTA=",
+                "name": "User5"
+              }
+            },
+            {
+              "node": {
+                "id": "VXNlcjo1NjZlYmI1MWRmZGRmYjYyYmFjNTRkYTE=",
+                "name": "User6"
+              }
+            },
+            {
+              "node": {
+                "id": "VXNlcjo1NjZlYmI1MWRmZGRmYjYyYmFjNTRkYTI=",
+                "name": "User7"
+              }
+            },
+            {
+              "node": {
+                "id": "VXNlcjo1NjZlYmI1MWRmZGRmYjYyYmFjNTRkYjQ=",
+                "name": "User25"
+              }
+            },
+            {
+              "node": {
+                "id": "VXNlcjo1NjZlYmI1MWRmZGRmYjYyYmFjNTRkYjk=",
+                "name": "User30"
+              }
+            }
+          ]
+        }
       }
     }
   }

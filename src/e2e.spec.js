@@ -115,7 +115,6 @@ describe('e2e', () => {
 
       describe('with fragments', () => {
         it('should support fragments', async function Test() {
-          // FIXME it fails in node {}
           const result = await graphql(schema, `
             query GetUser {
               user(id: "${user2._id}") {
@@ -184,7 +183,7 @@ describe('e2e', () => {
 
     describe('plural query', () => {
       it('should get data from database and filter by number', async function Test() {
-        const result = await graphql(schema, `{
+        let result = await graphql(schema, `{
           users(age: 28) {
             _id
             name
@@ -192,7 +191,7 @@ describe('e2e', () => {
           }
         }`);
 
-        expect(result.data.users).to.deep.include.members([
+        const expected = [
           {
             _id: user1._id.toString(),
             name: 'Foo',
@@ -202,7 +201,29 @@ describe('e2e', () => {
             name: 'Bar',
             age: 28
           }
-        ]);
+        ];
+
+        expect(result.data.users).to.deep.include.members(expected);
+
+        result = await graphql(schema, `{
+          users(id: ["${user1._id.toString()}", "${user2._id.toString()}"]) {
+            _id
+            name
+            age
+          }
+        }`);
+
+        expect(result.data.users).to.deep.include.members(expected);
+
+        result = await graphql(schema, `{
+          users(ids: ["${user1._id.toString()}", "${user2._id.toString()}"]) {
+            _id
+            name
+            age
+          }
+        }`);
+
+        expect(result.data.users).to.deep.include.members(expected);
       });
 
       it('should get data from database and filter by array of _id(s)', async function Test() {
@@ -365,8 +386,12 @@ describe('e2e', () => {
         result = await graphql(schema, `
           mutation updateUserMutation {
             updateUser(input: {id: "${id}", name: "Updated Test User", clientMutationId: "2"}) {
+              clientMutationId
               changedUser {
                 name
+                friends {
+                  count
+                }
               }
             }
           }
@@ -374,8 +399,38 @@ describe('e2e', () => {
         expect(result).to.containSubset({
           data: {
             updateUser: {
+              clientMutationId: '2',
               changedUser: {
-                name: 'Updated Test User'
+                name: 'Updated Test User',
+                friends: {
+                  count: 0
+                }
+              }
+            }
+          }
+        });
+
+        result = await graphql(schema, `
+          mutation updateUserMutation {
+            updateUser(input: {id: "${id}", friends_add: ["${id}"], clientMutationId: "3"}) {
+              clientMutationId
+              changedUser {
+                name
+                friends {
+                  count
+                }
+              }
+            }
+          }
+        `);
+        expect(result).to.containSubset({
+          data: {
+            updateUser: {
+              clientMutationId: '3',
+              changedUser: {
+                friends: {
+                  count: 1
+                }
               }
             }
           }

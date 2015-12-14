@@ -5,8 +5,11 @@ import viewer from '../model/viewer';
 
 function processId({id, _id = id}) {
   // global or mongo id
-  if (isString(_id) && _id.length === 40 && _id.endsWith('=')) {
-    return fromGlobalId(_id).id;
+  if (isString(_id) && !/^[a-fA-F0-9]{24}$/.test(_id)) {
+    const {type, id} = fromGlobalId(_id);
+    if (type) {
+      return id;
+    }
   }
 
   return _id;
@@ -15,7 +18,6 @@ function processId({id, _id = id}) {
 function getCount(Collection, selector) {
   if (selector && (isArray(selector.id) || isArray(selector._id))) {
     const {id, _id = id} = selector;
-    delete selector._id;
     delete selector.id;
     selector._id = {
       $in: _id.map((id) => processId({id}))
@@ -62,16 +64,22 @@ function addOne(Collection, args) {
   });
 }
 
-function updateOne(Collection, args, info) {
-  const _id = processId(args);
-  delete args.id;
-  delete args._id;
+function updateOne(Collection, {id, _id, ...args}, info) {
+  _id = processId({id, _id});
 
   forEach(args, (arg, key) => {
     if (isArray(arg)) {
       args[key] = arg.map((id) => processId({id}));
     } else {
       args[key] = processId({id: arg});
+    }
+
+    if (key.endsWith('_add')) {
+      const values = args[key];
+      args.$push = {
+        [key.slice(0, -4)]: {$each: values}
+      };
+      delete args[key];
     }
   });
 
@@ -86,8 +94,7 @@ function updateOne(Collection, args, info) {
 
 function deleteOne(Collection, args) {
   const _id = processId(args);
-  delete args.id;
-  delete args._id;
+
   return Collection.remove({_id}).then(({result}) => {
     return {
       id: toGlobalId(Collection.modelName, _id),
@@ -99,7 +106,6 @@ function deleteOne(Collection, args) {
 function getList(Collection, selector, options = {}, info = null) {
   if (selector && (isArray(selector.id) || isArray(selector._id))) {
     const {id, _id = id} = selector;
-    delete selector._id;
     delete selector.id;
     selector._id = {
       $in: _id.map((id) => processId({id}))
@@ -129,7 +135,7 @@ function getOneResolver(graffitiModel) {
 }
 
 function getAddOneMutateHandler(graffitiModel) {
-  return (args) => {
+  return ({clientMutationId, ...args}) => { // eslint-disable-line
     const Collection = graffitiModel.model;
     if (Collection) {
       return addOne(Collection, args);
@@ -140,7 +146,7 @@ function getAddOneMutateHandler(graffitiModel) {
 }
 
 function getUpdateOneMutateHandler(graffitiModel) {
-  return (args) => {
+  return ({clientMutationId, ...args}) => { // eslint-disable-line
     const Collection = graffitiModel.model;
     if (Collection) {
       return updateOne(Collection, args);
@@ -151,7 +157,7 @@ function getUpdateOneMutateHandler(graffitiModel) {
 }
 
 function getDeleteOneMutateHandler(graffitiModel) {
-  return (args) => {
+  return ({clientMutationId, ...args}) => { // eslint-disable-line
     const Collection = graffitiModel.model;
     if (Collection) {
       return deleteOne(Collection, args);
@@ -162,10 +168,9 @@ function getDeleteOneMutateHandler(graffitiModel) {
 }
 
 function getListResolver(graffitiModel) {
-  return (root, args, info) => {
-    if (args && args.ids) {
-      args.id = args.ids;
-      delete args.ids;
+  return (root, {ids, ...args} = {}, info) => {
+    if (ids) {
+      args.id = ids;
     }
 
     const Collection = graffitiModel.model;

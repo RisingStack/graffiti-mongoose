@@ -130,6 +130,17 @@ function getMutationField(graffitiModel, type, viewer, hooks = {}) {
     return inputFields;
   }, {});
 
+  const updateInputFields = reduce(fields, (inputFields, field) => {
+    if (field.type instanceof GraphQLObjectType && field.type.name.endsWith('Connection')) {
+      inputFields[`${field.name}_add`] = {
+        name: field.name,
+        type: new GraphQLList(GraphQLID)
+      };
+    }
+
+    return inputFields;
+  }, {});
+
   const changedName = `changed${name}`;
   const edgeName = `${changedName}Edge`;
   const nodeName = `${changedName}Node`;
@@ -161,6 +172,7 @@ function getMutationField(graffitiModel, type, viewer, hooks = {}) {
       name: updateName,
       inputFields: {
         ...inputFields,
+        ...updateInputFields,
         id: idField
       },
       outputFields: {
