@@ -266,7 +266,8 @@ function getTypes(graffitiModels) {
       const typeFields = reduce(fields, (typeFields, field, fieldName) => {
         if (field.args === connectionArgs) {
           // It's a connection
-          const {connectionType} = connectionDefinitions({name: fieldName, nodeType: types[field.type], connectionFields: {
+          const fieldNameCapitalized = fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
+          const {connectionType} = connectionDefinitions({name: `${typeName}${fieldNameCapitalized}`, nodeType: types[field.type], connectionFields: {
             count: {
               name: 'count',
               type: GraphQLFloat
