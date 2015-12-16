@@ -293,8 +293,8 @@ async function connectionFromModel(graffitiModel, args, info) {
   }
 
   const result = await getList(Collection, selector, {
+    limit,
     skip: offset,
-    limit: limit,
     sort: orderBy
   }, info);
   const count = await getCount(Collection, selector);
@@ -313,7 +313,7 @@ async function connectionFromModel(graffitiModel, args, info) {
   const firstElement = await getFirst(Collection);
   return {
     count,
-    edges: edges,
+    edges,
     pageInfo: {
       startCursor: edges[0].cursor,
       endCursor: edges[edges.length - 1].cursor,

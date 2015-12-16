@@ -119,7 +119,7 @@ describe('GraphQL date type', () => {
         await graphql(schema, `{ nextDay(date: "${someday}") }`)
       ).to.deep.equal({
         data: {
-          nextDay: nextDay
+          nextDay
         }
       });
     });
