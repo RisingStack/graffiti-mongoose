@@ -1,3 +1,13 @@
+<a name="5.0.1"></a>
+## 5.0.1 (2015-12-18)
+
+
+### fix
+
+* fix(query): fix id translation ([7ec8fc1](https://github.com/RisingStack/graffiti-mongoose/commit/7ec8fc1))
+
+
+
 <a name="5.0.0"></a>
 # 5.0.0 (2015-12-18)
 
@@ -5,6 +15,7 @@
 ### chore
 
 * chore(package): add babel-polyfill to peer dependencies ([215cfb9](https://github.com/RisingStack/graffiti-mongoose/commit/215cfb9))
+* chore(package): bump version to 5.0.0 ([0fb74d0](https://github.com/RisingStack/graffiti-mongoose/commit/0fb74d0))
 * chore(package): remove .jscsrc ([b8662a3](https://github.com/RisingStack/graffiti-mongoose/commit/b8662a3))
 * chore(package): run eslint before commits ([9a5b8f2](https://github.com/RisingStack/graffiti-mongoose/commit/9a5b8f2))
 * chore(package): update dependencies ([8b56a10](https://github.com/RisingStack/graffiti-mongoose/commit/8b56a10))
