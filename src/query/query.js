@@ -7,7 +7,7 @@ function processId({id, _id = id}) {
   // global or mongo id
   if (isString(_id) && !/^[a-fA-F0-9]{24}$/.test(_id)) {
     const {type, id} = fromGlobalId(_id);
-    if (type) {
+    if (type && /^[a-zA-Z]*$/.test(type)) {
       return id;
     }
   }
