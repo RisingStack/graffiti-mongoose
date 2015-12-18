@@ -1,3 +1,25 @@
+<a name="5.0.0"></a>
+# 5.0.0 (2015-12-18)
+
+
+### chore
+
+* chore(package): add babel-polyfill to peer dependencies ([215cfb9](https://github.com/RisingStack/graffiti-mongoose/commit/215cfb9))
+* chore(package): remove .jscsrc ([b8662a3](https://github.com/RisingStack/graffiti-mongoose/commit/b8662a3))
+* chore(package): run eslint before commits ([9a5b8f2](https://github.com/RisingStack/graffiti-mongoose/commit/9a5b8f2))
+* chore(package): update dependencies ([8b56a10](https://github.com/RisingStack/graffiti-mongoose/commit/8b56a10))
+
+### feat
+
+* feat(mutation): support append to arrays in update mutation (with fieldName_add input field) ([6aa5820](https://github.com/RisingStack/graffiti-mongoose/commit/6aa5820))
+* feat(schema): add read support types for objects within a list ([c473304](https://github.com/RisingStack/graffiti-mongoose/commit/c473304))
+
+### fix
+
+* fix(type): fix connections for different models with the same field names ([4da2042](https://github.com/RisingStack/graffiti-mongoose/commit/4da2042))
+
+
+
 <a name="4.3.3"></a>
 ## 4.3.3 (2015-12-11)
 
@@ -5,6 +27,7 @@
 ### chore
 
 * chore(package): update dependencies ([d6e080c](https://github.com/RisingStack/graffiti-mongoose/commit/d6e080c))
+* chore(package): update version to 4.3.3 ([02eaf3e](https://github.com/RisingStack/graffiti-mongoose/commit/02eaf3e))
 
 ### fix
 
