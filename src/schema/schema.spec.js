@@ -80,7 +80,7 @@ describe('schema', () => {
           args
         }
       });
-      expect(fields.addQux.args.input.type.ofType._typeConfig.fields).to.containSubset({
+      expect(fields.addQux.args.input.type.ofType._typeConfig.fields()).to.containSubset({
         bar: {
           name: 'bar',
           type: GraphQLString
