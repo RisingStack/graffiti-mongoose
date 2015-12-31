@@ -1,6 +1,24 @@
+<a name="5.0.2"></a>
+## 5.0.2 (2015-12-31)
+
+
+### chore
+
+* chore(package): update dependencies ([33c18dc](https://github.com/RisingStack/graffiti-mongoose/commit/33c18dc))
+
+### fix
+
+* fix(Date): parseValue takes a String as input ([4a0d254](https://github.com/RisingStack/graffiti-mongoose/commit/4a0d254))
+
+
+
 <a name="5.0.1"></a>
 ## 5.0.1 (2015-12-18)
 
+
+### chore
+
+* chore(package): bump version to 5.0.1 ([b71b072](https://github.com/RisingStack/graffiti-mongoose/commit/b71b072))
 
 ### fix
 
