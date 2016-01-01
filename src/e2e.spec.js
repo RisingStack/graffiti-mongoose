@@ -316,6 +316,26 @@ describe('e2e', () => {
       it('should return results in descending order', async function Test() {
         const result = await graphql(schema, `{
           viewer {
+            users(orderBy: NAME_DESC) {
+              edges {
+                node {
+                  name
+                }
+              }
+            }
+          }
+       }`);
+
+        expect(result.data.viewer.users.edges).to.be.eql([
+          { node: { name: 'Mother' } },
+          { node: { name: 'Foo' } },
+          { node: { name: 'Bar' } }
+        ]);
+      });
+
+      it('should be able to limit the ordered results', async function Test() {
+        const result = await graphql(schema, `{
+          viewer {
             users(orderBy: NAME_DESC, first: 2) {
               edges {
                 node {

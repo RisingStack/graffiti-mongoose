@@ -112,10 +112,16 @@ function getOrderByType({name}, fields) {
         if (field.type instanceof GraphQLScalarType) {
           const upperCaseName = field.name.toUpperCase();
           values[`${upperCaseName}_ASC`] = {
-            [field.name]: 1
+            name: `${upperCaseName}_ASC`,
+            value: {
+              [field.name]: 1
+            }
           };
           values[`${upperCaseName}_DESC`] = {
-            [field.name]: -1
+            name: `${upperCaseName}_DESC`,
+            value: {
+              [field.name]: -1
+            }
           };
         }
 
