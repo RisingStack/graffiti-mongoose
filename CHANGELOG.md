@@ -1,9 +1,20 @@
+<a name="5.0.3"></a>
+## 5.0.3 (2016-01-02)
+
+
+### fix
+
+* fix(type): fix orderBy arguments ([0975ae2](https://github.com/RisingStack/graffiti-mongoose/commit/0975ae2))
+
+
+
 <a name="5.0.2"></a>
 ## 5.0.2 (2015-12-31)
 
 
 ### chore
 
+* chore(package): bump version to 5.0.2 ([84294f8](https://github.com/RisingStack/graffiti-mongoose/commit/84294f8))
 * chore(package): update dependencies ([33c18dc](https://github.com/RisingStack/graffiti-mongoose/commit/33c18dc))
 
 ### fix
