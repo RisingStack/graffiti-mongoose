@@ -5,12 +5,12 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "@risingstack/graffiti": "^2.1.1",
+    "@risingstack/graffiti": "^2.1.2",
     "@risingstack/graffiti-mongoose": "../",
-    "babel-runtime": "^6.3.13",
+    "babel-runtime": "^6.3.19",
     "koa": "^1.1.2"
   },
   "devDependencies": {
-    "babel": "^6.3.13"
+    "babel": "^6.3.26"
   }
 }
