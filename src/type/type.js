@@ -178,7 +178,8 @@ export default function getType(graffitiModels, {name, description, fields}, pat
 
   // These references have to be resolved when all type definitions are avaiable
   resolveReference[graphQLType.name] = resolveReference[graphQLType.name] || {};
-  const graphQLTypeFields = reduce(fields, (graphQLFields, {name, description, type, subtype, reference, nonNull, hidden, hooks, fields: subfields}, key) => {
+  const graphQLTypeFields = reduce(fields, (graphQLFields,
+      {name, description, type, subtype, reference, nonNull, hidden, hooks, fields: subfields}, key) => {
     name = name || key;
     const newPath = [...path, name];
 
@@ -273,12 +274,16 @@ function getTypes(graffitiModels) {
         if (field.args === connectionArgs) {
           // It's a connection
           const fieldNameCapitalized = fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
-          const {connectionType} = connectionDefinitions({name: `${typeName}${fieldNameCapitalized}`, nodeType: types[field.type], connectionFields: {
-            count: {
-              name: 'count',
-              type: GraphQLFloat
+          const {connectionType} = connectionDefinitions({
+            name: `${typeName}${fieldNameCapitalized}`,
+            nodeType: types[field.type],
+            connectionFields: {
+              count: {
+                name: 'count',
+                type: GraphQLFloat
+              }
             }
-          }});
+          });
           field.type = connectionType;
         } else {
           // It's an object reference

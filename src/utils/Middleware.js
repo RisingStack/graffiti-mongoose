@@ -5,7 +5,7 @@ import {
 } from 'lodash';
 
 export default class Middleware {
-  middleware = []
+  middleware = [];
 
   constructor(middleware) {
     this.use(middleware);
