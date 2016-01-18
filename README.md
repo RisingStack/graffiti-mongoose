@@ -154,25 +154,31 @@ Examples:
 ```
 mutation addX {
   addUser(input: {name: "X", age: 11, clientMutationId: "1"}) {
-    id
-    name
+    changedUserEdge {
+      node {
+        id
+        name
+      }
+    }
   }
 }
 ```
 
 ```
 mutation updateX {
-  updateUser(input: {id: "xpmsdfonasd", age: 10, clientMutationId: "2"}) {
-    id
-    name
-    age
+  updateUser(input: {id: "id=", age: 10, clientMutationId: "2"}) {
+    changedUser {
+      id
+      name
+      age
+    }
   }
 }
 ```
 
 ```
 mutation deleteX {
-  deleteUser(input: {id: "xpmsdfonasd", clientMutationId: "3"}) {
+  deleteUser(input: {id: "id=", clientMutationId: "3"}) {
     ok
   }
 }
