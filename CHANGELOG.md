@@ -1,6 +1,25 @@
+<a name="5.0.4"></a>
+## 5.0.4 (2016-01-18)
+
+
+### chore
+
+* chore(example): update dependencies ([de00242](https://github.com/RisingStack/graffiti-mongoose/commit/de00242))
+* chore(package): update dependencies ([db90b07](https://github.com/RisingStack/graffiti-mongoose/commit/db90b07))
+
+### docs
+
+* docs(readme): fix example mutations ([d182b8f](https://github.com/RisingStack/graffiti-mongoose/commit/d182b8f))
+
+
+
 <a name="5.0.3"></a>
 ## 5.0.3 (2016-01-02)
 
+
+### chore
+
+* chore(package): bump version to 5.0.3 ([eafcd37](https://github.com/RisingStack/graffiti-mongoose/commit/eafcd37))
 
 ### fix
 
