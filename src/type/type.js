@@ -161,6 +161,17 @@ function getArguments(type, args = {}) {
   });
 }
 
+/**
+ * Returns a concatenation of type and field name, used for nestedObjects
+ * @param {String} typeName
+ * @param {String} fieldName
+ * @returns {String}
+ */
+function getTypeFieldName(typeName, fieldName) {
+  const fieldNameCapitalized = fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
+  return `${typeName}${fieldNameCapitalized}`;
+}
+
 // Holds references to fields that later have to be resolved
 const resolveReference = {};
 
@@ -193,7 +204,9 @@ export default function getType(graffitiModels, {name, description, fields}, pat
     if (type === 'Array') {
       if (subtype === 'Object') {
         const fields = subfields;
-        graphQLField.type = new GraphQLList(getType(graffitiModels, {name, description, fields}, newPath, rootType));
+        const nestedObjectName = getTypeFieldName(graphQLType.name, name);
+        graphQLField.type = new GraphQLList(
+          getType(graffitiModels, {name: nestedObjectName, description, fields}, newPath, rootType));
       } else {
         graphQLField.type = new GraphQLList(stringToGraphQLType(subtype));
         if (reference) {
@@ -210,7 +223,8 @@ export default function getType(graffitiModels, {name, description, fields}, pat
       }
     } else if (type === 'Object') {
       const fields = subfields;
-      graphQLField.type = getType(graffitiModels, {name, description, fields}, newPath, rootType);
+      const nestedObjectName = getTypeFieldName(graphQLType.name, name);
+      graphQLField.type = getType(graffitiModels, {name: nestedObjectName, description, fields}, newPath, rootType);
     } else {
       graphQLField.type = stringToGraphQLType(type);
     }
@@ -273,9 +287,9 @@ function getTypes(graffitiModels) {
       const typeFields = reduce(fields, (typeFields, field, fieldName) => {
         if (field.args === connectionArgs) {
           // It's a connection
-          const fieldNameCapitalized = fieldName.charAt(0).toUpperCase() + fieldName.slice(1);
+          const connectionName = getTypeFieldName(typeName, fieldName);
           const {connectionType} = connectionDefinitions({
-            name: `${typeName}${fieldNameCapitalized}`,
+            name: connectionName,
             nodeType: types[field.type],
             connectionFields: {
               count: {
