@@ -1,3 +1,21 @@
+<a name="5.0.5"></a>
+## 5.0.5 (2016-01-27)
+
+
+### chore
+
+* chore(package): update dependencies ([22cebcb](https://github.com/RisingStack/graffiti-mongoose/commit/22cebcb))
+
+### docs
+
+* docs(readme): add bitHound badge ([f9b9251](https://github.com/RisingStack/graffiti-mongoose/commit/f9b9251))
+
+### fix
+
+* fix(type): fix conflit for nested object names ([5c5dd0e](https://github.com/RisingStack/graffiti-mongoose/commit/5c5dd0e)), closes [RisingStack/graffiti-mongoose#84](https://github.com/RisingStack/graffiti-mongoose/issues/84)
+
+
+
 <a name="5.0.4"></a>
 ## 5.0.4 (2016-01-18)
 
@@ -5,6 +23,7 @@
 ### chore
 
 * chore(example): update dependencies ([de00242](https://github.com/RisingStack/graffiti-mongoose/commit/de00242))
+* chore(package): bump version to 5.0.4 ([cdbdbf3](https://github.com/RisingStack/graffiti-mongoose/commit/cdbdbf3))
 * chore(package): update dependencies ([db90b07](https://github.com/RisingStack/graffiti-mongoose/commit/db90b07))
 
 ### docs
