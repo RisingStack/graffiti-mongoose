@@ -29,7 +29,7 @@
   ],
   "dependencies": {
     "graphql-relay": "^0.3.6",
-    "lodash": "^4.0.0"
+    "lodash": "^4.0.1"
   },
   "peerDependencies": {
     "graphql": "^0.4.14",
@@ -37,7 +37,7 @@
   },
   "devDependencies": {
     "babel": "^6.3.26",
-    "babel-cli": "^6.4.0",
+    "babel-cli": "^6.4.5",
     "babel-eslint": "^5.0.0-beta6",
     "babel-istanbul": "^0.6.0",
     "babel-polyfill": "^6.3.14",
@@ -47,12 +47,12 @@
     "chai": "^3.4.1",
     "chai-subset": "^1.2.0",
     "eslint": "^1.10.3",
-    "eslint-config-airbnb": "^3.1.0",
+    "eslint-config-airbnb": "^4.0.0",
     "graphql": "^0.4.14",
-    "mocha": "^2.3.4",
-    "mongoose": "^4.3.6",
+    "mocha": "^2.4.2",
+    "mongoose": "^4.3.7",
     "pre-commit": "^1.1.2",
-    "sinon": "^1.17.2",
+    "sinon": "^1.17.3",
     "sinon-chai": "^2.8.0"
   },
   "pre-commit": [

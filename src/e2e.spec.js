@@ -11,7 +11,7 @@ describe('e2e', () => {
     let user2;
     let schema;
     let hooks;
-    before(function beforeAll() {
+    before(() => {
       hooks = {
         viewer: {
           pre: spy(),

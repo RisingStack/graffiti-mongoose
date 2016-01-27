@@ -98,9 +98,9 @@ function extractPath(schemaPath) {
  * @return {Object) extractedSchemaPaths
  */
 function extractPaths(schemaPaths, model) {
-  return reduce(schemaPaths, (fields, schemaPath) => {
-    return merge(fields, extractPath(schemaPath, model));
-  }, {});
+  return reduce(schemaPaths, (fields, schemaPath) => (
+    merge(fields, extractPath(schemaPath, model))
+  ), {});
 }
 
 /**

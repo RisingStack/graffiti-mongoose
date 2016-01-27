@@ -79,9 +79,7 @@ describe('GraphQL generic type', () => {
                 type: GraphQLGeneric
               }
             },
-            resolve: (_, {bar}) => {
-              return new Unknown(bar.field + '-qux');
-            }
+            resolve: (_, {bar}) => new Unknown(`${bar.field}-qux`)
           }
         }
       })

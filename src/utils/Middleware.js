@@ -48,6 +48,6 @@ export default class Middleware {
         await fn.call(this, next, ...result);
         return lastResult;
       };
-    }, () => {})();
+    }, () => null)();
   }
 }

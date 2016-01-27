@@ -95,12 +95,10 @@ function updateOne(Collection, {id, _id, ...args}, info) {
 function deleteOne(Collection, args) {
   const _id = processId(args);
 
-  return Collection.remove({_id}).then(({result}) => {
-    return {
-      id: toGlobalId(Collection.modelName, _id),
-      ok: !!result.ok
-    };
-  });
+  return Collection.remove({_id}).then(({result}) => ({
+    id: toGlobalId(Collection.modelName, _id),
+    ok: !!result.ok
+  }));
 }
 
 function getList(Collection, selector, options = {}, info = null) {
@@ -113,14 +111,12 @@ function getList(Collection, selector, options = {}, info = null) {
   }
 
   const projection = getFieldList(info);
-  return Collection.find(selector, projection, options).then((result) => {
-    return result.map((value) => {
-      return {
-        ...value.toObject(),
-        _type: Collection.modelName
-      };
-    });
-  });
+  return Collection.find(selector, projection, options).then((result) => (
+    result.map((value) => ({
+      ...value.toObject(),
+      _type: Collection.modelName
+    }))
+  ));
 }
 
 function getOneResolver(graffitiModel) {
@@ -303,12 +299,10 @@ async function connectionFromModel(graffitiModel, args, info) {
     return emptyConnection();
   }
 
-  const edges = result.map((value) => {
-    return {
-      cursor: idToCursor(value._id),
-      node: value
-    };
-  });
+  const edges = result.map((value) => ({
+    cursor: idToCursor(value._id),
+    node: value
+  }));
 
   const firstElement = await getFirst(Collection);
   return {

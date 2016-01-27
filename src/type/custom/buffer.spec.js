@@ -73,9 +73,7 @@ describe('GraphQL buffer type', () => {
                 type: GraphQLBuffer
               }
             },
-            resolve: (_, {bar}) => {
-              return new Buffer(bar.toString() + '-qux');
-            }
+            resolve: (_, {bar}) => new Buffer(`${bar.toString()}-qux`)
           }
         }
       })

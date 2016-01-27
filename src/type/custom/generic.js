@@ -12,7 +12,7 @@ export default new GraphQLScalarType({
   parseValue: coerceDate,
   parseLiteral(ast) {
     if (ast.kind !== Kind.STRING) {
-      throw new GraphQLError('Query error: Can only parse strings to JSON but got a: ' + ast.kind, [ast]);
+      throw new GraphQLError(`Query error: Can only parse strings to buffers but got a: ${ast.kind}`, [ast]);
     }
 
     const json = ast.value.replace(/\'/g, '"');

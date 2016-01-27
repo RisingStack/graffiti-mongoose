@@ -44,9 +44,7 @@ describe('query', () => {
       model: {
         modelName: type,
         findById(id) {
-          const obj = objArray.find((obj) => {
-            return obj._id === id;
-          });
+          const obj = objArray.find((obj) => obj._id === id);
           return Promise.resolve(obj);
         },
 
@@ -126,12 +124,10 @@ describe('query', () => {
   describe('connectionFromModel', () => {
     it('should return a connection', async function connectionFromModelTest() {
       const result = await connectionFromModel(graffitiModels.type, {});
-      const edges = resultArray.map((obj) => {
-        return {
-          cursor: _idToCursor(obj._id),
-          node: obj
-        };
-      });
+      const edges = resultArray.map((obj) => ({
+        cursor: _idToCursor(obj._id),
+        node: obj
+      }));
       const startCursor = edges[0].cursor;
       const endCursor = edges[edges.length - 1].cursor;
       expect(result).to.containSubset({

@@ -36,8 +36,8 @@ describe('schema', () => {
 
   describe('getQueryField', () => {
     it('should return a singular and a plural query field', function getQueryFieldTest() {
-      this.sandbox.stub(query, 'getOneResolver').returns(() => {});
-      this.sandbox.stub(query, 'getListResolver').returns(() => {});
+      this.sandbox.stub(query, 'getOneResolver').returns(() => null);
+      this.sandbox.stub(query, 'getListResolver').returns(() => null);
 
       const graphQLType = types.Qux;
       const fields = getQueryField({Qux: {model: {}}}, graphQLType);
@@ -65,8 +65,8 @@ describe('schema', () => {
 
   describe('getMutationField', () => {
     it('should return an addXyz and an updateXyz field', function getMutationFieldTest() {
-      this.sandbox.stub(query, 'getAddOneMutateHandler').returns(() => {});
-      this.sandbox.stub(query, 'getUpdateOneMutateHandler').returns(() => {});
+      this.sandbox.stub(query, 'getAddOneMutateHandler').returns(() => null);
+      this.sandbox.stub(query, 'getUpdateOneMutateHandler').returns(() => null);
       const graphQLType = types.Qux;
       const fields = getMutationField({Qux: {model: {}}}, graphQLType);
       const args = {
@@ -147,14 +147,14 @@ describe('schema', () => {
       this.sandbox.stub(type, 'getTypes').returns(types);
     });
 
-    it('should return a GraphQL schema', function getSchemaTest() {
+    it('should return a GraphQL schema', () => {
       const schema = getSchema({});
       expect(schema).instanceOf(GraphQLSchema);
       expect(schema._queryType.name).to.be.equal('RootQuery');
       expect(schema._mutationType.name).to.be.equal('RootMutation');
     });
 
-    it('should return a GraphQL schema without mutations', function getSchemaTest() {
+    it('should return a GraphQL schema without mutations', () => {
       const schema = getSchema({}, {mutation: false});
       expect(schema).instanceOf(GraphQLSchema);
       expect(schema._queryType.name).to.be.equal('RootQuery');

@@ -39,10 +39,10 @@ function addType(name, type) {
 }
 
 // Node interface
-const {nodeInterface} = nodeDefinitions(null, (obj) => {
+const {nodeInterface} = nodeDefinitions(null, (obj) => (
   // Type resolver
-  return obj._type ? types[obj._type] : null;
-});
+  obj._type ? types[obj._type] : null
+));
 
 // GraphQL Viewer type
 const GraphQLViewer = new GraphQLObjectType({
@@ -245,9 +245,7 @@ export default function getType(graffitiModels, {name, description, fields}, pat
     }
 
     if (!graphQLField.resolve) {
-      graphQLField.resolve = addHooks((source) => {
-        return source[name];
-      }, hooks);
+      graphQLField.resolve = addHooks((source) => source[name], hooks);
     }
 
     graphQLFields[name] = graphQLField;

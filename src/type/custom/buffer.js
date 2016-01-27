@@ -16,7 +16,7 @@ export default new GraphQLScalarType({
   parseValue: coerceBuffer,
   parseLiteral(ast) {
     if (ast.kind !== Kind.STRING) {
-      throw new GraphQLError('Query error: Can only parse strings to buffers but got a: ' + ast.kind, [ast]);
+      throw new GraphQLError(`Query error: Can only parse strings to buffers but got a: ${ast.kind}`, [ast]);
     }
 
     const result = new Buffer(ast.value);
