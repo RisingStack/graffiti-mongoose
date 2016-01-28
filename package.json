@@ -8,7 +8,7 @@
     "eslint": "eslint src",
     "prepublish": "npm run build",
     "build": "rm -rf lib/* && babel src --ignore *.spec.js --out-dir lib",
-    "coverage": "NODE_ENV=test babel-istanbul --include-babel-polyfill cover _mocha 'src/**/*.spec.js'"
+    "coverage": "NODE_ENV=test babel-istanbul cover _mocha -- --require babel-polyfill 'src/**/*.spec.js'"
   },
   "author": "RisingStack",
   "repository": {
