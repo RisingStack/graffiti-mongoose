@@ -1,9 +1,24 @@
+<a name="5.0.6"></a>
+## 5.0.6 (2016-02-02)
+
+
+### chore
+
+* chore(package): update dependencies ([7e4b785](https://github.com/RisingStack/graffiti-mongoose/commit/7e4b785))
+
+### fix
+
+* fix(test): fix coverage test run ([3345a59](https://github.com/RisingStack/graffiti-mongoose/commit/3345a59))
+
+
+
 <a name="5.0.5"></a>
 ## 5.0.5 (2016-01-27)
 
 
 ### chore
 
+* chore(package): bump version to 5.0.5 ([04da755](https://github.com/RisingStack/graffiti-mongoose/commit/04da755))
 * chore(package): update dependencies ([22cebcb](https://github.com/RisingStack/graffiti-mongoose/commit/22cebcb))
 
 ### docs
