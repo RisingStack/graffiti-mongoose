@@ -7,7 +7,7 @@ import {getSchema} from '../src';
 import User from './user';
 
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost/graphql');
-const port = process.env.PORT || 8081;
+const port = process.env.PORT || 8080;
 
 const hooks = {
   viewer: {
