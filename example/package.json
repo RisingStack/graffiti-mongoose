@@ -5,10 +5,11 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "@risingstack/graffiti": "^2.1.2",
+    "@risingstack/graffiti": "^3.0.1",
     "@risingstack/graffiti-mongoose": "../",
     "babel-runtime": "^6.3.19",
-    "koa": "^1.1.2"
+    "koa": "^1.1.2",
+    "koa-bodyparser": "^2.0.1"
   },
   "devDependencies": {
     "babel": "^6.3.26"
