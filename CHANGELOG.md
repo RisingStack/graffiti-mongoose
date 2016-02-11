@@ -1,9 +1,24 @@
+<a name="5.0.7"></a>
+## 5.0.7 (2016-02-11)
+
+
+### chore
+
+* chore(package): update dependencies ([7600d6b](https://github.com/RisingStack/graffiti-mongoose/commit/7600d6b))
+
+### refactor
+
+* refactor(example): change port to 8080 ([d7bf170](https://github.com/RisingStack/graffiti-mongoose/commit/d7bf170))
+
+
+
 <a name="5.0.6"></a>
 ## 5.0.6 (2016-02-02)
 
 
 ### chore
 
+* chore(package): bump version to 3.0.1 ([12b7436](https://github.com/RisingStack/graffiti-mongoose/commit/12b7436))
 * chore(package): update dependencies ([7e4b785](https://github.com/RisingStack/graffiti-mongoose/commit/7e4b785))
 
 ### fix
