@@ -31,6 +31,7 @@ import {
 import query from './../query';
 import {addHooks} from '../utils';
 import viewerInstance from '../model/viewer';
+import {toCollectionName} from 'mongoose/lib/utils';
 
 const idField = {
   name: 'id',
@@ -56,7 +57,7 @@ function getSingularQueryField(graffitiModel, type, hooks = {}) {
 function getPluralQueryField(graffitiModel, type, hooks = {}) {
   const {name} = type;
   const {plural} = hooks;
-  const pluralName = `${name.toLowerCase()}s`;
+  const pluralName = toCollectionName(name);
 
   return {
     [pluralName]: {
@@ -86,7 +87,7 @@ function getQueryField(graffitiModel, type, hooks) {
 function getConnectionField(graffitiModel, type, hooks = {}) {
   const {name} = type;
   const {plural} = hooks;
-  const pluralName = `${name.toLowerCase()}s`;
+  const pluralName = toCollectionName(name.toLowerCase());
   const {connectionType} = connectionDefinitions({name, nodeType: type, connectionFields: {
     count: {
       name: 'count',

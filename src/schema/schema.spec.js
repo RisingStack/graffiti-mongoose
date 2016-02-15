@@ -50,7 +50,7 @@ describe('schema', () => {
             }
           }
         },
-        quxs: {
+        quxes: {
           type: new GraphQLList(graphQLType),
           args: {
             bar: {
@@ -104,7 +104,7 @@ describe('schema', () => {
           _typeConfig: {
             fields: {
               qux: {},
-              quxs: {},
+              quxes: {},
               viewer: {},
               node: {
                 name: 'node',
@@ -136,7 +136,7 @@ describe('schema', () => {
       });
       expect(fields.query._typeConfig.fields.viewer.type._typeConfig.fields()).to.containSubset({
         qux: {},
-        quxs: {}
+        quxes: {}
       });
     });
   });
