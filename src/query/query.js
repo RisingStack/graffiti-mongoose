@@ -169,9 +169,12 @@ function getListResolver(graffitiModel) {
       args.id = ids;
     }
 
+    const { orderBy: sort } = args;
+    delete args.orderBy;
+
     const Collection = graffitiModel.model;
     if (Collection) {
-      return getList(Collection, args, {}, info);
+      return getList(Collection, args, {sort}, info);
     }
 
     return null;

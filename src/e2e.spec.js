@@ -294,7 +294,7 @@ describe('e2e', () => {
       });
 
       it('should return results in ascending order', async function Test() {
-        const result = await graphql(schema, `{
+        let result = await graphql(schema, `{
           viewer {
             users(orderBy: NAME_ASC) {
               edges {
@@ -311,10 +311,22 @@ describe('e2e', () => {
           { node: { name: 'Foo' } },
           { node: { name: 'Mother' } }
         ]);
+
+        result = await graphql(schema, `{
+          users(orderBy: NAME_ASC) {
+            name
+          }
+        }`);
+
+        expect(result.data.users).to.be.eql([
+          { name: 'Bar' },
+          { name: 'Foo' },
+          { name: 'Mother' }
+        ]);
       });
 
       it('should return results in descending order', async function Test() {
-        const result = await graphql(schema, `{
+        let result = await graphql(schema, `{
           viewer {
             users(orderBy: NAME_DESC) {
               edges {
@@ -330,6 +342,18 @@ describe('e2e', () => {
           { node: { name: 'Mother' } },
           { node: { name: 'Foo' } },
           { node: { name: 'Bar' } }
+        ]);
+
+        result = await graphql(schema, `{
+          users(orderBy: NAME_DESC) {
+            name
+          }
+        }`);
+
+        expect(result.data.users).to.be.eql([
+          { name: 'Mother' },
+          { name: 'Foo' },
+          { name: 'Bar' }
         ]);
       });
 
