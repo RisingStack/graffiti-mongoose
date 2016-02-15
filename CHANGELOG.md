@@ -1,9 +1,20 @@
+<a name="5.0.8"></a>
+## 5.0.8 (2016-02-15)
+
+
+### fix
+
+* fix(query): fix orderBy argument on lists ([ef9a603](https://github.com/RisingStack/graffiti-mongoose/commit/ef9a603))
+
+
+
 <a name="5.0.7"></a>
 ## 5.0.7 (2016-02-11)
 
 
 ### chore
 
+* chore(package): bump version to 5.0.7 ([9054e96](https://github.com/RisingStack/graffiti-mongoose/commit/9054e96))
 * chore(package): update dependencies ([7600d6b](https://github.com/RisingStack/graffiti-mongoose/commit/7600d6b))
 
 ### refactor
