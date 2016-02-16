@@ -70,7 +70,8 @@ import graphql from 'graphql';
 import User from './User';
 
 const options = {
-  mutation: false // mutation fields can be disabled
+  mutation: false, // mutation fields can be disabled
+  allowMongoIDMutation: false // mutation of mongo _id can be enabled
 };
 const schema = getSchema([User], options);
 
