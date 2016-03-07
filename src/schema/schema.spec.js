@@ -31,6 +31,17 @@ describe('schema', () => {
           type: GraphQLID
         }
       })
+    }),
+    TestQuery: new GraphQLObjectType({
+      name: 'TestQuery',
+      type: GraphQLString,
+      fields: () => ({
+        fetchCount: {
+          name: 'fetchCount',
+          type: GraphQLString,
+          resolve: () => '42'
+        }
+      })
     })
   };
 
@@ -159,6 +170,46 @@ describe('schema', () => {
       expect(schema).instanceOf(GraphQLSchema);
       expect(schema._queryType.name).to.be.equal('RootQuery');
       expect(schema._mutationType).to.be.equal(undefined);
+    });
+
+    it('should return a GraphQL schema with custom queries', () => {
+      const graphQLType = types.TestQuery;
+      const customQueries = {
+        testQuery: {
+          type: graphQLType,
+          args: {
+            id: {
+              type: new GraphQLNonNull(GraphQLID)
+            }
+          }
+        }
+      };
+      const schema = getSchema({}, {customQueries});
+      expect(schema).instanceOf(GraphQLSchema);
+      expect(schema._queryType.name).to.be.equal('RootQuery');
+      expect(schema._mutationType.name).to.be.equal('RootMutation');
+      expect(schema._queryType._fields.testQuery.name).to.be.equal('testQuery');
+      expect(schema._queryType._fields.testQuery.type._fields.fetchCount.resolve()).to.be.equal('42');
+    });
+
+    it('should return a GraphQL schema with custom mutations', () => {
+      const graphQLType = types.TestQuery;
+      const customMutations = {
+        testQuery: {
+          type: graphQLType,
+          args: {
+            id: {
+              type: new GraphQLNonNull(GraphQLID)
+            }
+          }
+        }
+      };
+      const schema = getSchema({}, {customMutations});
+      expect(schema).instanceOf(GraphQLSchema);
+      expect(schema._queryType.name).to.be.equal('RootQuery');
+      expect(schema._mutationType.name).to.be.equal('RootMutation');
+      expect(schema._mutationType._fields.testQuery.name).to.be.equal('testQuery');
+      expect(schema._mutationType._fields.testQuery.type._fields.fetchCount.resolve()).to.be.equal('42');
     });
   });
 });
