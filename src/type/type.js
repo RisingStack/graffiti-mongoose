@@ -235,7 +235,7 @@ export default function getType(graffitiModels, {name, description, fields}, pat
         type: reference,
         resolve: addHooks((rootValue, args, info) => {
           const resolver = getOneResolver(graffitiModels[reference]);
-          return resolver(rootValue, {id: rootValue[name].toString()}, info);
+          return resolver(rootValue, {id: rootValue[name] ? rootValue[name].toString() : null}, info);
         }, hooks)
       };
     }
