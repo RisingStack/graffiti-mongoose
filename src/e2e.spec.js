@@ -375,6 +375,41 @@ describe('e2e', () => {
           { node: { name: 'Foo' } }
         ]);
       });
+
+      it('should be able to paginate the ordered results', async function Test() {
+        let result = await graphql(schema, `{
+          viewer {
+            users(orderBy: NAME_DESC) {
+              edges {
+                cursor
+                node {
+                  name
+                }
+              }
+            }
+          }
+        }`);
+
+        const edges1 = result.data.viewer.users.edges;
+        const cursor = edges1[0].cursor;
+
+        result = await graphql(schema, `{
+          viewer {
+            users(orderBy: NAME_DESC, after: "${cursor}", first: 1) {
+              edges {
+                cursor
+                node {
+                  name
+                }
+              }
+            }
+          }
+        }`);
+
+        const edges2 = result.data.viewer.users.edges;
+        expect(edges2.length).to.eql(1);
+        expect(edges2).to.eql(edges1.slice(1, 2));
+      });
     });
 
     describe('mutations', () => {
