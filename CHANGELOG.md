@@ -1,6 +1,24 @@
+<a name="5.0.9"></a>
+## 5.0.9 (2016-03-13)
+
+
+### feat
+
+* feat(schema): use mongoose compatible plurals for model names ([9fd9680](https://github.com/RisingStack/graffiti-mongoose/commit/9fd9680))
+
+### test
+
+* test(e2e): add test for pagination with ordering ([c4e2d49](https://github.com/RisingStack/graffiti-mongoose/commit/c4e2d49))
+
+
+
 <a name="5.0.8"></a>
 ## 5.0.8 (2016-02-15)
 
+
+### chore
+
+* chore(package): bump version to 5.0.8 ([ae061a3](https://github.com/RisingStack/graffiti-mongoose/commit/ae061a3))
 
 ### fix
 
