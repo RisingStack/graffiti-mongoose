@@ -1,6 +1,20 @@
+<a name="5.0.10"></a>
+## 5.0.10 (2016-03-18)
+
+
+### fix
+
+* fix(type): resolve null id on optionnal fields ([fc9c50f](https://github.com/RisingStack/graffiti-mongoose/commit/fc9c50f))
+
+
+
 <a name="5.0.9"></a>
 ## 5.0.9 (2016-03-13)
 
+
+### chore
+
+* chore(package): bump version to 5.0.9 ([f3f1afc](https://github.com/RisingStack/graffiti-mongoose/commit/f3f1afc))
 
 ### feat
 
