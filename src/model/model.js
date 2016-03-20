@@ -1,6 +1,8 @@
 import {reduce, reduceRight, merge} from 'lodash';
 import mongoose from 'mongoose';
 
+const embeddedModels = {};
+
 /**
  * @method getField
  * @param schemaPaths
@@ -72,6 +74,18 @@ function extractPath(schemaPath) {
         type: 'Array',
         subtype: 'Object',
         fields
+      };
+    } else if (schemaPath instanceof mongoose.Schema.Types.Embedded) {
+      schemaPath.modelName = schemaPath.schema.options.graphqlTypeName || sub;
+      // embedded model must be unique Instance
+      const embeddedModel = embeddedModels.hasOwnProperty(schemaPath.modelName)
+        ? embeddedModels[schemaPath.modelName]
+        : getModel(schemaPath); // eslint-disable-line no-use-before-define
+
+      embeddedModels[schemaPath.modelName] = embeddedModel;
+      obj[sub] = {
+        ...getField(schemaPath),
+        embeddedModel
       };
     } else if (key === (subs.length - 1)) {
       obj[sub] = getField(schemaPath);

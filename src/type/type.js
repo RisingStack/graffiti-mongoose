@@ -182,7 +182,7 @@ const resolveReference = {};
  * @param  {Boolean} root
  * @return {GraphQLObjectType}
  */
-export default function getType(graffitiModels, {name, description, fields}, path = [], rootType = null) {
+function getType(graffitiModels, {name, description, fields}, path = [], rootType = null) {
   const root = path.length === 0;
   const graphQLType = {name, description};
   rootType = rootType || graphQLType;
@@ -190,7 +190,7 @@ export default function getType(graffitiModels, {name, description, fields}, pat
   // These references have to be resolved when all type definitions are avaiable
   resolveReference[graphQLType.name] = resolveReference[graphQLType.name] || {};
   const graphQLTypeFields = reduce(fields, (graphQLFields,
-      {name, description, type, subtype, reference, nonNull, hidden, hooks, fields: subfields}, key) => {
+      {name, description, type, subtype, reference, nonNull, hidden, hooks, fields: subfields, embeddedModel}, key) => {
     name = name || key;
     const newPath = [...path, name];
 
@@ -225,6 +225,12 @@ export default function getType(graffitiModels, {name, description, fields}, pat
       const fields = subfields;
       const nestedObjectName = getTypeFieldName(graphQLType.name, name);
       graphQLField.type = getType(graffitiModels, {name: nestedObjectName, description, fields}, newPath, rootType);
+    } else if (type === 'Embedded') {
+      const type = types.hasOwnProperty(name)
+        ? types[name]
+        : getType(graffitiModels, embeddedModel, ['embedded']);
+      type.mongooseEmbedded = true;
+      graphQLField.type = type;
     } else {
       graphQLField.type = stringToGraphQLType(type);
     }
@@ -334,6 +340,8 @@ function getTypes(graffitiModels) {
 
   return types;
 }
+
+export default getType;
 
 export default {
   getTypes

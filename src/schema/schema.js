@@ -32,6 +32,7 @@ import query from './../query';
 import {addHooks} from '../utils';
 import viewerInstance from '../model/viewer';
 import {toCollectionName} from 'mongoose/lib/utils';
+import createInputObject from '../type/custom/to-input-object';
 
 const idField = {
   name: 'id',
@@ -115,6 +116,11 @@ function getMutationField(graffitiModel, type, viewer, hooks = {}, allowMongoIDM
         inputFields[field.name] = {
           name: field.name,
           type: new GraphQLList(GraphQLID)
+        };
+      } else if (field.type.mongooseEmbedded) {
+        inputFields[field.name] = {
+          name: field.name,
+          type: createInputObject(field.type)
         };
       } else {
         inputFields[field.name] = {
