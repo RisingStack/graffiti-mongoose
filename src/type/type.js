@@ -84,8 +84,10 @@ function stringToGraphQLType(type) {
  * @return {Object}
  */
 function listToGraphQLEnumType(list, name) {
-  const values = {};
-  list.forEach((val) => { values[val] = {value: val}; });
+  const values = reduce(list, (values, val) => {
+    values[val] = {value: val};
+    return values;
+  }, {});
   return new GraphQLEnumType({ name, values });
 }
 
