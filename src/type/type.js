@@ -78,6 +78,18 @@ function stringToGraphQLType(type) {
 }
 
 /**
+ * Returns a GraphQL Enum type based on a List of Strings
+ * @param  {Array} list
+ * @param  {String} name
+ * @return {Object}
+ */
+function listToGraphQLEnumType(list, name) {
+  const values = {};
+  list.forEach((val) => { values[val] = {value: val}; });
+  return new GraphQLEnumType({ name, values });
+}
+
+/**
  * Extracts the fields of a GraphQL type
  * @param  {GraphQLType} type
  * @return {Object}
@@ -190,7 +202,8 @@ function getType(graffitiModels, {name, description, fields}, path = [], rootTyp
   // These references have to be resolved when all type definitions are avaiable
   resolveReference[graphQLType.name] = resolveReference[graphQLType.name] || {};
   const graphQLTypeFields = reduce(fields, (graphQLFields,
-      {name, description, type, subtype, reference, nonNull, hidden, hooks, fields: subfields, embeddedModel}, key) => {
+      {name, description, type, subtype, reference, nonNull, hidden, hooks,
+       fields: subfields, embeddedModel, enumValues}, key) => {
     name = name || key;
     const newPath = [...path, name];
 
@@ -231,6 +244,8 @@ function getType(graffitiModels, {name, description, fields}, path = [], rootTyp
         : getType(graffitiModels, embeddedModel, ['embedded']);
       type.mongooseEmbedded = true;
       graphQLField.type = type;
+    } else if (enumValues && type === 'String') {
+      graphQLField.type = listToGraphQLEnumType(enumValues, getTypeFieldName(graphQLType.name, `${name}Enum`));
     } else {
       graphQLField.type = stringToGraphQLType(type);
     }

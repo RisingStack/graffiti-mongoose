@@ -27,6 +27,10 @@ function getField(schemaPath) {
     nonNull: !!index
   };
 
+  if (schemaPath.enumValues && schemaPath.enumValues.length > 0) {
+    field.enumValues = schemaPath.enumValues;
+  }
+
   // ObjectID ref
   if (ref) {
     field.reference = ref;
