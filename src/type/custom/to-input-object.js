@@ -7,14 +7,24 @@ import {
   GraphQLScalarType,
   GraphQLInputObjectType,
   GraphQLEnumType,
-  GraphQLID,
+  GraphQLID
 } from 'graphql';
 
+const cachedTypes = {};
+
 function createInputObject(type) {
-  return new GraphQLInputObjectType({
-    name: `${type.name}Input`,
-    fields: filterFields(type.getFields(), (field) => (!field.noInputObject)), // eslint-disable-line
-  });
+  const typeName = `${type.name}Input`;
+
+  if (!cachedTypes.hasOwnProperty(typeName)) {
+    cachedTypes[typeName] = new GraphQLInputObjectType({
+      name: typeName,
+      fields: {}
+    });
+    cachedTypes[typeName]._typeConfig.fields =
+      () => filterFields(type.getFields(), (field) => (!field.noInputObject)); // eslint-disable-line
+  }
+
+  return cachedTypes[typeName];
 }
 
 function filterFields(obj, filter) {
