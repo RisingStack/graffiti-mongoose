@@ -33,7 +33,7 @@ describe('GraphQL date type', () => {
     });
 
     return expect(
-      await graphql(schema, `{ now }`)
+      await graphql(schema, '{ now }')
     ).to.deep.equal({
       data: {
         now: now.toJSON()
@@ -57,7 +57,7 @@ describe('GraphQL date type', () => {
     });
 
     return expect(
-      await graphql(schema, `{ now }`)
+      await graphql(schema, '{ now }')
     ).to.deep.equal({
       data: {
         now: null
@@ -81,7 +81,7 @@ describe('GraphQL date type', () => {
     });
 
     return expect(
-      await graphql(schema, `{ now }`)
+      await graphql(schema, '{ now }')
     ).to.containSubset({
       errors: [
         {

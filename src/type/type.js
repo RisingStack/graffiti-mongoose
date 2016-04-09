@@ -229,9 +229,9 @@ function getType(graffitiModels, {name, description, fields}, path = [], rootTyp
             name,
             type: reference,
             args: connectionArgs,
-            resolve: addHooks((rootValue, args, info) => {
+            resolve: addHooks((rootValue, args, context, info) => {
               args.id = rootValue[name].map((i) => i.toString());
-              return connectionFromModel(graffitiModels[reference], args, info);
+              return connectionFromModel(graffitiModels[reference], args, context, info);
             }, hooks)
           };
         }
@@ -256,9 +256,9 @@ function getType(graffitiModels, {name, description, fields}, path = [], rootTyp
       resolveReference[rootType.name][newPath.join('.')] = {
         name,
         type: reference,
-        resolve: addHooks((rootValue, args, info) => {
+        resolve: addHooks((rootValue, args, context, info) => {
           const resolver = getOneResolver(graffitiModels[reference]);
-          return resolver(rootValue, {id: rootValue[name] ? rootValue[name].toString() : null}, info);
+          return resolver(rootValue, {id: rootValue[name] ? rootValue[name].toString() : null}, context, info);
         }, hooks)
       };
     }
@@ -357,8 +357,6 @@ function getTypes(graffitiModels) {
 
   return types;
 }
-
-export default getType;
 
 export default {
   getTypes

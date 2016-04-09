@@ -107,7 +107,7 @@ describe('type', () => {
   describe('getType', () => {
     it('should implement the Node interface', () => {
       const result = getType([], user);
-      expect(result._interfaces).to.containSubset([{
+      expect(result._typeConfig.interfaces).to.containSubset([{
         name: 'Node'
       }]);
       expect(result._typeConfig.fields()).to.containSubset({

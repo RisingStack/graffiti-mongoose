@@ -11,8 +11,7 @@ const port = process.env.PORT || 8080;
 
 const hooks = {
   viewer: {
-    pre: (next, root, args, {rootValue}) => {
-      const {request} = rootValue;
+    pre: (next, root, args, request) => {
       console.log(request);
       next();
     },

@@ -29,7 +29,7 @@ describe('GraphQL buffer type', () => {
     });
 
     return expect(
-      await graphql(schema, `{ foo }`)
+      await graphql(schema, '{ foo }')
     ).to.deep.equal({
       data: {
         foo: buffer.toString()
@@ -53,7 +53,7 @@ describe('GraphQL buffer type', () => {
     });
 
     return expect(
-      await graphql(schema, `{ foo }`)
+      await graphql(schema, '{ foo }')
     ).to.deep.equal({
       data: {
         foo: null

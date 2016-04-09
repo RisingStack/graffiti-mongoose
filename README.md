@@ -198,8 +198,7 @@ Examples:
 ```javascript
 const hooks = {
   viewer: {
-    pre: (next, root, args, {rootValue}) => {
-      const {request} = rootValue;
+    pre: (next, root, args, request) => {
       // authorize the logged in user based on the request
       authorize(request);
       next();
@@ -231,9 +230,7 @@ const UserSchema = new mongoose.Schema({
   name: {
     type: String,
     hooks: {
-      pre: (next, root, args, {rootValue}) => {
-        const {request} = rootValue;
-
+      pre: (next, root, args, request) => {
         // authorize the logged in user based on the request
         // throws error if the user has no right to request the user names
         authorize(request);

@@ -123,13 +123,6 @@ describe('schema', () => {
                   id: {
                     type: new GraphQLNonNull(GraphQLID)
                   }
-                },
-                type: {
-                  _implementations: [
-                    {
-                      name: 'Viewer'
-                    }
-                  ]
                 }
               }
             }

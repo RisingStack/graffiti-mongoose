@@ -27,7 +27,7 @@ function getCount(Collection, selector) {
   return Collection.count(selector);
 }
 
-function getOne(Collection, args, info) {
+function getOne(Collection, args, context, info) {
   const id = processId(args);
   const projection = getFieldList(info);
   return Collection.findById(id, projection).then((result) => {
@@ -64,7 +64,7 @@ function addOne(Collection, args) {
   });
 }
 
-function updateOne(Collection, {id, _id, ...args}, info) {
+function updateOne(Collection, {id, _id, ...args}, context, info) {
   _id = processId({id, _id});
 
   forEach(args, (arg, key) => {
@@ -85,7 +85,7 @@ function updateOne(Collection, {id, _id, ...args}, info) {
 
   return Collection.update({_id}, args).then((res) => {
     if (res.ok) {
-      return getOne(Collection, {_id}, info);
+      return getOne(Collection, {_id}, context, info);
     }
 
     return null;
@@ -101,7 +101,7 @@ function deleteOne(Collection, args) {
   }));
 }
 
-function getList(Collection, selector, options = {}, info = null) {
+function getList(Collection, selector, options = {}, context, info = null) {
   if (selector && (isArray(selector.id) || isArray(selector._id))) {
     const {id, _id = id} = selector;
     delete selector.id;
@@ -120,10 +120,10 @@ function getList(Collection, selector, options = {}, info = null) {
 }
 
 function getOneResolver(graffitiModel) {
-  return (root, args, info) => {
+  return (root, args, context, info) => {
     const Collection = graffitiModel.model;
     if (Collection) {
-      return getOne(Collection, args, info);
+      return getOne(Collection, args, context, info);
     }
 
     return null;
@@ -164,7 +164,7 @@ function getDeleteOneMutateHandler(graffitiModel) {
 }
 
 function getListResolver(graffitiModel) {
-  return (root, {ids, ...args} = {}, info) => {
+  return (root, {ids, ...args} = {}, context, info) => {
     if (ids) {
       args.id = ids;
     }
@@ -174,7 +174,7 @@ function getListResolver(graffitiModel) {
 
     const Collection = graffitiModel.model;
     if (Collection) {
-      return getList(Collection, args, {sort}, info);
+      return getList(Collection, args, {sort}, context, info);
     }
 
     return null;
@@ -193,14 +193,14 @@ function getFirst(Collection) {
  * an object based on a global id
  */
 function getIdFetcher(graffitiModels) {
-  return function idFetcher(obj, {id: globalId}, info) {
+  return function idFetcher(obj, {id: globalId}, context, info) {
     const {type, id} = fromGlobalId(globalId);
 
     if (type === 'Viewer') {
       return viewer;
     } else if (graffitiModels[type]) {
       const Collection = graffitiModels[type].model;
-      return getOne(Collection, {id}, info);
+      return getOne(Collection, {id}, context, info);
     }
 
     return null;
@@ -263,7 +263,7 @@ function getId(cursor) {
 /**
  * Returns a connection based on a graffitiModel
  */
-async function connectionFromModel(graffitiModel, args, info) {
+async function connectionFromModel(graffitiModel, args, context, info) {
   const Collection = graffitiModel.model;
   if (!Collection) {
     return emptyConnection();
@@ -295,7 +295,7 @@ async function connectionFromModel(graffitiModel, args, info) {
     limit,
     skip: offset,
     sort: orderBy
-  }, info);
+  }, context, info);
   const count = await getCount(Collection, selector);
 
   if (result.length === 0) {

@@ -35,7 +35,7 @@ describe('GraphQL generic type', () => {
     });
 
     return expect(
-      await graphql(schema, `{ foo }`)
+      await graphql(schema, '{ foo }')
     ).to.deep.equal({
       data: {
         foo: GraphQLGeneric.serialize(unknown)
@@ -59,7 +59,7 @@ describe('GraphQL generic type', () => {
     });
 
     return expect(
-      await graphql(schema, `{ foo }`)
+      await graphql(schema, '{ foo }')
     ).to.deep.equal({
       data: {
         foo: null

@@ -3,7 +3,7 @@ import { Kind } from 'graphql/language';
 
 function coerceDate(value) {
   const json = JSON.stringify(value);
-  return json.replace(/\"/g, '\'');
+  return json.replace(/\"/g, '\''); // eslint-disable-line
 }
 
 export default new GraphQLScalarType({
@@ -15,7 +15,7 @@ export default new GraphQLScalarType({
       throw new GraphQLError(`Query error: Can only parse strings to buffers but got a: ${ast.kind}`, [ast]);
     }
 
-    const json = ast.value.replace(/\'/g, '"');
+    const json = ast.value.replace(/\'/g, '"'); // eslint-disable-line
     return JSON.parse(json);
   }
 });

@@ -15,20 +15,18 @@ import {
   globalIdField
 } from 'graphql-relay';
 import model from './../model';
-import {
+import type, {
   GraphQLViewer,
   nodeInterface,
   getTypeFields,
   getArguments,
   setTypeFields
 } from './../type';
-import type from './../type';
-import {
+import query, {
   idToCursor,
   getIdFetcher,
   connectionFromModel
 } from './../query';
-import query from './../query';
 import {addHooks} from '../utils';
 import viewerInstance from '../model/viewer';
 import {toCollectionName} from 'mongoose/lib/utils';

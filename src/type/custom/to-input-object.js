@@ -10,8 +10,16 @@ import {
   GraphQLID
 } from 'graphql';
 
-const cachedTypes = {};
+function filterFields(obj, filter) {
+  return Object.keys(obj)
+    .filter(filter)
+    .reduce((result, key) => ({
+      ...result,
+      [key]: convertInputObjectField(obj[key]) // eslint-disable-line
+    }), {});
+}
 
+const cachedTypes = {};
 function createInputObject(type) {
   const typeName = `${type.name}Input`;
 
@@ -27,16 +35,6 @@ function createInputObject(type) {
   return cachedTypes[typeName];
 }
 
-function filterFields(obj, filter) {
-  const result = {};
-  Object.keys(obj).forEach((key) => {
-    if (filter(obj[key])) {
-      result[key] = convertInputObjectField(obj[key]); // eslint-disable-line no-use-before-define
-    }
-  });
-  return result;
-}
-
 function convertInputObjectField(field) {
   let fieldType = field.type;
   const wrappers = [];
@@ -46,15 +44,10 @@ function convertInputObjectField(field) {
     fieldType = fieldType.ofType;
   }
 
-  if (
-    !(fieldType instanceof GraphQLInputObjectType ||
-      fieldType instanceof GraphQLScalarType ||
-      fieldType instanceof GraphQLEnumType
-    )
-  ) {
-    fieldType = fieldType.getInterfaces().includes(nodeInterface)
-      ? GraphQLID
-      : createInputObject(fieldType);
+  if (!(fieldType instanceof GraphQLInputObjectType ||
+        fieldType instanceof GraphQLScalarType ||
+        fieldType instanceof GraphQLEnumType)) {
+    fieldType = fieldType.getInterfaces().includes(nodeInterface) ? GraphQLID : createInputObject(fieldType);
   }
 
   fieldType = wrappers.reduce((type, Wrapper) => new Wrapper(type), fieldType);
