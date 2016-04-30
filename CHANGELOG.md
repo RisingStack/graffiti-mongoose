@@ -1,6 +1,36 @@
+<a name="5.1.0"></a>
+# 5.1.0 (2016-04-30)
+
+
+### chore
+
+* chore(package): update dependencies ([8a54912](https://github.com/RisingStack/graffiti-mongoose/commit/8a54912))
+
+### feat
+
+* feat(model): add support for enums ([a0d151a](https://github.com/RisingStack/graffiti-mongoose/commit/a0d151a))
+* feat(model): add support for mongoose embedded schemas ([21e1e31](https://github.com/RisingStack/graffiti-mongoose/commit/21e1e31))
+* feat(schema): add allowMongoIDMutation to options ([5df7147](https://github.com/RisingStack/graffiti-mongoose/commit/5df7147))
+* feat(schema): add customQueries and customMutations to options ([b2b841e](https://github.com/RisingStack/graffiti-mongoose/commit/b2b841e))
+* feat(schema): add support for objects nested in lists ([564cb7c](https://github.com/RisingStack/graffiti-mongoose/commit/564cb7c))
+
+### fix
+
+* fix(type): add to input-object ability for self-nesting ([c28e59e](https://github.com/RisingStack/graffiti-mongoose/commit/c28e59e))
+
+### style
+
+* style(type): using reduce for enum values ([44356a3](https://github.com/RisingStack/graffiti-mongoose/commit/44356a3))
+
+
+
 <a name="5.0.10"></a>
 ## 5.0.10 (2016-03-18)
 
+
+### chore
+
+* chore(package): bump version to 5.0.10 ([a47f729](https://github.com/RisingStack/graffiti-mongoose/commit/a47f729))
 
 ### fix
 
