@@ -7,7 +7,7 @@
 
 `graffiti-mongoose` generates `GraphQL` types and schemas from your existing `mongoose` models, that's how simple it is. The generated schema is compatible with [Relay](https://facebook.github.io/relay/).
 
-For quick jump check out the [Usage section](https://github.com/RisingStack/graffiti-mongoose#graffiti-mongoose-1).
+For quick jump check out the [Usage section](https://github.com/RisingStack/graffiti-mongoose#usage).
 
 ## Install
 
