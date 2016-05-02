@@ -1,4 +1,4 @@
-import {reduce, isArray} from 'lodash';
+import {reduce, isArray, isFunction, mapValues} from 'lodash';
 import {
   GraphQLList,
   GraphQLNonNull,
@@ -258,8 +258,10 @@ function getFields(graffitiModels, {
       }
     };
   }, {
-    queries: customQueries,
-    mutations: customMutations
+    queries: isFunction(customQueries) ?
+      customQueries(mapValues(types, (type) => createInputObject(type))) : customQueries,
+    mutations: isFunction(customMutations) ?
+      customMutations(mapValues(types, (type) => createInputObject(type))) : customMutations
   });
 
   const RootQuery = new GraphQLObjectType({

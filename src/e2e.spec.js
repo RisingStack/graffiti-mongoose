@@ -1,3 +1,5 @@
+/* eslint-disable no-unused-expressions */
+
 import {expect} from 'chai';
 import {spy} from 'sinon';
 
@@ -261,7 +263,7 @@ describe('e2e', () => {
         }`);
 
         const {id, users} = result.data.viewer;
-        expect(id).to.be.ok; // eslint-disable-line
+        expect(id).to.be.ok;
         expect(users.count).to.be.equal(3);
 
         expect(users.edges).to.containSubset([
@@ -445,7 +447,7 @@ describe('e2e', () => {
           }
         `);
 
-        expect(result.errors).not.to.be.ok; // eslint-disable-line
+        expect(result.errors).not.to.be.ok;
       });
 
       it('should update data', async function Test() {
@@ -557,8 +559,8 @@ describe('e2e', () => {
         pre.reset();
         post.reset();
 
-        expect(pre.called).to.be.false; // eslint-disable-line
-        expect(post.called).to.be.false; // eslint-disable-line
+        expect(pre.called).to.be.false;
+        expect(post.called).to.be.false;
         await graphql(schema, `{
           viewer {
             users {
@@ -566,8 +568,8 @@ describe('e2e', () => {
             }
           }
         }`);
-        expect(pre.called).to.be.true; // eslint-disable-line
-        expect(post.called).to.be.true; // eslint-disable-line
+        expect(pre.called).to.be.true;
+        expect(post.called).to.be.true;
       });
 
       it('should call singular hooks on a singular query', async () => {
@@ -575,15 +577,15 @@ describe('e2e', () => {
         pre.reset();
         post.reset();
 
-        expect(pre.called).to.be.false; // eslint-disable-line
-        expect(post.called).to.be.false; // eslint-disable-line
+        expect(pre.called).to.be.false;
+        expect(post.called).to.be.false;
         await graphql(schema, `{
           user(id: "${user2._id}") {
             _id
           }
         }`);
-        expect(pre.called).to.be.true; // eslint-disable-line
-        expect(post.called).to.be.true; // eslint-disable-line
+        expect(pre.called).to.be.true;
+        expect(post.called).to.be.true;
       });
 
       it('should call plural hooks on a plural query', async () => {
@@ -591,15 +593,15 @@ describe('e2e', () => {
         pre.reset();
         post.reset();
 
-        expect(pre.called).to.be.false; // eslint-disable-line
-        expect(post.called).to.be.false; // eslint-disable-line
+        expect(pre.called).to.be.false;
+        expect(post.called).to.be.false;
         await graphql(schema, `{
           users(age: 28) {
             _id
           }
         }`);
-        expect(pre.called).to.be.true; // eslint-disable-line
-        expect(post.called).to.be.true; // eslint-disable-line
+        expect(pre.called).to.be.true;
+        expect(post.called).to.be.true;
       });
 
       it('should call mutation hooks on a mutation', async () => {
@@ -607,8 +609,8 @@ describe('e2e', () => {
         pre.reset();
         post.reset();
 
-        expect(pre.called).to.be.false; // eslint-disable-line
-        expect(post.called).to.be.false; // eslint-disable-line
+        expect(pre.called).to.be.false;
+        expect(post.called).to.be.false;
         await graphql(schema, `
           mutation addUserMutation {
             addUser(input: {name: "Test User", clientMutationId: "1"}) {
@@ -620,8 +622,8 @@ describe('e2e', () => {
             }
           }
         `);
-        expect(pre.called).to.be.true; // eslint-disable-line
-        expect(post.called).to.be.true; // eslint-disable-line
+        expect(pre.called).to.be.true;
+        expect(post.called).to.be.true;
       });
     });
   });
