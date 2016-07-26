@@ -1,6 +1,4 @@
 coverage
 .travis.yml
 example
-.idea
-src
 *.spec.js

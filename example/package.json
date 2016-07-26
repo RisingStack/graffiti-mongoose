@@ -2,16 +2,14 @@
   "name": "graffiti-mongoose-example",
   "description": "An example using graffiti-mongoose",
   "scripts": {
-    "start": "node index.js"
+    "start": "babel-node app.js"
   },
   "dependencies": {
     "@risingstack/graffiti": "^3.0.3",
     "@risingstack/graffiti-mongoose": "../",
-    "babel-runtime": "^6.5.0",
-    "koa": "^1.1.2",
-    "koa-bodyparser": "^2.0.1"
-  },
-  "devDependencies": {
-    "babel": "^6.5.1"
+    "babel-cli": "6.11.4",
+    "babel-runtime": "6.9.2",
+    "koa": "1.2.1",
+    "koa-bodyparser": "2.2.0"
   }
 }

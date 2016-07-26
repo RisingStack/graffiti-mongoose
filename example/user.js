@@ -29,7 +29,7 @@ User.remove().then(() => {
     users.push(new User({
       name: `User${i}`,
       age: i,
-      createdAt: new Date() + i * 100,
+      createdAt: new Date() + (i * 100),
       friends: users.map((i) => i._id),
       nums: [0, i],
       bools: [true, false],

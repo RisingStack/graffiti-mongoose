@@ -6,6 +6,7 @@ import {getSchema} from '../src';
 
 import User from './user';
 
+mongoose.Promise = global.Promise;
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost/graphql');
 const port = process.env.PORT || 8080;
 
@@ -35,10 +36,14 @@ app.use(graffiti.koa({
 }));
 
 // redirect all requests to /graphql
-app.use(function *redirect() {
+app.use(function *redirect(next) {
   this.redirect('/graphql');
+  yield next;
 });
 
-app.listen(port);
-
-console.log(`Started on http://localhost:${port}/`);
+app.listen(port, (err) => {
+  if (err) {
+    throw err;
+  }
+  console.log(`Started on http://localhost:${port}/`);
+});
