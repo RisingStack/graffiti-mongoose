@@ -24,6 +24,12 @@ before((done) => {
   };
 });
 
+after((done) => {
+  mongoose.models = {};
+  mongoose.modelSchemas = {};
+  mongoose.connection.close(() => done());
+});
+
 beforeEach(function sandbox() {
   this.sandbox = sinon.sandbox.create();
 });

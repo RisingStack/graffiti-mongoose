@@ -20,11 +20,11 @@ import {
   GraphQLScalarType,
   GraphQLEnumType
 } from 'graphql/type';
-import {addHooks} from '../utils';
+import { addHooks } from '../utils';
 import GraphQLDate from './custom/date';
 import GraphQLBuffer from './custom/buffer';
 import GraphQLGeneric from './custom/generic';
-import {connectionFromModel, getOneResolver} from '../query';
+import { connectionFromModel, getOneResolver } from '../query';
 
 // Registered types will be saved, we can access them later to resolve types
 const types = [];
@@ -39,7 +39,7 @@ function addType(name, type) {
 }
 
 // Node interface
-const {nodeInterface} = nodeDefinitions(null, (obj) => (
+const { nodeInterface } = nodeDefinitions(null, (obj) => (
   // Type resolver
   obj._type ? types[obj._type] : null
 ));
@@ -85,7 +85,7 @@ function stringToGraphQLType(type) {
  */
 function listToGraphQLEnumType(list, name) {
   const values = reduce(list, (values, val) => {
-    values[val] = {value: val};
+    values[val] = { value: val };
     return values;
   }, {});
   return new GraphQLEnumType({ name, values });
@@ -117,7 +117,7 @@ const orderByTypes = {};
  * @param  {Object} fields
  * @return {GraphQLEnumType}
  */
-function getOrderByType({name}, fields) {
+function getOrderByType({ name }, fields) {
   if (!orderByTypes[name]) {
     // save new enum
     orderByTypes[name] = new GraphQLEnumType({
@@ -196,16 +196,16 @@ const resolveReference = {};
  * @param  {Boolean} root
  * @return {GraphQLObjectType}
  */
-function getType(graffitiModels, {name, description, fields}, path = [], rootType = null) {
+function getType(graffitiModels, { name, description, fields }, path = [], rootType = null) {
   const root = path.length === 0;
-  const graphQLType = {name, description};
+  const graphQLType = { name, description };
   rootType = rootType || graphQLType;
 
   // These references have to be resolved when all type definitions are avaiable
   resolveReference[graphQLType.name] = resolveReference[graphQLType.name] || {};
   const graphQLTypeFields = reduce(fields, (graphQLFields,
-      {name, description, type, subtype, reference, nonNull, hidden, hooks,
-       fields: subfields, embeddedModel, enumValues}, key) => {
+      { name, description, type, subtype, reference, nonNull, hidden, hooks,
+       fields: subfields, embeddedModel, enumValues }, key) => {
     name = name || key;
     const newPath = [...path, name];
 
@@ -214,14 +214,14 @@ function getType(graffitiModels, {name, description, fields}, path = [], rootTyp
       return graphQLFields;
     }
 
-    const graphQLField = {name, description};
+    const graphQLField = { name, description };
 
     if (type === 'Array') {
       if (subtype === 'Object') {
         const fields = subfields;
         const nestedObjectName = getTypeFieldName(graphQLType.name, name);
         graphQLField.type = new GraphQLList(
-          getType(graffitiModels, {name: nestedObjectName, description, fields}, newPath, rootType));
+          getType(graffitiModels, { name: nestedObjectName, description, fields }, newPath, rootType));
       } else {
         graphQLField.type = new GraphQLList(stringToGraphQLType(subtype));
         if (reference) {
@@ -239,7 +239,7 @@ function getType(graffitiModels, {name, description, fields}, path = [], rootTyp
     } else if (type === 'Object') {
       const fields = subfields;
       const nestedObjectName = getTypeFieldName(graphQLType.name, name);
-      graphQLField.type = getType(graffitiModels, {name: nestedObjectName, description, fields}, newPath, rootType);
+      graphQLField.type = getType(graffitiModels, { name: nestedObjectName, description, fields }, newPath, rootType);
     } else if (type === 'Embedded') {
       const type = types.hasOwnProperty(name)
         ? types[name]
@@ -258,7 +258,7 @@ function getType(graffitiModels, {name, description, fields}, path = [], rootTyp
         type: reference,
         resolve: addHooks((rootValue, args, context, info) => {
           const resolver = getOneResolver(graffitiModels[reference]);
-          return resolver(rootValue, {id: rootValue[name] ? rootValue[name].toString() : null}, context, info);
+          return resolver(rootValue, { id: rootValue[name] ? rootValue[name].toString() : null }, context, info);
         }, hooks)
       };
     }
@@ -309,7 +309,7 @@ function getTypes(graffitiModels) {
         if (field.args === connectionArgs) {
           // It's a connection
           const connectionName = getTypeFieldName(typeName, fieldName);
-          const {connectionType} = connectionDefinitions({
+          const { connectionType } = connectionDefinitions({
             name: connectionName,
             nodeType: types[field.type],
             connectionFields: {
@@ -327,13 +327,8 @@ function getTypes(graffitiModels) {
 
         // deeply find the path of the field we want to resolve the reference of
         const path = fieldName.split('.');
-        const newTypeFields = {...typeFields};
-        let parent = newTypeFields;
-        let segment;
 
-        while (path.length > 0) {
-          segment = path.shift();
-
+        path.reduce((parent, segment, idx) => {
           if (parent[segment]) {
             if (parent[segment].type instanceof GraphQLObjectType) {
               parent = parent[segment].type.getFields();
@@ -342,12 +337,15 @@ function getTypes(graffitiModels) {
               parent = getTypeFields(parent[segment].type.ofType);
             }
           }
-        }
 
-        if (path.length === 0) {
-          parent[segment] = field;
-        }
-        return newTypeFields;
+          if (idx === path.length - 1) {
+            parent[segment] = field;
+          }
+
+          return parent;
+        }, typeFields);
+
+        return typeFields;
       }, getTypeFields(type));
 
       // Add new fields

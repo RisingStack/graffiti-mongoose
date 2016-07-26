@@ -1,9 +1,9 @@
 /* eslint-disable no-unused-expressions */
 
-import {expect} from 'chai';
-import {spy} from 'sinon';
+import { expect } from 'chai';
+import { spy } from 'sinon';
 
-import {getSchema, graphql} from './';
+import { getSchema, graphql } from './';
 import User from '../fixture/user';
 
 describe('e2e', () => {
@@ -32,7 +32,7 @@ describe('e2e', () => {
           post: spy()
         }
       };
-      schema = getSchema([User], {hooks});
+      schema = getSchema([User], { hooks });
     });
 
     beforeEach(async function BeforeEach() {
@@ -262,14 +262,14 @@ describe('e2e', () => {
           }
         }`);
 
-        const {id, users} = result.data.viewer;
+        const { id, users } = result.data.viewer;
         expect(id).to.be.ok;
         expect(users.count).to.be.equal(3);
 
         expect(users.edges).to.containSubset([
-          {node: {name: 'Mother'}},
-          {node: {name: 'Foo'}},
-          {node: {name: 'Bar'}}
+          { node: { name: 'Mother' } },
+          { node: { name: 'Foo' } },
+          { node: { name: 'Bar' } }
         ]);
       });
 
@@ -287,11 +287,11 @@ describe('e2e', () => {
           }
         }`);
 
-        const {users} = result.data.viewer;
+        const { users } = result.data.viewer;
         expect(users.count).to.be.eql(1);
 
         expect(users.edges).to.containSubset([
-          {node: {name: 'Foo'}}
+          { node: { name: 'Foo' } }
         ]);
       });
 
@@ -431,7 +431,7 @@ describe('e2e', () => {
         `);
 
         const node = result.data.addUser.changedUserEdge.node;
-        const {id} = node;
+        const { id } = node;
         expect(typeof node._id).to.be.equal('string');
         expect(node.name).to.be.equal('Test User');
 
@@ -530,7 +530,7 @@ describe('e2e', () => {
             }
           }
         `);
-        const {id} = result.data.addUser.changedUserEdge.node;
+        const { id } = result.data.addUser.changedUserEdge.node;
 
         result = await graphql(schema, `
           mutation deleteUserMutation {
@@ -555,7 +555,7 @@ describe('e2e', () => {
 
     describe('hooks', () => {
       it('should call viewer hooks on a viewer query', async () => {
-        const {pre, post} = hooks.viewer;
+        const { pre, post } = hooks.viewer;
         pre.reset();
         post.reset();
 
@@ -573,7 +573,7 @@ describe('e2e', () => {
       });
 
       it('should call singular hooks on a singular query', async () => {
-        const {pre, post} = hooks.singular;
+        const { pre, post } = hooks.singular;
         pre.reset();
         post.reset();
 
@@ -589,7 +589,7 @@ describe('e2e', () => {
       });
 
       it('should call plural hooks on a plural query', async () => {
-        const {pre, post} = hooks.plural;
+        const { pre, post } = hooks.plural;
         pre.reset();
         post.reset();
 
@@ -605,7 +605,7 @@ describe('e2e', () => {
       });
 
       it('should call mutation hooks on a mutation', async () => {
-        const {pre, post} = hooks.mutation;
+        const { pre, post } = hooks.mutation;
         pre.reset();
         post.reset();
 

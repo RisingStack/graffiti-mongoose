@@ -1,5 +1,6 @@
-import {expect} from 'chai';
-import {toGlobalId} from 'graphql-relay';
+import { expect } from 'chai';
+import { toGlobalId } from 'graphql-relay';
+import objectid from 'objectid';
 import {
   _idToCursor,
   getIdFetcher,
@@ -19,20 +20,19 @@ describe('query', () => {
     }
   }
 
-  // mongoDB ID is 24 charachter long
-  const fields = {name: 'foo'};
+  const fields = { name: 'foo' };
   const type = 'type';
   const objArray = [];
   const resultArray = [];
   for (let i = 0; i < 10; i++) {
     const objFields = {
-      _id: `${i}`.repeat(24),
-      ...fields
+      ...fields,
+      _id: objectid().toString()
     };
     objArray.push(new MongooseObject(objFields));
     resultArray.push({
-      _type: type,
-      ...objFields
+      ...objFields,
+      _type: type
     });
   }
 
@@ -72,7 +72,7 @@ describe('query', () => {
       const id = toGlobalId('type', obj._id);
 
       const idFetcher = getIdFetcher(graffitiModels);
-      const result = await idFetcher({}, {id});
+      const result = await idFetcher({}, { id });
       expect(result).to.eql(resultObj);
     });
 
@@ -80,8 +80,8 @@ describe('query', () => {
       const id = toGlobalId('Viewer', 'viewer');
 
       const idFetcher = getIdFetcher(graffitiModels);
-      const result = await idFetcher({}, {id});
-      expect(result).to.eql({_type: 'Viewer', id: 'viewer'});
+      const result = await idFetcher({}, { id });
+      expect(result).to.eql({ _type: 'Viewer', id: 'viewer' });
     });
   });
 
@@ -96,11 +96,11 @@ describe('query', () => {
     });
 
     it('should return an object', async function getOneResolverTest() {
-      let result = await oneResolver({}, {id: obj._id});
+      let result = await oneResolver({}, { id: obj._id });
       expect(result).to.eql(resultObj);
 
       const id = toGlobalId('type', obj._id);
-      result = await oneResolver({}, {id});
+      result = await oneResolver({}, { id });
       expect(result).to.eql(resultObj);
     });
   });

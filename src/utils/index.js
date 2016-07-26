@@ -1,6 +1,6 @@
 import Middleware from './Middleware';
 
-function addHooks(resolver, {pre, post} = {}) {
+function addHooks(resolver, { pre, post } = {}) {
   return async function resolve(...args) {
     const preMiddleware = new Middleware(pre);
     await preMiddleware.compose(...args);

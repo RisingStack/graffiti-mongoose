@@ -1,4 +1,4 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import {
   graphql,
   GraphQLSchema,
@@ -103,7 +103,7 @@ describe('GraphQL date type', () => {
                 type: GraphQlDate
               }
             },
-            resolve: (_, {date}) => new Date(date.getTime() + (24 * 3600 * 1000))
+            resolve: (_, { date }) => new Date(date.getTime() + (24 * 3600 * 1000))
           }
         }
       })

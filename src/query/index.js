@@ -1,2 +1,2 @@
 export * from './query';
-export {default} from './query';
+export { default } from './query';

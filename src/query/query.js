@@ -1,12 +1,12 @@
-import {forEach, isArray, isString} from 'lodash';
-import {fromGlobalId, toGlobalId} from 'graphql-relay';
+import { forEach, isArray, isString } from 'lodash';
+import { fromGlobalId, toGlobalId } from 'graphql-relay';
 import getFieldList from './projection';
 import viewer from '../model/viewer';
 
-function processId({id, _id = id}) {
+function processId({ id, _id = id }) {
   // global or mongo id
   if (isString(_id) && !/^[a-fA-F0-9]{24}$/.test(_id)) {
-    const {type, id} = fromGlobalId(_id);
+    const { type, id } = fromGlobalId(_id);
     if (type && /^[a-zA-Z]*$/.test(type)) {
       return id;
     }
@@ -17,10 +17,10 @@ function processId({id, _id = id}) {
 
 function getCount(Collection, selector) {
   if (selector && (isArray(selector.id) || isArray(selector._id))) {
-    const {id, _id = id} = selector;
+    const { id, _id = id } = selector;
     delete selector.id;
     selector._id = {
-      $in: _id.map((id) => processId({id}))
+      $in: _id.map((id) => processId({ id }))
     };
   }
 
@@ -45,9 +45,9 @@ function getOne(Collection, args, context, info) {
 function addOne(Collection, args) {
   forEach(args, (arg, key) => {
     if (isArray(arg)) {
-      args[key] = arg.map((id) => processId({id}));
+      args[key] = arg.map((id) => processId({ id }));
     } else {
-      args[key] = processId({id: arg});
+      args[key] = processId({ id: arg });
     }
   });
 
@@ -64,28 +64,28 @@ function addOne(Collection, args) {
   });
 }
 
-function updateOne(Collection, {id, _id, ...args}, context, info) {
-  _id = processId({id, _id});
+function updateOne(Collection, { id, _id, ...args }, context, info) {
+  _id = processId({ id, _id });
 
   forEach(args, (arg, key) => {
     if (isArray(arg)) {
-      args[key] = arg.map((id) => processId({id}));
+      args[key] = arg.map((id) => processId({ id }));
     } else {
-      args[key] = processId({id: arg});
+      args[key] = processId({ id: arg });
     }
 
     if (key.endsWith('_add')) {
       const values = args[key];
       args.$push = {
-        [key.slice(0, -4)]: {$each: values}
+        [key.slice(0, -'_add'.length)]: { $each: values }
       };
       delete args[key];
     }
   });
 
-  return Collection.update({_id}, args).then((res) => {
+  return Collection.update({ _id }, args).then((res) => {
     if (res.ok) {
-      return getOne(Collection, {_id}, context, info);
+      return getOne(Collection, { _id }, context, info);
     }
 
     return null;
@@ -95,7 +95,7 @@ function updateOne(Collection, {id, _id, ...args}, context, info) {
 function deleteOne(Collection, args) {
   const _id = processId(args);
 
-  return Collection.remove({_id}).then(({result}) => ({
+  return Collection.remove({ _id }).then(({ result }) => ({
     id: toGlobalId(Collection.modelName, _id),
     ok: !!result.ok
   }));
@@ -103,10 +103,10 @@ function deleteOne(Collection, args) {
 
 function getList(Collection, selector, options = {}, context, info = null) {
   if (selector && (isArray(selector.id) || isArray(selector._id))) {
-    const {id, _id = id} = selector;
+    const { id, _id = id } = selector;
     delete selector.id;
     selector._id = {
-      $in: _id.map((id) => processId({id}))
+      $in: _id.map((id) => processId({ id }))
     };
   }
 
@@ -131,7 +131,8 @@ function getOneResolver(graffitiModel) {
 }
 
 function getAddOneMutateHandler(graffitiModel) {
-  return ({clientMutationId, ...args}) => { // eslint-disable-line
+  // eslint-disable-next-line no-unused-vars
+  return ({ clientMutationId, ...args }) => {
     const Collection = graffitiModel.model;
     if (Collection) {
       return addOne(Collection, args);
@@ -142,7 +143,8 @@ function getAddOneMutateHandler(graffitiModel) {
 }
 
 function getUpdateOneMutateHandler(graffitiModel) {
-  return ({clientMutationId, ...args}) => { // eslint-disable-line
+  // eslint-disable-next-line no-unused-vars
+  return ({ clientMutationId, ...args }) => {
     const Collection = graffitiModel.model;
     if (Collection) {
       return updateOne(Collection, args);
@@ -153,7 +155,8 @@ function getUpdateOneMutateHandler(graffitiModel) {
 }
 
 function getDeleteOneMutateHandler(graffitiModel) {
-  return ({clientMutationId, ...args}) => { // eslint-disable-line
+  // eslint-disable-next-line no-unused-vars
+  return ({ clientMutationId, ...args }) => {
     const Collection = graffitiModel.model;
     if (Collection) {
       return deleteOne(Collection, args);
@@ -164,7 +167,7 @@ function getDeleteOneMutateHandler(graffitiModel) {
 }
 
 function getListResolver(graffitiModel) {
-  return (root, {ids, ...args} = {}, context, info) => {
+  return (root, { ids, ...args } = {}, context, info) => {
     if (ids) {
       args.id = ids;
     }
@@ -174,7 +177,7 @@ function getListResolver(graffitiModel) {
 
     const Collection = graffitiModel.model;
     if (Collection) {
-      return getList(Collection, args, {sort}, context, info);
+      return getList(Collection, args, { sort }, context, info);
     }
 
     return null;
@@ -185,7 +188,7 @@ function getListResolver(graffitiModel) {
  * Returns the first element in a Collection
  */
 function getFirst(Collection) {
-  return Collection.findOne({}, {}, {sort: {_id: 1}});
+  return Collection.findOne({}, {}, { sort: { _id: 1 } });
 }
 
 /**
@@ -193,14 +196,14 @@ function getFirst(Collection) {
  * an object based on a global id
  */
 function getIdFetcher(graffitiModels) {
-  return function idFetcher(obj, {id: globalId}, context, info) {
-    const {type, id} = fromGlobalId(globalId);
+  return function idFetcher(obj, { id: globalId }, context, info) {
+    const { type, id } = fromGlobalId(globalId);
 
     if (type === 'Viewer') {
       return viewer;
     } else if (graffitiModels[type]) {
       const Collection = graffitiModels[type].model;
-      return getOne(Collection, {id}, context, info);
+      return getOne(Collection, { id }, context, info);
     }
 
     return null;
@@ -269,7 +272,7 @@ async function connectionFromModel(graffitiModel, args, context, info) {
     return emptyConnection();
   }
 
-  const {before, after, first, last, id, orderBy = {_id: 1}, ...selector} = args;
+  const { before, after, first, last, id, orderBy = { _id: 1 }, ...selector } = args;
 
   const begin = getId(after);
   const end = getId(before);

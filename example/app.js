@@ -2,7 +2,7 @@ import koa from 'koa';
 import parser from 'koa-bodyparser';
 import mongoose from 'mongoose';
 import graffiti from '@risingstack/graffiti';
-import {getSchema} from '../src';
+import { getSchema } from '../src';
 
 import User from './user';
 
@@ -22,7 +22,7 @@ const hooks = {
     }
   }
 };
-const schema = getSchema([User], {hooks});
+const schema = getSchema([User], { hooks });
 
 // set up example server
 const app = koa();

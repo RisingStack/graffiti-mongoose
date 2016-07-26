@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-expressions */
 
-import {expect} from 'chai';
+import { expect } from 'chai';
 import {
   GraphQLObjectType,
   GraphQLString,
@@ -53,7 +53,7 @@ describe('schema', () => {
       this.sandbox.stub(query, 'getListResolver').returns(() => null);
 
       const graphQLType = types.Qux;
-      const fields = getQueryField({Qux: {model: {}}}, graphQLType);
+      const fields = getQueryField({ Qux: { model: {} } }, graphQLType);
       expect(fields).to.containSubset({
         qux: {
           type: graphQLType,
@@ -81,7 +81,7 @@ describe('schema', () => {
       this.sandbox.stub(query, 'getAddOneMutateHandler').returns(() => null);
       this.sandbox.stub(query, 'getUpdateOneMutateHandler').returns(() => null);
       const graphQLType = types.Qux;
-      const fields = getMutationField({Qux: {model: {}}}, graphQLType);
+      const fields = getMutationField({ Qux: { model: {} } }, graphQLType);
       const args = {
         input: {}
       };
@@ -161,7 +161,7 @@ describe('schema', () => {
     });
 
     it('should return a GraphQL schema without mutations', () => {
-      const schema = getSchema({}, {mutation: false});
+      const schema = getSchema({}, { mutation: false });
       expect(schema).instanceOf(GraphQLSchema);
       expect(schema._queryType.name).to.be.equal('RootQuery');
       expect(schema._mutationType).to.be.equal(undefined);
@@ -179,7 +179,7 @@ describe('schema', () => {
           }
         }
       };
-      const schema = getSchema({}, {customQueries});
+      const schema = getSchema({}, { customQueries });
       expect(schema).instanceOf(GraphQLSchema);
       expect(schema._queryType.name).to.be.equal('RootQuery');
       expect(schema._mutationType.name).to.be.equal('RootMutation');
@@ -199,7 +199,7 @@ describe('schema', () => {
           }
         }
       };
-      const schema = getSchema({}, {customMutations});
+      const schema = getSchema({}, { customMutations });
       expect(schema).instanceOf(GraphQLSchema);
       expect(schema._queryType.name).to.be.equal('RootQuery');
       expect(schema._mutationType.name).to.be.equal('RootMutation');
@@ -219,7 +219,7 @@ describe('schema', () => {
           }
         }
       });
-      const schema = getSchema({}, {customQueries});
+      const schema = getSchema({}, { customQueries });
       expect(schema).instanceOf(GraphQLSchema);
       expect(schema._queryType.name).to.be.equal('RootQuery');
       expect(schema._mutationType.name).to.be.equal('RootMutation');
@@ -242,7 +242,7 @@ describe('schema', () => {
           }
         }
       });
-      const schema = getSchema({}, {customMutations});
+      const schema = getSchema({}, { customMutations });
       expect(schema).instanceOf(GraphQLSchema);
       expect(schema._queryType.name).to.be.equal('RootQuery');
       expect(schema._mutationType.name).to.be.equal('RootMutation');

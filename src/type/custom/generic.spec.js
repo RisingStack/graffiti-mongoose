@@ -1,4 +1,4 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import {
   graphql,
   GraphQLSchema,
@@ -79,7 +79,7 @@ describe('GraphQL generic type', () => {
                 type: GraphQLGeneric
               }
             },
-            resolve: (_, {bar}) => new Unknown(`${bar.field}-qux`)
+            resolve: (_, { bar }) => new Unknown(`${bar.field}-qux`)
           }
         }
       })

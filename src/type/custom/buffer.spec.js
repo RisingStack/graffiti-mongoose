@@ -1,4 +1,4 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import {
   graphql,
   GraphQLSchema,
@@ -73,7 +73,7 @@ describe('GraphQL buffer type', () => {
                 type: GraphQLBuffer
               }
             },
-            resolve: (_, {bar}) => new Buffer(`${bar.toString()}-qux`)
+            resolve: (_, { bar }) => new Buffer(`${bar.toString()}-qux`)
           }
         }
       })

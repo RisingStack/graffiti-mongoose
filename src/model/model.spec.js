@@ -1,5 +1,5 @@
-import {expect} from 'chai';
-import {extractPath, extractPaths} from './';
+import { expect } from 'chai';
+import { extractPath, extractPaths } from './';
 
 describe('model', () => {
   it('should extract tree chunk from path', () => {

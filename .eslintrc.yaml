@@ -10,7 +10,6 @@
     no-shadow: 0
     no-param-reassign: 0
     comma-dangle: 0
-    object-curly-spacing: 0
     no-underscore-dangle: 0
     import/no-extraneous-dependencies: 0
     no-prototype-builtins: 0

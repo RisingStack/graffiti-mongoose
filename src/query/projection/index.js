@@ -1,4 +1,4 @@
-export default function getFieldList(context, fieldASTs) {
+function getFieldList(context, fieldASTs) {
   if (!context) {
     return {};
   }
@@ -15,7 +15,7 @@ export default function getFieldList(context, fieldASTs) {
   // get all selectionSets
   const selections = asts.reduce((selections, source) => {
     if (source.selectionSet) {
-      selections.push(...source.selectionSet.selections);
+      return selections.concat(source.selectionSet.selections);
     }
 
     return selections;
@@ -23,14 +23,14 @@ export default function getFieldList(context, fieldASTs) {
 
   // return fields
   return selections.reduce((list, ast) => {
-    const {name, kind} = ast;
+    const { name, kind } = ast;
 
     switch (kind) {
       case 'Field':
-        list[name.value] = true;
         return {
           ...list,
-          ...getFieldList(context, ast)
+          ...getFieldList(context, ast),
+          [name.value]: true
         };
       case 'InlineFragment':
         return {
@@ -47,3 +47,5 @@ export default function getFieldList(context, fieldASTs) {
     }
   }, {});
 }
+
+export default getFieldList;

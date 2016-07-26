@@ -1,4 +1,4 @@
-import {expect} from 'chai';
+import { expect } from 'chai';
 import getFieldList from './';
 
 describe('projection', () => {
@@ -6,15 +6,15 @@ describe('projection', () => {
     const context = {
       fieldASTs: {
         kind: 'Field',
-        name: {value: 'foo'},
+        name: { value: 'foo' },
         selectionSet: {
           selections: [{
             kind: 'Field',
-            name: {value: 'bar'},
+            name: { value: 'bar' },
             selectionSet: {
               selections: [{
                 kind: 'Field',
-                name: {value: 'baz'}
+                name: { value: 'baz' }
               }]
             }
           }]
