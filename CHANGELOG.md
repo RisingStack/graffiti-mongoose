@@ -1,9 +1,28 @@
+<a name="5.2.0"></a>
+# 5.2.0 (2016-07-26)
+
+
+### chore
+
+* chore(package): update dependencies ([f726498](https://github.com/RisingStack/graffiti-mongoose/commit/f726498))
+
+### docs
+
+* docs(readme): fix anchor link ([d58b449](https://github.com/RisingStack/graffiti-mongoose/commit/d58b449))
+
+### feat
+
+* feat(schema): allow to use functions for custom mutations and queries to be able to use defined type ([0cb244f](https://github.com/RisingStack/graffiti-mongoose/commit/0cb244f))
+
+
+
 <a name="5.1.0"></a>
 # 5.1.0 (2016-04-30)
 
 
 ### chore
 
+* chore(package): bump version ([e64f06a](https://github.com/RisingStack/graffiti-mongoose/commit/e64f06a))
 * chore(package): update dependencies ([8a54912](https://github.com/RisingStack/graffiti-mongoose/commit/8a54912))
 
 ### feat
