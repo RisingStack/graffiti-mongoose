@@ -2,13 +2,13 @@
  * Detailed explanation https://github.com/graphql/graphql-js/issues/312#issuecomment-196169994
  */
 
-import { nodeInterface } from '../../schema/schema';
 import {
-  GraphQLScalarType,
-  GraphQLInputObjectType,
-  GraphQLEnumType,
-  GraphQLID
+ GraphQLScalarType,
+ GraphQLInputObjectType,
+ GraphQLEnumType,
+ GraphQLID
 } from 'graphql';
+import { nodeInterface } from '../../schema/schema';
 
 function filterFields(obj, filter) {
   return Object.keys(obj)

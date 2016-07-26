@@ -1,4 +1,5 @@
 import {reduce, isArray, isFunction, mapValues} from 'lodash';
+import {toCollectionName} from 'mongoose/lib/utils';
 import {
   GraphQLList,
   GraphQLNonNull,
@@ -29,7 +30,6 @@ import query, {
 } from './../query';
 import {addHooks} from '../utils';
 import viewerInstance from '../model/viewer';
-import {toCollectionName} from 'mongoose/lib/utils';
 import createInputObject from '../type/custom/to-input-object';
 
 const idField = {
@@ -87,12 +87,16 @@ function getConnectionField(graffitiModel, type, hooks = {}) {
   const {name} = type;
   const {plural} = hooks;
   const pluralName = toCollectionName(name.toLowerCase());
-  const {connectionType} = connectionDefinitions({name, nodeType: type, connectionFields: {
-    count: {
-      name: 'count',
-      type: GraphQLFloat
+  const {connectionType} = connectionDefinitions({
+    name,
+    nodeType: type,
+    connectionFields: {
+      count: {
+        name: 'count',
+        type: GraphQLFloat
+      }
     }
-  }});
+  });
 
   return {
     [pluralName]: {
@@ -168,10 +172,13 @@ function getMutationField(graffitiModel, type, viewer, hooks = {}, allowMongoIDM
       outputFields: {
         viewer,
         [edgeName]: {
-          type: connectionDefinitions({name: changedName, nodeType: new GraphQLObjectType({
-            name: nodeName,
-            fields
-          })}).edgeType,
+          type: connectionDefinitions({
+            name: changedName,
+            nodeType: new GraphQLObjectType({
+              name: nodeName,
+              fields
+            })
+          }).edgeType,
           resolve: (node) => ({
             node,
             cursor: idToCursor(node.id)

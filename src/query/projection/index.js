@@ -26,24 +26,24 @@ export default function getFieldList(context, fieldASTs) {
     const {name, kind} = ast;
 
     switch (kind) {
-    case 'Field':
-      list[name.value] = true;
-      return {
-        ...list,
-        ...getFieldList(context, ast)
-      };
-    case 'InlineFragment':
-      return {
-        ...list,
-        ...getFieldList(context, ast)
-      };
-    case 'FragmentSpread':
-      return {
-        ...list,
-        ...getFieldList(context, context.fragments[name.value])
-      };
-    default:
-      throw new Error('Unsuported query selection');
+      case 'Field':
+        list[name.value] = true;
+        return {
+          ...list,
+          ...getFieldList(context, ast)
+        };
+      case 'InlineFragment':
+        return {
+          ...list,
+          ...getFieldList(context, ast)
+        };
+      case 'FragmentSpread':
+        return {
+          ...list,
+          ...getFieldList(context, context.fragments[name.value])
+        };
+      default:
+        throw new Error('Unsuported query selection');
     }
   }, {});
 }

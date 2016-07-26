@@ -60,20 +60,20 @@ addType('Viewer', GraphQLViewer);
  */
 function stringToGraphQLType(type) {
   switch (type) {
-  case 'String':
-    return GraphQLString;
-  case 'Number':
-    return GraphQLFloat;
-  case 'Date':
-    return GraphQLDate;
-  case 'Buffer':
-    return GraphQLBuffer;
-  case 'Boolean':
-    return GraphQLBoolean;
-  case 'ObjectID':
-    return GraphQLID;
-  default:
-    return GraphQLGeneric;
+    case 'String':
+      return GraphQLString;
+    case 'Number':
+      return GraphQLFloat;
+    case 'Date':
+      return GraphQLDate;
+    case 'Buffer':
+      return GraphQLBuffer;
+    case 'Boolean':
+      return GraphQLBoolean;
+    case 'ObjectID':
+      return GraphQLID;
+    default:
+      return GraphQLGeneric;
   }
 }
 

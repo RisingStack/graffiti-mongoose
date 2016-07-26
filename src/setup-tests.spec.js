@@ -9,6 +9,8 @@ before((done) => {
   chai.use(sinonChai);
   chai.use(chaiSubset);
 
+  mongoose.Promise = global.Promise;
+
   mongoose.connect('mongodb://localhost/graffiti-mongoose-test', () => {
     mongoose.connection.db.dropDatabase(done);
   });
