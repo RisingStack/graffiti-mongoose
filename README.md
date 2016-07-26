@@ -1,9 +1,11 @@
-# graffiti-mongoose [![npm version](https://badge.fury.io/js/%40risingstack%2Fgraffiti-mongoose.svg)](https://badge.fury.io/js/%40risingstack%2Fgraffiti-mongoose)
+# ![graffiti](https://cloud.githubusercontent.com/assets/1764512/8900273/9ed758dc-343e-11e5-95ba-e82f876cf52d.png) Mongoose
 
+[![npm version](https://badge.fury.io/js/%40risingstack%2Fgraffiti-mongoose.svg)](https://badge.fury.io/js/%40risingstack%2Fgraffiti-mongoose)
 [![Codeship Status for RisingStack/graffiti-mongoose](https://codeship.com/projects/f7a22cd0-5968-0133-d2b0-0e957d4e7dfa/status?branch=master)](https://codeship.com/projects/110028)
 [![bitHound Overall Score](https://www.bithound.io/github/RisingStack/graffiti-mongoose/badges/score.svg)](https://www.bithound.io/github/RisingStack/graffiti-mongoose)
+[![Known Vulnerabilities](https://snyk.io/test/npm/@risingstack/graffiti-mongoose/badge.svg)](https://snyk.io/test/npm/@risingstack/graffiti-mongoose)
 
-[Mongoose](http://mongoosejs.com) (MongoDB) adapter for the [graffiti](https://github.com/RisingStack/graffiti) [GraphQL](https://github.com/graphql/graphql-js) ORM.  
+[Mongoose](http://mongoosejs.com) (MongoDB) adapter for [GraphQL](https://github.com/graphql/graphql-js).
 
 `graffiti-mongoose` generates `GraphQL` types and schemas from your existing `mongoose` models, that's how simple it is. The generated schema is compatible with [Relay](https://facebook.github.io/relay/).
 
@@ -12,7 +14,7 @@ For quick jump check out the [Usage section](https://github.com/RisingStack/graf
 ## Install
 
 ```shell
-npm install graphql @risingstack/graffiti-mongoose --save
+npm install graphql @risingstack/graffiti-mongoose  --save
 ```
 
 ## Example
@@ -113,7 +115,6 @@ graphql(schema, query)
 * [Boolean]
 * [Date]
 * ObjectId with ref (reference to other document, populate)
-* more types coming soon...
 
 ## Supported query types
 
@@ -281,6 +282,10 @@ query UsersQuery {
 ```shell
 npm test
 ```
+
+## Contributing
+
+Please read the [CONTRIBUTING.md](https://github.com/RisingStack/graffiti-mongoose/tree/master/.github/CONTRIBUTING.md) file.
 
 ## License
 
