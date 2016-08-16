@@ -56,7 +56,10 @@ describe('e2e', () => {
         age: 28,
         mother: motherUser._id,
         friends: [user1._id],
-        objectIds: [user1._id]
+        objectIds: [user1._id],
+        sub: {
+          subref: motherUser._id
+        }
       });
 
       await user2.save();
@@ -87,6 +90,11 @@ describe('e2e', () => {
               }
             }
             objectIds
+            sub {
+              subref {
+                name
+              }
+            }
           }
         }`);
 
@@ -109,7 +117,12 @@ describe('e2e', () => {
                   }
                 }]
               },
-              objectIds: [user1._id.toString()]
+              objectIds: [user1._id.toString()],
+              sub: {
+                subref: {
+                  name: 'Mother'
+                }
+              }
             }
           }
         });

@@ -331,7 +331,7 @@ function getTypes(graffitiModels) {
         path.reduce((parent, segment, idx) => {
           if (parent[segment]) {
             if (parent[segment].type instanceof GraphQLObjectType) {
-              parent = parent[segment].type.getFields();
+              parent = getTypeFields(parent[segment].type);
             } else if (parent[segment].type instanceof GraphQLList &&
                parent[segment].type.ofType instanceof GraphQLObjectType) {
               parent = getTypeFields(parent[segment].type.ofType);
