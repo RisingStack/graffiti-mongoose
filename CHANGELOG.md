@@ -1,9 +1,32 @@
+<a name="5.2.1"></a>
+## 5.2.1 (2016-08-16)
+
+
+### docs
+
+* docs(package): update documents ([5b226c8](https://github.com/RisingStack/graffiti-mongoose/commit/5b226c8))
+
+### feat
+
+* feat(example): update example ([33c66e2](https://github.com/RisingStack/graffiti-mongoose/commit/33c66e2))
+
+### fix
+
+* fix(type): fix embedded object reference Type creation (#132) ([436e56e](https://github.com/RisingStack/graffiti-mongoose/commit/436e56e)), closes [(#132](https://github.com/(/issues/132) [#131](https://github.com/RisingStack/graffiti-mongoose/issues/131)
+
+### refactor
+
+* refactor(package): refresh code ([a5b1298](https://github.com/RisingStack/graffiti-mongoose/commit/a5b1298))
+
+
+
 <a name="5.2.0"></a>
 # 5.2.0 (2016-07-26)
 
 
 ### chore
 
+* chore(package): bump version to 5.2.0 ([2e4578c](https://github.com/RisingStack/graffiti-mongoose/commit/2e4578c))
 * chore(package): update dependencies ([f726498](https://github.com/RisingStack/graffiti-mongoose/commit/f726498))
 
 ### docs
