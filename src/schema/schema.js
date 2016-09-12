@@ -266,10 +266,10 @@ function getFields(graffitiModels, {
     };
   }, {
     queries: isFunction(customQueries)
-      ? customQueries(mapValues(types, (type) => createInputObject(type)))
+      ? customQueries(mapValues(types, (type) => createInputObject(type)), types)
       : customQueries,
     mutations: isFunction(customMutations)
-      ? customMutations(mapValues(types, (type) => createInputObject(type)))
+      ? customMutations(mapValues(types, (type) => createInputObject(type)), types)
       : customMutations
   });
 
