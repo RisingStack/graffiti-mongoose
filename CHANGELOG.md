@@ -1,6 +1,30 @@
+<a name="5.3.0"></a>
+# 5.3.0 (2016-09-12)
+
+
+### chore
+
+* chore(package): update babel-cli to version 6.14.0 (#136) ([703be9e](https://github.com/RisingStack/graffiti-mongoose/commit/703be9e))
+* chore(package): update babel-preset-es2015 to version 6.14.0 (#137) ([dc0c28f](https://github.com/RisingStack/graffiti-mongoose/commit/dc0c28f))
+* chore(package): update dependencies ([6df0fe0](https://github.com/RisingStack/graffiti-mongoose/commit/6df0fe0))
+* chore(package): update dependencies ([46e4b48](https://github.com/RisingStack/graffiti-mongoose/commit/46e4b48))
+* chore(package): update dependencies (#134) ([b19ab86](https://github.com/RisingStack/graffiti-mongoose/commit/b19ab86))
+* chore(package): update eslint to version 3.4.0 (#140) ([bc47722](https://github.com/RisingStack/graffiti-mongoose/commit/bc47722))
+* chore(package): update mongoose to version 4.5.10 (#135) ([32ac18e](https://github.com/RisingStack/graffiti-mongoose/commit/32ac18e))
+
+### feat
+
+* feat(schema): pass in types for customQueries and customMutations (#149) ([e6e9d8c](https://github.com/RisingStack/graffiti-mongoose/commit/e6e9d8c))
+
+
+
 <a name="5.2.1"></a>
 ## 5.2.1 (2016-08-16)
 
+
+### chore
+
+* chore(package): bump version to 5.2.1 ([d0cf049](https://github.com/RisingStack/graffiti-mongoose/commit/d0cf049))
 
 ### docs
 
