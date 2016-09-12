@@ -24,7 +24,7 @@ describe('query', () => {
   const type = 'type';
   const objArray = [];
   const resultArray = [];
-  for (let i = 0; i < 10; i++) {
+  for (let i = 0; i < 10; i += 1) {
     const objFields = {
       ...fields,
       _id: objectid().toString()

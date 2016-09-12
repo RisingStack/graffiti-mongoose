@@ -567,7 +567,7 @@ describe('e2e', () => {
     });
 
     describe('hooks', () => {
-      it('should call viewer hooks on a viewer query', async () => {
+      it('should call viewer hooks on a viewer query', async function () {
         const { pre, post } = hooks.viewer;
         pre.reset();
         post.reset();
@@ -585,7 +585,7 @@ describe('e2e', () => {
         expect(post.called).to.be.true;
       });
 
-      it('should call singular hooks on a singular query', async () => {
+      it('should call singular hooks on a singular query', async function () {
         const { pre, post } = hooks.singular;
         pre.reset();
         post.reset();
@@ -601,7 +601,7 @@ describe('e2e', () => {
         expect(post.called).to.be.true;
       });
 
-      it('should call plural hooks on a plural query', async () => {
+      it('should call plural hooks on a plural query', async function () {
         const { pre, post } = hooks.plural;
         pre.reset();
         post.reset();
@@ -617,7 +617,7 @@ describe('e2e', () => {
         expect(post.called).to.be.true;
       });
 
-      it('should call mutation hooks on a mutation', async () => {
+      it('should call mutation hooks on a mutation', async function () {
         const { pre, post } = hooks.mutation;
         pre.reset();
         post.reset();

@@ -17,3 +17,6 @@
       - 2
       - 120
       - 2
+    arrow-parens:
+      - 2
+      - always

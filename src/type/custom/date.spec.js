@@ -17,7 +17,7 @@ describe('GraphQL date type', () => {
     ).to.equal(aDateStr);
   });
 
-  it('should stringifiy dates', async () => {
+  it('should stringifiy dates', async function () {
     const now = new Date();
 
     const schema = new GraphQLSchema({
@@ -41,7 +41,7 @@ describe('GraphQL date type', () => {
     });
   });
 
-  it('should handle null', async () => {
+  it('should handle null', async function () {
     const now = null;
 
     const schema = new GraphQLSchema({
@@ -65,7 +65,7 @@ describe('GraphQL date type', () => {
     });
   });
 
-  it('should fail when now is not a date', async () => {
+  it('should fail when now is not a date', async function () {
     const now = 'invalid date';
 
     const schema = new GraphQLSchema({
@@ -109,7 +109,7 @@ describe('GraphQL date type', () => {
       })
     });
 
-    it('should handle dates as input', async () => {
+    it('should handle dates as input', async function () {
       const someday = '2015-07-24T10:56:42.744Z';
       const nextDay = '2015-07-25T10:56:42.744Z';
 
@@ -122,7 +122,7 @@ describe('GraphQL date type', () => {
       });
     });
 
-    it('should not accept alternative date formats', async () => {
+    it('should not accept alternative date formats', async function () {
       const someday = 'Fri Jul 24 2015 12:56:42 GMT+0200 (CEST)';
 
       return expect(
@@ -137,7 +137,7 @@ describe('GraphQL date type', () => {
       });
     });
 
-    it('should choke on invalid dates as input', async () => {
+    it('should choke on invalid dates as input', async function () {
       const invalidDate = 'invalid data';
 
       return expect(
