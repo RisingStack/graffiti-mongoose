@@ -30,7 +30,7 @@
   "dependencies": {
     "babel-runtime": "6.11.6",
     "graphql-relay": "0.4.3",
-    "lodash": "4.15.0"
+    "lodash": "4.16.0"
   },
   "peerDependencies": {
     "graphql": "^0.7.0"
