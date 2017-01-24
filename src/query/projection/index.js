@@ -9,7 +9,7 @@ function getFieldList(context, fieldASTs) {
   // Fragments doesn't have many sets
   let asts = fieldASTs;
   if (!Array.isArray(asts)) {
-    asts = [asts];
+    asts = asts ? [asts] : [];
   }
 
   // get all selectionSets
