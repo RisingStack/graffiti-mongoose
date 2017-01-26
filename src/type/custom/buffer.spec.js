@@ -13,7 +13,7 @@ describe('GraphQL buffer type', () => {
     expect(GraphQLBuffer.serialize(buffer)).to.equal('foo');
   });
 
-  it('should stringifiy buffers', async function () {
+  it('should stringifiy buffers', async () => {
     const buffer = new Buffer('bar');
 
     const schema = new GraphQLSchema({
@@ -37,7 +37,7 @@ describe('GraphQL buffer type', () => {
     });
   });
 
-  it('should handle null', async function () {
+  it('should handle null', async () => {
     const buffer = null;
 
     const schema = new GraphQLSchema({
@@ -61,7 +61,7 @@ describe('GraphQL buffer type', () => {
     });
   });
 
-  it('should handle buffers as input', async function () {
+  it('should handle buffers as input', async () => {
     const schema = new GraphQLSchema({
       query: new GraphQLObjectType({
         name: 'Query',

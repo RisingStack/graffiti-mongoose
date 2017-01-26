@@ -140,7 +140,10 @@ function getMutationField(graffitiModel, type, viewer, hooks = {}, allowMongoIDM
     } else if (!(field.type instanceof GraphQLObjectType)
         && field.name !== 'id' && field.name !== '__v'
         && (allowMongoIDMutation || field.name !== '_id')) {
-      inputFields[field.name] = field;
+      inputFields[field.name] = {
+        name: field.name,
+        type: field.type
+      };
     }
 
     return inputFields;

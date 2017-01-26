@@ -19,6 +19,7 @@ export default class Middleware {
     if (!isArray(middleware)) {
       middleware = [middleware];
     }
+    // eslint-disable-next-line no-restricted-syntax
     for (const fn of middleware) {
       if (!isFunction(fn)) {
         throw new TypeError('Middleware must be composed of functions!');

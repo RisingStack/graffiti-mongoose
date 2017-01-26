@@ -68,7 +68,7 @@ describe('query', () => {
       expect(getIdFetcher({})).instanceOf(Function);
     });
 
-    it('should return an object based on a global id', async function getIdFetcherTest() {
+    it('should return an object based on a global id', async () => {
       const id = toGlobalId('type', obj._id);
 
       const idFetcher = getIdFetcher(graffitiModels);
@@ -76,7 +76,7 @@ describe('query', () => {
       expect(result).to.eql(resultObj);
     });
 
-    it('should return the Viewer instance', async function getIdFetcherTest() {
+    it('should return the Viewer instance', async () => {
       const id = toGlobalId('Viewer', 'viewer');
 
       const idFetcher = getIdFetcher(graffitiModels);
@@ -95,7 +95,7 @@ describe('query', () => {
       expect(oneResolver).instanceOf(Function);
     });
 
-    it('should return an object', async function getOneResolverTest() {
+    it('should return an object', async () => {
       let result = await oneResolver({}, { id: obj._id });
       expect(result).to.eql(resultObj);
 
@@ -115,14 +115,14 @@ describe('query', () => {
       expect(listResolver).instanceOf(Function);
     });
 
-    it('should return an array of objects', async function getListResolverTest() {
+    it('should return an array of objects', async () => {
       const result = await listResolver();
       expect(result).to.eql(resultArray);
     });
   });
 
   describe('connectionFromModel', () => {
-    it('should return a connection', async function connectionFromModelTest() {
+    it('should return a connection', async () => {
       const result = await connectionFromModel(graffitiModels.type, {});
       const edges = resultArray.map((obj) => ({
         cursor: _idToCursor(obj._id),

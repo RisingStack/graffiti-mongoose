@@ -19,7 +19,7 @@ describe('GraphQL generic type', () => {
     expect(GraphQLGeneric.serialize(unknown)).to.equal('{\'field\':\'foo\'}');
   });
 
-  it('should stringifiy generic types', async function () {
+  it('should stringifiy generic types', async () => {
     const unknown = new Unknown('bar');
 
     const schema = new GraphQLSchema({
@@ -43,7 +43,7 @@ describe('GraphQL generic type', () => {
     });
   });
 
-  it('should handle null', async function () {
+  it('should handle null', async () => {
     const unknown = null;
 
     const schema = new GraphQLSchema({
@@ -67,7 +67,7 @@ describe('GraphQL generic type', () => {
     });
   });
 
-  it('should handle generic types as input', async function () {
+  it('should handle generic types as input', async () => {
     const schema = new GraphQLSchema({
       query: new GraphQLObjectType({
         name: 'Query',

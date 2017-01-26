@@ -35,7 +35,7 @@ describe('e2e', () => {
       schema = getSchema([User], { hooks });
     });
 
-    beforeEach(async function BeforeEach() {
+    beforeEach(async () => {
       motherUser = new User({
         name: 'Mother',
         age: 54,
@@ -65,12 +65,12 @@ describe('e2e', () => {
       await user2.save();
     });
 
-    afterEach(async function AfterEach() {
+    afterEach(async () => {
       await [motherUser.remove(), user1.remove(), user2.remove()];
     });
 
     describe('singular query', () => {
-      it('should get data from database by id', async function Test() {
+      it('should get data from database by id', async () => {
         const result = await graphql(schema, `{
           user(id: "${user2._id}") {
             _id
@@ -129,7 +129,7 @@ describe('e2e', () => {
       });
 
       describe('with fragments', () => {
-        it('should support fragments', async function Test() {
+        it('should support fragments', async () => {
           const result = await graphql(schema, `
             query GetUser {
               user(id: "${user2._id}") {
@@ -172,7 +172,7 @@ describe('e2e', () => {
           });
         });
 
-        it('should support inline fragments', async function Test() {
+        it('should support inline fragments', async () => {
           const result = await graphql(schema, `{
             user(id: "${user2._id}") {
               _id
@@ -197,7 +197,7 @@ describe('e2e', () => {
     });
 
     describe('plural query', () => {
-      it('should get data from database and filter by number', async function Test() {
+      it('should get data from database and filter by number', async () => {
         let result = await graphql(schema, `{
           users(age: 28) {
             _id
@@ -241,7 +241,7 @@ describe('e2e', () => {
         expect(result.data.users).to.deep.include.members(expected);
       });
 
-      it('should get data from database and filter by array of _id(s)', async function Test() {
+      it('should get data from database and filter by array of _id(s)', async () => {
         const result = await graphql(schema, `{
           users(id: ["${user1._id}", "${user2._id}"]) {
             _id
@@ -259,7 +259,7 @@ describe('e2e', () => {
         });
       });
 
-      it('should support viewer field', async function Test() {
+      it('should support viewer field', async () => {
         const result = await graphql(schema, `{
           viewer {
             id
@@ -286,7 +286,7 @@ describe('e2e', () => {
         ]);
       });
 
-      it('should filter connections by arguments', async function Test() {
+      it('should filter connections by arguments', async () => {
         const result = await graphql(schema, `{
           viewer {
             users(name: "Foo") {
@@ -308,7 +308,7 @@ describe('e2e', () => {
         ]);
       });
 
-      it('should return results in ascending order', async function Test() {
+      it('should return results in ascending order', async () => {
         let result = await graphql(schema, `{
           viewer {
             users(orderBy: NAME_ASC) {
@@ -340,7 +340,7 @@ describe('e2e', () => {
         ]);
       });
 
-      it('should return results in descending order', async function Test() {
+      it('should return results in descending order', async () => {
         let result = await graphql(schema, `{
           viewer {
             users(orderBy: NAME_DESC) {
@@ -372,7 +372,7 @@ describe('e2e', () => {
         ]);
       });
 
-      it('should be able to limit the ordered results', async function Test() {
+      it('should be able to limit the ordered results', async () => {
         const result = await graphql(schema, `{
           viewer {
             users(orderBy: NAME_DESC, first: 2) {
@@ -391,7 +391,7 @@ describe('e2e', () => {
         ]);
       });
 
-      it('should be able to paginate the ordered results', async function Test() {
+      it('should be able to paginate the ordered results', async () => {
         let result = await graphql(schema, `{
           viewer {
             users(orderBy: NAME_DESC) {
@@ -428,7 +428,7 @@ describe('e2e', () => {
     });
 
     describe('mutations', () => {
-      it('should add data to the database', async function Test() {
+      it('should add data to the database', async () => {
         let result = await graphql(schema, `
           mutation addUserMutation {
             addUser(input: {name: "Test User", clientMutationId: "1"}) {
@@ -463,7 +463,7 @@ describe('e2e', () => {
         expect(result.errors).not.to.be.ok;
       });
 
-      it('should update data', async function Test() {
+      it('should update data', async () => {
         let result = await graphql(schema, `
           mutation addUserMutation {
             addUser(input: {name: "Test User", clientMutationId: "1"}) {
@@ -531,7 +531,7 @@ describe('e2e', () => {
         });
       });
 
-      it('should delete data', async function Test() {
+      it('should delete data', async () => {
         let result = await graphql(schema, `
           mutation addUserMutation {
             addUser(input: {name: "Test User", clientMutationId: "1"}) {
@@ -567,7 +567,7 @@ describe('e2e', () => {
     });
 
     describe('hooks', () => {
-      it('should call viewer hooks on a viewer query', async function () {
+      it('should call viewer hooks on a viewer query', async () => {
         const { pre, post } = hooks.viewer;
         pre.reset();
         post.reset();
@@ -585,7 +585,7 @@ describe('e2e', () => {
         expect(post.called).to.be.true;
       });
 
-      it('should call singular hooks on a singular query', async function () {
+      it('should call singular hooks on a singular query', async () => {
         const { pre, post } = hooks.singular;
         pre.reset();
         post.reset();
@@ -601,7 +601,7 @@ describe('e2e', () => {
         expect(post.called).to.be.true;
       });
 
-      it('should call plural hooks on a plural query', async function () {
+      it('should call plural hooks on a plural query', async () => {
         const { pre, post } = hooks.plural;
         pre.reset();
         post.reset();
@@ -617,7 +617,7 @@ describe('e2e', () => {
         expect(post.called).to.be.true;
       });
 
-      it('should call mutation hooks on a mutation', async function () {
+      it('should call mutation hooks on a mutation', async () => {
         const { pre, post } = hooks.mutation;
         pre.reset();
         post.reset();
