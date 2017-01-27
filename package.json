@@ -5,7 +5,7 @@
   "main": "lib/index.js",
   "scripts": {
     "test": "NODE_ENV=test mocha --compilers js:babel-register 'src/**/*.spec.js'",
-    "eslint": "eslint src",
+    "lint": "eslint src",
     "prepublish": "npm run build",
     "build": "rm -rf lib/* && babel src --ignore *.spec.js --out-dir lib",
     "coverage": "NODE_ENV=test babel-istanbul cover _mocha 'src/**/*.spec.js'"
@@ -59,7 +59,7 @@
     "sinon-chai": "2.8.0"
   },
   "pre-commit": [
-    "test",
-    "eslint"
+    "lint",
+    "test"
   ]
 }
