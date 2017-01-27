@@ -3,8 +3,8 @@ import getFieldList from './';
 
 describe('projection', () => {
   it('should return an object of fields (\'Field\' fragment)', () => {
-    const context = {
-      fieldASTs: {
+    const info = {
+      fieldNodes: {
         kind: 'Field',
         name: { value: 'foo' },
         selectionSet: {
@@ -21,7 +21,7 @@ describe('projection', () => {
         }
       }
     };
-    const fields = getFieldList(context);
+    const fields = getFieldList(info);
     expect(fields).to.be.eql({
       bar: true,
       baz: true
