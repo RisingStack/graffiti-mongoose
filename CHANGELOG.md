@@ -1,9 +1,30 @@
+<a name="6.0.0"></a>
+# 6.0.0 (2017-01-27)
+
+
+### chore
+
+* chore(circle): add badge, use yarn ([764eaf5](https://github.com/RisingStack/graffiti-mongoose/commit/764eaf5))
+* chore(circle): use CircleCI ([690b8aa](https://github.com/RisingStack/graffiti-mongoose/commit/690b8aa))
+* chore(package): update dependencies ([75d9085](https://github.com/RisingStack/graffiti-mongoose/commit/75d9085))
+* chore(package): update example dependencies ([9391856](https://github.com/RisingStack/graffiti-mongoose/commit/9391856))
+* chore(package): update lodash to version 4.16.0 (#153) ([0bfcfc0](https://github.com/RisingStack/graffiti-mongoose/commit/0bfcfc0))
+* chore(package): update sinon to version 1.17.6 (#152) ([1d1f6d1](https://github.com/RisingStack/graffiti-mongoose/commit/1d1f6d1))
+
+### fix
+
+* fix(projection): fieldASTs is called fieldNodes ([fced319](https://github.com/RisingStack/graffiti-mongoose/commit/fced319))
+* fix(projection): fix "can't get selectionSet of undefined" error (#204) ([f8edeb9](https://github.com/RisingStack/graffiti-mongoose/commit/f8edeb9)), closes [(#204](https://github.com/(/issues/204)
+
+
+
 <a name="5.3.0"></a>
 # 5.3.0 (2016-09-12)
 
 
 ### chore
 
+* chore(package): bump version to 5.3.0 ([a6b98cc](https://github.com/RisingStack/graffiti-mongoose/commit/a6b98cc))
 * chore(package): update babel-cli to version 6.14.0 (#136) ([703be9e](https://github.com/RisingStack/graffiti-mongoose/commit/703be9e))
 * chore(package): update babel-preset-es2015 to version 6.14.0 (#137) ([dc0c28f](https://github.com/RisingStack/graffiti-mongoose/commit/dc0c28f))
 * chore(package): update dependencies ([6df0fe0](https://github.com/RisingStack/graffiti-mongoose/commit/6df0fe0))
