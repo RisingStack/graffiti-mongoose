@@ -1,7 +1,7 @@
 # ![graffiti](https://cloud.githubusercontent.com/assets/1764512/8900273/9ed758dc-343e-11e5-95ba-e82f876cf52d.png) Mongoose
 
 [![npm version](https://badge.fury.io/js/%40risingstack%2Fgraffiti-mongoose.svg)](https://badge.fury.io/js/%40risingstack%2Fgraffiti-mongoose)
-[![Codeship Status for RisingStack/graffiti-mongoose](https://codeship.com/projects/f7a22cd0-5968-0133-d2b0-0e957d4e7dfa/status?branch=master)](https://codeship.com/projects/110028)
+[![CircleCI](https://circleci.com/gh/RisingStack/graffiti-mongoose.svg?style=svg)](https://circleci.com/gh/RisingStack/graffiti-mongoose)
 [![bitHound Overall Score](https://www.bithound.io/github/RisingStack/graffiti-mongoose/badges/score.svg)](https://www.bithound.io/github/RisingStack/graffiti-mongoose)
 [![Known Vulnerabilities](https://snyk.io/test/npm/@risingstack/graffiti-mongoose/badge.svg)](https://snyk.io/test/npm/@risingstack/graffiti-mongoose)
 
